@@ -27,7 +27,7 @@ public class PlayerCount extends PlaceholderExpansion {
 
     @Override
     public String getName() {
-        return "online";
+        return "placeholders";
     }
 
     @Override
@@ -42,10 +42,25 @@ public class PlayerCount extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer p, String params) {
-        DataBase db = new DataBase();
-        PingUtil pu = new PingUtil();
-        PingInfoStructure structure = pu.getData(Integer.parseInt(db.getPortByUUID(p.getUniqueId().toString())));
+        if (params.equalsIgnoreCase("online")) {
+            DataBase db = new DataBase();
+            PingUtil pu = new PingUtil();
+            try {
+                PingInfoStructure structure = pu.getData(Integer.parseInt(db.getPortByUUID(p.getUniqueId().toString())));
 
-        return (structure != null) ? String.valueOf(structure.getOnline()) : "Offline";
+                return (structure != null) ? String.valueOf(structure.getOnline()) : "Offline";
+            } catch (Exception ex) {
+                return "Offline";
+            }
+        } else if (params.equalsIgnoreCase("serversonline")) {
+            DataBase db = new DataBase();
+            PingUtil pu = new PingUtil();
+
+            int online = (int) db.getServersInfo().stream().filter(dbInfoStructure -> pu.isOnline("127.0.0.1", dbInfoStructure.getPort())).count();
+
+            return String.valueOf(online);
+        }
+
+        return null;
     }
 }
