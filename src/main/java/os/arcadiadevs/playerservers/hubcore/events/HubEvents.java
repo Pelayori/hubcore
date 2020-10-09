@@ -13,8 +13,6 @@ public class HubEvents implements Listener {
     @EventHandler
     public void weatherChange(WeatherChangeEvent e) {
         if (PSH.getConfig().getBoolean("disable-weather")) {
-            e.getWorld().setThundering(false);
-            e.getWorld().setStorm(false);
             e.setCancelled(true);
         }
     }

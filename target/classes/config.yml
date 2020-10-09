@@ -3,6 +3,7 @@ mysql:
   username: web
   password: webmaster
   database: playerservers
+  useSSL: true
 
 enable-compass: true
 compass-name: "&aQuick Compass"

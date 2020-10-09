@@ -1,5 +1,6 @@
 package os.arcadiadevs.playerservers.hubcore;
 
+import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,6 +17,7 @@ public class PSHubCore extends JavaPlugin {
 
     public static Plugin PSH;
 
+    @SneakyThrows
     @Override
     public void onEnable() {
         PSH = this;
@@ -33,7 +35,7 @@ public class PSHubCore extends JavaPlugin {
             new PlayerCount(this).register();
         }
 
-        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         Bukkit.getPluginManager().registerEvents(new ClickEvent(), this);
         Bukkit.getPluginManager().registerEvents(new JoinEvent(), this);
         Bukkit.getPluginManager().registerEvents(new HubEvents(), this);

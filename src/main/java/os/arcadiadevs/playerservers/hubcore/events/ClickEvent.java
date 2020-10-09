@@ -47,7 +47,7 @@ public class ClickEvent implements Listener  {
             e.setCancelled(true);
 
         else if (e.getView().getTitle().equalsIgnoreCase(translate("&aServer Selector"))) {
-            if (e.getCurrentItem().getItemMeta() != null && e.getCurrentItem().getItemMeta().getLore() != null) {
+            if (e.getCurrentItem() != null && e.getCurrentItem().getItemMeta() != null && e.getCurrentItem().getItemMeta().getLore() != null) {
                 if (e.getCurrentItem().getType() == XMaterial.EMERALD_BLOCK.parseMaterial()) {
                     String UUID = e.getCurrentItem().getItemMeta().getLore().get(1).split(" ")[1].replaceAll("§7", "");
                     ByteArrayDataOutput out = ByteStreams.newDataOutput();
