@@ -14,3 +14,6 @@ compass-description:
 
 disable-weather: true
 disable-damage: true
+
+# EXPERIMENTAL
+multi-node: false

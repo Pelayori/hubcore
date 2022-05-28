@@ -38,7 +38,8 @@ public class DataBase {
                         rs.getString("SERVERID"),
                         rs.getString("PORT"),
                         rs.getString("NAME"),
-                        rs.getString("PLAYERNAME"))
+                        rs.getString("PLAYERNAME"),
+                        rs.getString("NODE"))
                 );
             }
             return output;

@@ -7,11 +7,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import os.arcadiadevs.playerservers.hubcore.PSHubCore;
 import os.arcadiadevs.playerservers.hubcore.database.DataBase;
 import os.arcadiadevs.playerservers.hubcore.database.structures.DBInfoStructure;
 import os.arcadiadevs.playerservers.hubcore.database.structures.PingInfoStructure;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import static os.arcadiadevs.playerservers.hubcore.PSHubCore.PSH;
 import static os.arcadiadevs.playerservers.hubcore.utils.ColorUtils.translate;
@@ -19,23 +21,25 @@ import static os.arcadiadevs.playerservers.hubcore.utils.ColorUtils.translate;
 public class GUIUtils {
 
     public void openSelector(Player player) {
-        DataBase db = new DataBase();
-        PingUtil pu = new PingUtil();
+        final DataBase db = new DataBase();
+        final PingUtil pu = new PingUtil();
 
-        Inventory gui = Bukkit.createInventory(player, 9*6, ChatColor.GREEN + "Server Selector");
+        final Inventory gui = Bukkit.createInventory(player, 9*6, ChatColor.GREEN + "Server Selector");
+        final Map<String, Object> map = PSHubCore.multinode.getTable("servers").toMap();
 
         Bukkit.getScheduler().runTaskAsynchronously(PSH, () -> {
             for (DBInfoStructure is : db.getServersInfo()) {
-                ItemStack istack;
-                if (pu.isOnline("127.0.0.1", is.getPort())) {
+                final ItemStack istack;
+                if (pu.isOnline(PSH.getConfig().getBoolean("multi-node") ? map.get(is.getNode()).toString() : "127.0.0.1", is.getPort())) {
 
-                    PingInfoStructure pus = pu.getData(Integer.parseInt(is.getPort()));
+                    final PingInfoStructure pus = pu.getData(Integer.parseInt(is.getPort()));
+                    final ArrayList<String> lore = new ArrayList<>();
 
                     istack = new ItemStack(XMaterial.EMERALD_BLOCK.parseMaterial());
-                    ItemMeta ir = istack.getItemMeta();
+                    final ItemMeta ir = istack.getItemMeta();
+
                     //noinspection ConstantConditions
                     ir.setDisplayName(translate("&a" + is.getPlayerName() + "'s server"));
-                    ArrayList<String> lore = new ArrayList<>();
                     lore.add(translate("&cPort: &7" + is.getPort()));
                     lore.add(translate("&cUUID: &7" + is.getServerID().split("-")[0]));
                     lore.add(translate(String.format("&cOnline: &7%d/%d", pus.getOnline(), pus.getMax())));
@@ -48,12 +52,12 @@ public class GUIUtils {
             }
 
             for (DBInfoStructure is : db.getServersInfo()) {
-                if (!pu.isOnline("127.0.0.1", is.getPort())) {
-                    ItemStack istack = new ItemStack(XMaterial.REDSTONE_BLOCK.parseMaterial());
-                    ItemMeta ir = istack.getItemMeta();
+                if (!pu.isOnline(PSH.getConfig().getBoolean("multi-node") ? map.get(is.getNode()).toString() : "127.0.0.1", is.getPort())) {
+                    final ItemStack istack = new ItemStack(XMaterial.REDSTONE_BLOCK.parseMaterial());
+                    final ItemMeta ir = istack.getItemMeta();
+                    final ArrayList<String> lore = new ArrayList<>();
                     //noinspection ConstantConditions
                     ir.setDisplayName(translate("&a" + is.getPlayerName() + "'s server"));
-                    ArrayList<String> lore = new ArrayList<>();
                     lore.add(translate("&cPort: &7" + is.getPort()));
                     lore.add(translate("&cUUID: &7" + is.getServerID().split("-")[0]));
                     ir.setLore(lore);

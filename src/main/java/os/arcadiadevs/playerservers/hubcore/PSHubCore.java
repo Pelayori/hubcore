@@ -1,5 +1,6 @@
 package os.arcadiadevs.playerservers.hubcore;
 
+import com.moandjiezana.toml.Toml;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -11,11 +12,16 @@ import os.arcadiadevs.playerservers.hubcore.events.HubEvents;
 import os.arcadiadevs.playerservers.hubcore.events.JoinEvent;
 import os.arcadiadevs.playerservers.hubcore.placeholders.PlayerCount;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 
 public class PSHubCore extends JavaPlugin {
 
     public static Plugin PSH;
+    public static Toml multinode;
 
     @SneakyThrows
     @Override
@@ -23,6 +29,7 @@ public class PSHubCore extends JavaPlugin {
         PSH = this;
         getConfig().options().copyDefaults(true);
         saveConfig();
+        createMultiNodeConfig();
 
         DataSource ds = new DataSource();
         ds.registerDataSource();
@@ -41,6 +48,31 @@ public class PSHubCore extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new HubEvents(), this);
 
         Objects.requireNonNull(getCommand("servers")).setExecutor(new CommandManager());
+    }
+
+    private void createMultiNodeConfig() throws IOException {
+
+        if (!getConfig().getBoolean("multi-node")) {
+            return;
+        }
+
+        File configFile = new File(this.getDataFolder(), "multinode.toml");
+        //noinspection ResultOfMethodCallIgnored
+        getDataFolder().mkdirs();
+        if (configFile.createNewFile()) {
+
+            try (InputStream fis = getClass().getResourceAsStream("/multinode.toml"); FileOutputStream fos = new FileOutputStream(configFile)) {
+                byte[] buf = new byte[1024];
+                int i;
+                while ((i = fis.read(buf)) != -1) {
+                    fos.write(buf, 0, i);
+                }
+            } catch (Exception e) {
+                getLogger().info("[PlayerServers] Failed to load MultiNode file from Jar");
+            }
+        }
+
+        multinode = new Toml().read(new File(this.getDataFolder(), "multinode.toml"));
     }
 
     @Override

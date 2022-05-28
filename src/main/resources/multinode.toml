@@ -1,0 +1,3 @@
+# Please copy the content of multinode.toml from PSBungee here.
+[servers]
+example = "node1.example.com:25565"

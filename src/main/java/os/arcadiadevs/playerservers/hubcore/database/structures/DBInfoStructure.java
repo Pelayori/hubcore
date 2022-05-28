@@ -2,18 +2,20 @@ package os.arcadiadevs.playerservers.hubcore.database.structures;
 
 public class DBInfoStructure {
 
-    private String UUID;
-    private String ServerID;
-    private String Port;
-    private String ServerName;
-    private String PlayerName;
+    private final String UUID;
+    private final String ServerID;
+    private final String Port;
+    private final String ServerName;
+    private final String PlayerName;
+    private final String Node;
 
-    public DBInfoStructure(String UUID, String ServerID, String Port, String ServerName, String PlayerName) {
+    public DBInfoStructure(String UUID, String ServerID, String Port, String ServerName, String PlayerName, String node) {
         this.UUID = UUID;
         this.ServerID = ServerID;
         this.Port = Port;
         this.ServerName = ServerName;
         this.PlayerName = PlayerName;
+        this.Node = node;
     }
 
     public String getPlayerName() {
@@ -34,6 +36,10 @@ public class DBInfoStructure {
 
     public String getUUID() {
         return UUID;
+    }
+
+    public String getNode() {
+        return Node;
     }
 
 }
