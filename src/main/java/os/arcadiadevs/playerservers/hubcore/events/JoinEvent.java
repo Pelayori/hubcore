@@ -8,17 +8,22 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import os.arcadiadevs.playerservers.hubcore.utils.ColorUtils;
+import os.arcadiadevs.playerservers.hubcore.PSHubCore;
+import os.arcadiadevs.playerservers.hubcore.database.DataBase;
 
 import java.util.ArrayList;
 
-import static os.arcadiadevs.playerservers.hubcore.PSHubCore.PSH;
+import static os.arcadiadevs.playerservers.hubcore.utils.ColorUtils.translate;
 
 public class JoinEvent implements Listener {
+
+    final PSHubCore PSH = PSHubCore.getInstance();
+    final DataBase db = new DataBase();
 
     @SuppressWarnings("ConstantConditions")
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
+
         Player p = e.getPlayer();
         if (PSH.getConfig().getBoolean("enable-compass")) {
             Bukkit.getScheduler().runTaskAsynchronously(PSH, () -> {
@@ -26,10 +31,10 @@ public class JoinEvent implements Listener {
                 ItemStack is = new ItemStack(XMaterial.COMPASS.parseMaterial());
                 ItemMeta im = is.getItemMeta();
 
-                im.setDisplayName(ColorUtils.translate(PSH.getConfig().getString("compass-name")));
+                im.setDisplayName(translate(PSH.getConfig().getString("compass-name")));
 
                 ArrayList<String> lore = new ArrayList<>();
-                PSH.getConfig().getStringList("compass-description").forEach(string -> lore.add(ColorUtils.translate(string)));
+                PSH.getConfig().getStringList("compass-description").forEach(string -> lore.add(translate(string)));
                 im.setLore(lore);
                 is.setItemMeta(im);
 

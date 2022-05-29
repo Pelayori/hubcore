@@ -1,9 +1,9 @@
 package os.arcadiadevs.playerservers.hubcore;
 
 import com.moandjiezana.toml.Toml;
+import com.samjakob.spigui.SpiGUI;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import os.arcadiadevs.playerservers.hubcore.commands.CommandManager;
 import os.arcadiadevs.playerservers.hubcore.database.DataSource;
@@ -20,8 +20,9 @@ import java.util.Objects;
 
 public class PSHubCore extends JavaPlugin {
 
-    public static Plugin PSH;
-    public static Toml multinode;
+    private static PSHubCore PSH;
+    public Toml multinode;
+    public SpiGUI spiGUI;
 
     @SneakyThrows
     @Override
@@ -48,6 +49,8 @@ public class PSHubCore extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new HubEvents(), this);
 
         Objects.requireNonNull(getCommand("servers")).setExecutor(new CommandManager());
+
+        spiGUI = new SpiGUI(this);
     }
 
     private void createMultiNodeConfig() throws IOException {
@@ -71,8 +74,11 @@ public class PSHubCore extends JavaPlugin {
                 getLogger().info("[PlayerServers] Failed to load MultiNode file from Jar");
             }
         }
-
         multinode = new Toml().read(new File(this.getDataFolder(), "multinode.toml"));
+    }
+
+    public static PSHubCore getInstance() {
+        return PSH;
     }
 
     @Override

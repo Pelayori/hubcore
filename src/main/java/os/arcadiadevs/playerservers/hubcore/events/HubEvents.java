@@ -5,21 +5,22 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
-
-import static os.arcadiadevs.playerservers.hubcore.PSHubCore.PSH;
+import os.arcadiadevs.playerservers.hubcore.PSHubCore;
 
 public class HubEvents implements Listener {
 
+
+
     @EventHandler
     public void weatherChange(WeatherChangeEvent e) {
-        if (PSH.getConfig().getBoolean("disable-weather")) {
+        if (PSHubCore.getInstance().getConfig().getBoolean("disable-weather")) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
     public void entityDamage(EntityDamageEvent e) {
-        if (e.getEntity() instanceof Player && PSH.getConfig().getBoolean("disable-damage"))
+        if (e.getEntity() instanceof Player && PSHubCore.getInstance().getConfig().getBoolean("disable-damage"))
             e.setCancelled(true);
     }
 
