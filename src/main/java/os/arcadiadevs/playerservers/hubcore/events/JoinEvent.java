@@ -9,7 +9,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import os.arcadiadevs.playerservers.hubcore.PSHubCore;
-import os.arcadiadevs.playerservers.hubcore.database.DataBase;
 
 import java.util.ArrayList;
 
