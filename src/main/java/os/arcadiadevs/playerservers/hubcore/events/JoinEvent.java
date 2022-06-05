@@ -18,7 +18,6 @@ import static os.arcadiadevs.playerservers.hubcore.utils.ChatUtil.translate;
 public class JoinEvent implements Listener {
 
     final PSHubCore PSH = PSHubCore.getInstance();
-    final DataBase db = new DataBase();
 
     @SuppressWarnings("ConstantConditions")
     @EventHandler
