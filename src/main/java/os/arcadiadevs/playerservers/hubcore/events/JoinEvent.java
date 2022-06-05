@@ -13,7 +13,7 @@ import os.arcadiadevs.playerservers.hubcore.database.DataBase;
 
 import java.util.ArrayList;
 
-import static os.arcadiadevs.playerservers.hubcore.utils.ColorUtils.translate;
+import static os.arcadiadevs.playerservers.hubcore.utils.ChatUtil.translate;
 
 public class JoinEvent implements Listener {
 

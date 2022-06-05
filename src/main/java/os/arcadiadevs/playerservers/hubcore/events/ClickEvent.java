@@ -11,12 +11,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import os.arcadiadevs.playerservers.hubcore.PSHubCore;
-import os.arcadiadevs.playerservers.hubcore.utils.ColorUtils;
+import os.arcadiadevs.playerservers.hubcore.utils.ChatUtil;
 import os.arcadiadevs.playerservers.hubcore.utils.GUIUtils;
 
 import java.util.Objects;
 
-import static os.arcadiadevs.playerservers.hubcore.utils.ColorUtils.translate;
+import static os.arcadiadevs.playerservers.hubcore.utils.ChatUtil.translate;
 
 @SuppressWarnings("UnstableApiUsage")
 public class ClickEvent implements Listener  {
@@ -35,7 +35,6 @@ public class ClickEvent implements Listener  {
 
             e.setCancelled(true);
         }
-
     }
 
     @EventHandler
@@ -46,22 +45,6 @@ public class ClickEvent implements Listener  {
         if (e.getCurrentItem() != null && e.getCurrentItem().getItemMeta() != null
                 && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(translate(PSHubCore.getInstance().getConfig().getString("compass-name"))))
             e.setCancelled(true);
-
-        else if (e.getView().getTitle().equalsIgnoreCase(translate("&aServer Selector"))) {
-            if (e.getCurrentItem() != null && e.getCurrentItem().getItemMeta() != null && e.getCurrentItem().getItemMeta().getLore() != null) {
-                if (e.getCurrentItem().getType() == XMaterial.EMERALD_BLOCK.parseMaterial()) {
-                    String UUID = e.getCurrentItem().getItemMeta().getLore().get(1).split(" ")[1].replaceAll("§7", "");
-                    ByteArrayDataOutput out = ByteStreams.newDataOutput();
-                    out.writeUTF("Connect");
-                    out.writeUTF(UUID);
-
-                    p.sendPluginMessage(PSHubCore.getInstance(), "BungeeCord", out.toByteArray());
-                    e.getWhoClicked().closeInventory();
-                } else if (e.getCurrentItem().getType() == XMaterial.REDSTONE_BLOCK.parseMaterial())
-                    p.sendMessage(ColorUtils.translate("&9PlayerServers> &7Oops, the server you tried to connect to is offline."));
-                e.setCancelled(true);
-            }
-        }
     }
 
     @EventHandler
