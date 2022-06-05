@@ -6,23 +6,18 @@ import com.samjakob.spigui.buttons.SGButton;
 import com.samjakob.spigui.item.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import os.arcadiadevs.playerservers.hubcore.PSHubCore;
 import os.arcadiadevs.playerservers.hubcore.database.DataBase;
-import os.arcadiadevs.playerservers.hubcore.database.structures.DBInfoStructure;
-import os.arcadiadevs.playerservers.hubcore.database.structures.PingInfoStructure;
 
 import java.util.Map;
 import java.util.Objects;
 
-import static os.arcadiadevs.playerservers.hubcore.utils.ColorUtils.translate;
-
 public class GUIUtils {
-
 
     public void openSelector(Player player) {
 
         final DataBase db = new DataBase();
-        final PingUtil pu = new PingUtil();
         final PSHubCore PSH = PSHubCore.getInstance();
 
         final SGMenu menu = PSH.spiGUI.create(ChatUtil.translate("&aServer Selector"), 5);

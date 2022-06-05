@@ -39,9 +39,6 @@ public class ClickEvent implements Listener  {
 
     @EventHandler
     public void inventory(InventoryClickEvent e) {
-
-        Player p = (Player) e.getWhoClicked();
-
         if (e.getCurrentItem() != null && e.getCurrentItem().getItemMeta() != null
                 && e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(translate(PSHubCore.getInstance().getConfig().getString("compass-name"))))
             e.setCancelled(true);

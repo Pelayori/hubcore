@@ -35,8 +35,8 @@ public class DataBase {
             while(rs.next()) {
                 output.add(new DBInfoStructure(
                         rs.getString("UUID"),
-                        rs.getString("SERVERID"),
-                        rs.getString("PORT"),
+                        rs.getString("SERVERID").split("-")[0],
+                        rs.getInt("PORT"),
                         rs.getString("NAME"),
                         rs.getString("PLAYERNAME"),
                         rs.getString("NODE"))
