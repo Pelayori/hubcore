@@ -23,20 +23,20 @@ public class JoinEvent implements Listener {
     public void onJoin(PlayerJoinEvent e) {
 
         Player p = e.getPlayer();
-        if (PSH.getConfig().getBoolean("enable-compass")) {
+        if (PSH.getConfig().getBoolean("gui.compass.enable-compass")) {
             Bukkit.getScheduler().runTaskAsynchronously(PSH, () -> {
 
                 ItemStack is = new ItemStack(XMaterial.COMPASS.parseMaterial());
                 ItemMeta im = is.getItemMeta();
 
-                im.setDisplayName(translate(PSH.getConfig().getString("compass-name")));
+                im.setDisplayName(translate(PSH.getConfig().getString("gui.compass.compass-name")));
 
                 ArrayList<String> lore = new ArrayList<>();
-                PSH.getConfig().getStringList("compass-description").forEach(string -> lore.add(translate(string)));
+                PSH.getConfig().getStringList("gui.compass.compass-description").forEach(string -> lore.add(translate(string)));
                 im.setLore(lore);
                 is.setItemMeta(im);
 
-                Bukkit.getScheduler().runTask(PSH, () -> p.getInventory().setItem(PSH.getConfig().getInt("compass-location"), is));
+                Bukkit.getScheduler().runTask(PSH, () -> p.getInventory().setItem(PSH.getConfig().getInt("gui.compass.compass-location"), is));
 
             });
         } else {

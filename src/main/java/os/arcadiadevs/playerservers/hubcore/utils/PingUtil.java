@@ -1,7 +1,5 @@
 package os.arcadiadevs.playerservers.hubcore.utils;
 
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import os.arcadiadevs.playerservers.hubcore.database.structures.PingInfoStructure;
 
@@ -13,6 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+@SuppressWarnings("ALL")
 public class PingUtil {
 
     @Getter

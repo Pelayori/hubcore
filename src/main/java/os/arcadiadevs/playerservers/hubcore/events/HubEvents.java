@@ -9,8 +9,6 @@ import os.arcadiadevs.playerservers.hubcore.PSHubCore;
 
 public class HubEvents implements Listener {
 
-
-
     @EventHandler
     public void weatherChange(WeatherChangeEvent e) {
         if (PSHubCore.getInstance().getConfig().getBoolean("disable-weather")) {

@@ -4,13 +4,35 @@ mysql:
   password: webmaster
   database: playerservers
   useSSL: true
-
-enable-compass: true
-compass-name: "&aQuick Compass"
-compass-location: 0
-compass-description:
-  - "&7Click here to open the server"
-  - "&7selector or to create your own one"
+gui:
+  enabled: true
+  compass:
+    enable-compass: true
+    compass-name: "&aQuick Compass"
+    compass-location: 0
+    compass-description:
+      - "&7Click here to open the server"
+      - "&7selector or to create your own one"
+  menu:
+    cache-time: 20
+    online:
+      block: "EMERALD_BLOCK"
+      name: '&a%server%''s server'
+      lore:
+        - '&7Status: %status%'
+        - '&7Players: &2%players%&8/&a%maxplayers%'
+        - '&7Owner: &a%owner%'
+        - '&7Motd: &a%motd%'
+        - '&7Node: &a%node%'
+        - '&7Ip: &a%ip%&8:&a%port%'
+    offline:
+      block: "REDSTONE_BLOCK"
+      name: '&c%server%''s server'
+      lore:
+        - '&7Status: %status%'
+        - '&7Owner: &c%owner%'
+        - '&7Node: &c%node%'
+        - '&7Ip: &c%ip%&8:&c%port%'
 
 disable-weather: true
 disable-damage: true

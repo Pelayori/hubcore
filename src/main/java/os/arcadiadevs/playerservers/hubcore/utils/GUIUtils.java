@@ -1,81 +1,66 @@
 package os.arcadiadevs.playerservers.hubcore.utils;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.samjakob.spigui.SGMenu;
 import com.samjakob.spigui.buttons.SGButton;
 import com.samjakob.spigui.item.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import os.arcadiadevs.playerservers.hubcore.PSHubCore;
-import os.arcadiadevs.playerservers.hubcore.database.DataBase;
 
-import java.util.Map;
-import java.util.Objects;
+import java.util.ArrayList;
 
 public class GUIUtils {
 
     public void openSelector(Player player) {
 
-        final DataBase db = new DataBase();
-        final PSHubCore PSH = PSHubCore.getInstance();
-
-        final SGMenu menu = PSH.spiGUI.create(ChatUtil.translate("&aServer Selector"), 5);
-        final Map<String, Object> map = PSHubCore.getInstance().multinode.getTable("servers").toMap();
+        final var PSH = PSHubCore.getInstance();
+        final var menu = PSH.spiGUI.create(ChatUtil.translate("&aServer Selector"), 5);
 
         menu.setAutomaticPaginationEnabled(true);
         menu.setBlockDefaultInteractions(true);
 
+        final var onlineXMaterialOptional = XMaterial.matchXMaterial(PSH.getConfig().getString("gui.menu.online.block"));
+        final var offlineXMaterialOptional = XMaterial.matchXMaterial(PSH.getConfig().getString("gui.menu.offline.block"));
+        
+        final var onlineXMaterial = onlineXMaterialOptional.orElse(XMaterial.EMERALD_BLOCK).parseMaterial();
+        final var offlineXMaterial = offlineXMaterialOptional.orElse(XMaterial.REDSTONE_BLOCK).parseMaterial();
+
         new Thread(() -> {
-            final var servers = db.getServersInfo();
-
-            // Sort servers by pu.isOnline(server)
-            servers.sort((s1, s2) -> {
-                final var pingUtil1 = new PingUtil(map.get(s1.getNode()).toString().split(" ")[0].replaceAll(":8080", ""), s1.getPort());
-                final var pingUtil2 = new PingUtil(map.get(s2.getNode()).toString().split(" ")[0].replaceAll(":8080", ""), s2.getPort());
-
-                final var p1 = pingUtil1.isOnline();
-                final var p2 = pingUtil2.isOnline();
-
-                if (p1 && !p2) {
-                    return -1;
-                } else if (!p1 && p2) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            });
+            final var servers = PSHubCore.getInstance().getServerCache().getServers();
 
             servers.forEach(server -> {
-                final var pingUtil = new PingUtil(map.get(server.getNode()).toString().split(" ")[0].replaceAll(":8080", ""), server.getPort());
+                final var itemBuilder = new ItemBuilder(server.isOnline() ? onlineXMaterial : offlineXMaterial);
 
-                final var itemBuilder = new ItemBuilder(Objects.requireNonNull(
-                        pingUtil.isOnline() ? XMaterial.EMERALD_BLOCK.parseMaterial() : XMaterial.REDSTONE_BLOCK.parseMaterial()
-                ));
+                var lore = PSH.getConfig().getStringList(server.isOnline() ? "gui.menu.online.lore" : "gui.menu.offline.lore");
 
-                final ItemStack item;
+                lore = lore.stream()
+                        .map(s -> s.replaceAll("%server%", server.getUniqueId()))
+                        .map(s -> s.replaceAll("%status%", server.isOnline() ? "&aOnline" : "&cOffline"))
+                        .map(s -> s.replaceAll("%players%", server.isOnline() ? server.getPlayers() + "" : "0"))
+                        .map(s -> s.replaceAll("%maxplayers%", server.isOnline() ? server.getMaxPlayers() + "" : "0"))
+                        .map(s -> s.replaceAll("%port%", server.getPort() + ""))
+                        .map(s -> s.replaceAll("%motd%", server.isOnline() ? server.getMotd() : "&cOffline"))
+                        .map(s -> s.replaceAll("%node%", server.getNode()))
+                        .map(s -> s.replaceAll("%owner%", server.getOwner()))
+                        .map(s -> s.replaceAll("%ip%", server.getAddress()))
+                        .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
 
-                if (pingUtil.isOnline()) {
-                    item = itemBuilder
-                            .name(ChatUtil.translate("&a" + server.getPlayerName() + "'s server"))
-                            .lore(
-                                    ChatUtil.translate("&7UUID: &a" + server.getServerId().split("-")[0]),
-                                    ChatUtil.translate("&7Port: &a" + server.getPort()),
-                                    ChatUtil.translate(String.format("&7Online: &a%d/%d", pingUtil.getData().getOnline(), pingUtil.getData().getMax())),
-                                    ChatUtil.translate("&7MOTD: &a" + pingUtil.getData().getMOTD())
-                            )
-                            .build();
-                } else {
-                    item = itemBuilder
-                            .name(ChatUtil.translate("&c" + server.getPlayerName() + "'s server"))
-                            .lore(
-                                    ChatUtil.translate("&7UUID: &c" + server.getServerId().split("-")[0]),
-                                    ChatUtil.translate("&7Port: &c" + server.getPort())
-                            )
-                            .build();
-                }
+                var item = itemBuilder
+                        .name(ChatUtil.translate(PSH.getConfig().getString(server.isOnline() ? "gui.menu.online.name" : "gui.menu.offline.name")
+                                        .replaceAll("%server%", server.getUniqueId())
+                                        .replaceAll("%status%", server.isOnline() ? "&aOnline" : "&cOffline"))
+                                        .replaceAll("%players%", server.isOnline() ? server.getPlayers() + "" : "0")
+                                        .replaceAll("%maxplayers%", server.isOnline() ? server.getMaxPlayers() + "" : "0")
+                                        .replaceAll("%port%", server.getPort() + "")
+                                        .replaceAll("%motd%", server.isOnline() ? server.getMotd() : "&cOffline")
+                                        .replaceAll("%node%", server.getNode())
+                                        .replaceAll("%owner%", server.getOwner())
+                                        .replaceAll("%ip%", server.getAddress())
+                        )
+                        .lore(lore)
+                        .build();
 
-                menu.setButton(0, menu.getInventory().firstEmpty(), new SGButton(item).withListener(listener -> BungeeUtil.connectPlayer(listener, player, server.getServerId())));
+                menu.setButton(0, menu.getInventory().firstEmpty(), new SGButton(item).withListener(listener -> BungeeUtil.connectPlayer(listener, player, server.getUniqueId())));
             });
 
             Bukkit.getScheduler().runTask(PSHubCore.getInstance(), () -> player.openInventory(menu.getInventory()));
