@@ -32,7 +32,7 @@ public class PlayerCount extends PlaceholderExpansion {
 
     @Override
     public String getAuthor() {
-        return "OpenSource";
+        return "OpenSource/Cuftica";
     }
 
     @Override

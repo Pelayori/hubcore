@@ -2,50 +2,51 @@ package os.arcadiadevs.playerservers.hubcore.events;
 
 import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import os.arcadiadevs.playerservers.hubcore.PSHubCore;
+import os.arcadiadevs.playerservers.hubcore.utils.ChatUtil;
 
 import java.util.ArrayList;
-
-import static os.arcadiadevs.playerservers.hubcore.utils.ChatUtil.translate;
+import java.util.List;
 
 public class JoinEvent implements Listener {
 
     final PSHubCore PSH = PSHubCore.getInstance();
 
-    @SuppressWarnings("ConstantConditions")
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
 
-        Player p = e.getPlayer();
-        if (PSH.getConfig().getBoolean("gui.compass.enable-compass")) {
-            Bukkit.getScheduler().runTaskAsynchronously(PSH, () -> {
-
-                ItemStack is = new ItemStack(XMaterial.COMPASS.parseMaterial());
-                ItemMeta im = is.getItemMeta();
-
-                im.setDisplayName(translate(PSH.getConfig().getString("gui.compass.compass-name")));
-
-                ArrayList<String> lore = new ArrayList<>();
-                PSH.getConfig().getStringList("gui.compass.compass-description").forEach(string -> lore.add(translate(string)));
-                im.setLore(lore);
-                is.setItemMeta(im);
-
-                Bukkit.getScheduler().runTask(PSH, () -> p.getInventory().setItem(PSH.getConfig().getInt("gui.compass.compass-location"), is));
-
+        final var itemName = PSH.getConfig().getString("gui.item.material");
+        final var guiMaterial = XMaterial.matchXMaterial(itemName).orElse(XMaterial.COMPASS).parseMaterial();
+        final var player = e.getPlayer();
+        
+        if (!PSH.getConfig().getBoolean("gui.enabled") || !PSH.getConfig().getBoolean("gui.compass.enabled")) {
+            player.getInventory().forEach(item -> {
+                if (item.getType() == guiMaterial) {
+                    player.getInventory().remove(item);
+                }
             });
-        } else {
-            p.getInventory().forEach(itemStack -> {
-                if (itemStack.getType() == XMaterial.COMPASS.parseMaterial())
-                    p.getInventory().remove(itemStack);
-            });
+            return;
         }
+
+        new Thread(() -> {
+            final var itemStack = new ItemStack(guiMaterial);
+            final var itemMeta = itemStack.getItemMeta();
+
+            itemMeta.setDisplayName(ChatUtil.translate(PSH.getConfig().getString("gui.item.name")));
+
+            final List<String> lore = PSH.getConfig().getStringList("gui.item.description")
+                    .stream()
+                    .map(ChatUtil::translate)
+                    .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+
+            itemMeta.setLore(lore);
+            itemStack.setItemMeta(itemMeta);
+
+            Bukkit.getScheduler().runTask(PSH, () -> player.getInventory().setItem(PSH.getConfig().getInt("gui.item.location"), itemStack));
+        }).start();
     }
-
-
 }

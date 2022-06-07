@@ -6,11 +6,12 @@ mysql:
   useSSL: true
 gui:
   enabled: true
-  compass:
-    enable-compass: true
-    compass-name: "&aQuick Compass"
-    compass-location: 0
-    compass-description:
+  item:
+    enabled: true
+    name: "&aQuick Compass"
+    material: "COMPASS"
+    location: 0
+    description:
       - "&7Click here to open the server"
       - "&7selector or to create your own one"
   menu:

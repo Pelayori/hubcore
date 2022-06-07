@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class GUIUtils {
 
-    public void openSelector(Player player) {
+    public static void openSelector(Player player) {
 
         final var PSH = PSHubCore.getInstance();
         final var menu = PSH.spiGUI.create(ChatUtil.translate("&aServer Selector"), 5);
