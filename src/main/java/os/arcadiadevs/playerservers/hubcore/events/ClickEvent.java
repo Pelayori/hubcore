@@ -22,7 +22,7 @@ public class ClickEvent implements Listener  {
             return;
         }
 
-        if (player.getInventory().getHeldItemSlot() == PSHubCore.getInstance().getConfig().getInt("gui.compass.compass-location")) {
+        if (player.getInventory().getHeldItemSlot() == PSHubCore.getInstance().getConfig().getInt("gui.item.location")) {
             GUIUtils.openSelector(player);
             event.setCancelled(true);
         }
@@ -36,7 +36,7 @@ public class ClickEvent implements Listener  {
 
         final var player = (Player) event.getWhoClicked();
         final var inventoryType = event.getInventory().getType();
-        final var slot = PSHubCore.getInstance().getConfig().getInt("gui.compass.compass-location");
+        final var slot = PSHubCore.getInstance().getConfig().getInt("gui.item.location");
 
         if (event.getSlot() == slot && (inventoryType == InventoryType.PLAYER || inventoryType == InventoryType.CRAFTING)) {
             if (player.getGameMode() == GameMode.CREATIVE) {
@@ -51,7 +51,7 @@ public class ClickEvent implements Listener  {
     public void drop(PlayerDropItemEvent event) {
         final var player = event.getPlayer();
 
-        if (player.getInventory().getHeldItemSlot() == PSHubCore.getInstance().getConfig().getInt("gui.compass.compass-location")) {
+        if (player.getInventory().getHeldItemSlot() == PSHubCore.getInstance().getConfig().getInt("gui.item.location")) {
             event.setCancelled(true);
         }
     }

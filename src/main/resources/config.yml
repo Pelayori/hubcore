@@ -15,6 +15,7 @@ gui:
       - "&7Click here to open the server"
       - "&7selector or to create your own one"
   menu:
+    name: "&aServer Selector"
     cache-time: 20
     online:
       block: "EMERALD_BLOCK"

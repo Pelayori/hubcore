@@ -14,7 +14,7 @@ public class GUIUtils {
     public static void openSelector(Player player) {
 
         final var PSH = PSHubCore.getInstance();
-        final var menu = PSH.spiGUI.create(ChatUtil.translate("&aServer Selector"), 5);
+        final var menu = PSH.spiGUI.create(ChatUtil.translate(PSH.getConfig().getString("gui.menu.name")), 5);
 
         menu.setAutomaticPaginationEnabled(true);
         menu.setBlockDefaultInteractions(true);

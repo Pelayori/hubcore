@@ -23,7 +23,7 @@ public class JoinEvent implements Listener {
         final var guiMaterial = XMaterial.matchXMaterial(itemName).orElse(XMaterial.COMPASS).parseMaterial();
         final var player = e.getPlayer();
         
-        if (!PSH.getConfig().getBoolean("gui.enabled") || !PSH.getConfig().getBoolean("gui.compass.enabled")) {
+        if (!PSH.getConfig().getBoolean("gui.enabled") || !PSH.getConfig().getBoolean("gui.item.enabled")) {
             player.getInventory().forEach(item -> {
                 if (item.getType() == guiMaterial) {
                     player.getInventory().remove(item);
