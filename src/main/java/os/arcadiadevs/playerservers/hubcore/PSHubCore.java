@@ -5,6 +5,7 @@ import com.samjakob.spigui.SpiGUI;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import os.arcadiadevs.playerservers.hubcore.commands.CommandManager;
 import os.arcadiadevs.playerservers.hubcore.database.DataSource;
@@ -48,7 +49,7 @@ public class PSHubCore extends JavaPlugin {
             new PlayerCount(this).register();
         }
 
-        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         Bukkit.getPluginManager().registerEvents(new ClickEvent(), this);
         Bukkit.getPluginManager().registerEvents(new JoinEvent(), this);
         Bukkit.getPluginManager().registerEvents(new HubEvents(), this);
@@ -91,6 +92,6 @@ public class PSHubCore extends JavaPlugin {
     @Override
     public void onDisable() {
         super.onDisable();
+        getServer().getMessenger().unregisterIncomingPluginChannel(this, "BungeeCord");
     }
-
 }

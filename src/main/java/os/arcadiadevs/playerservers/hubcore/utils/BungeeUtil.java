@@ -16,9 +16,55 @@ public class BungeeUtil {
         }
 
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        out.writeUTF("Connect");
-        out.writeUTF(server);
 
+        try {
+            out.writeUTF("Connect");
+            out.writeUTF(server);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        player.sendPluginMessage(PSHubCore.getInstance(), "BungeeCord", out.toByteArray());
+        event.getWhoClicked().closeInventory();
+    }
+
+    public static void stopServer(InventoryClickEvent event, Player player, String server) {
+
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+
+        try {
+            out.writeUTF("stop");
+            out.writeUTF(server);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        player.sendPluginMessage(PSHubCore.getInstance(), "BungeeCord", out.toByteArray());
+        event.getWhoClicked().closeInventory();
+    }
+
+    public static void deleteServer(InventoryClickEvent event, Player player, String server) {
+
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+
+        try {
+            out.writeUTF("delete");
+            out.writeUTF(server);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        player.sendPluginMessage(PSHubCore.getInstance(), "BungeeCord", out.toByteArray());
+        event.getWhoClicked().closeInventory();
+    }
+
+    public static void createServer(InventoryClickEvent event, Player player, String server) {
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+
+        try {
+            out.writeUTF("create");
+            out.writeUTF(server);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         player.sendPluginMessage(PSHubCore.getInstance(), "BungeeCord", out.toByteArray());
         event.getWhoClicked().closeInventory();
     }

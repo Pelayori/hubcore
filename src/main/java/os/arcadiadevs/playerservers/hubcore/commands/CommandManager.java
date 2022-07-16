@@ -21,8 +21,7 @@ public class CommandManager implements CommandExecutor {
             if (PSHubCore.getInstance().getConfig().getBoolean("gui.enabled")) {
                 if (command.getName().equalsIgnoreCase("servers") || command.getName().equalsIgnoreCase("menu") || command.getName().equalsIgnoreCase("opengui")) {
                     Player player = (Player) commandSender;
-                    GUIUtils gu = new GUIUtils();
-                    gu.openSelector(player);
+                    GUIUtils.openSelector(player);
                 }
             }
         }

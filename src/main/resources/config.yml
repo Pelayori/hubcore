@@ -9,13 +9,20 @@ gui:
   item:
     enabled: true
     name: "&aQuick Compass"
+    name1: "&eMy PlayerServers"
     material: "COMPASS"
+    material1: "EMERALD"
     location: 0
+    location1: 8
     description:
+      - "&7Click here to open the server"
+      - "&7selector or to create your own one"
+    description1:
       - "&7Click here to open the server"
       - "&7selector or to create your own one"
   menu:
     name: "&aServer Selector"
+    name1: "&eMy PlayerServers"
     cache-time: 20
     online:
       block: "EMERALD_BLOCK"

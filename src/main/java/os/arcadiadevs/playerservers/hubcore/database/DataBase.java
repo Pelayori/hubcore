@@ -11,10 +11,10 @@ public class DataBase {
 
     public boolean containsPort(String port) {
         try (Connection connection = DataSource.getConnection()) {
-            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM PLAYERSERVERS");
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM PlayerServers");
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
-                if (rs.getString("PORT").equals(port))
+                if (rs.getString("Port").equals(port))
                     return true;
             }
             return false;
@@ -30,16 +30,15 @@ public class DataBase {
         ArrayList<DBInfoStructure> output = new ArrayList<>();
 
         try (Connection connection = DataSource.getConnection()) {
-            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM PLAYERSERVERS");
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM PlayerServers");
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
                 output.add(new DBInfoStructure(
                         rs.getString("UUID"),
-                        rs.getString("SERVERID").split("-")[0],
-                        rs.getInt("PORT"),
-                        rs.getString("NAME"),
-                        rs.getString("PLAYERNAME"),
-                        rs.getString("NODE"))
+                        rs.getString("ServerID").split("-")[0],
+                        rs.getInt("Port"),
+                        rs.getString("PlayerName"),
+                        rs.getString("Node"))
                 );
             }
             return output;
@@ -53,9 +52,9 @@ public class DataBase {
 
     public String getPortByUUID(String UUID) {
         try (Connection connection = DataSource.getConnection()) {
-            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM PLAYERSERVERS WHERE UUID='" + UUID + "'");
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM PlayerServers WHERE UUID='" + UUID + "'");
             ResultSet rs = stmt.executeQuery(); rs.next();
-            return rs.getString("PORT");
+            return rs.getString("Port");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -65,13 +64,29 @@ public class DataBase {
 
     public String getServerByUUID(String UUID) {
         try (Connection connection = DataSource.getConnection()) {
-            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM PLAYERSERVERS WHERE UUID='" + UUID + "'");
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM PlayerServers WHERE UUID='" + UUID + "'");
             ResultSet rs = stmt.executeQuery(); rs.next();
-            return rs.getString("SERVERID");
+            return rs.getString("ServerID");
         }
         catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public boolean containsServer(String serverID) {
+        try (Connection connection = DataSource.getConnection()) {
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM PlayerServers");
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                if (rs.getString("ServerID").equals(serverID))
+                    return true;
+            }
+            return false;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

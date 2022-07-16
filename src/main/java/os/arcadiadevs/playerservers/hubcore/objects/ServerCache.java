@@ -7,6 +7,8 @@ import os.arcadiadevs.playerservers.hubcore.database.DataBase;
 import os.arcadiadevs.playerservers.hubcore.utils.PingUtil;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class ServerCache {
@@ -22,12 +24,17 @@ public class ServerCache {
         new Thread(() -> {
             while(PSHubCore.getInstance().isEnabled()) {
                 final var database = new DataBase();
-                final var map = PSHubCore.getInstance().multinode.getTable("servers").toMap();
+                Map<String, Object> map = null;
                 final var rawServers = database.getServersInfo();
                 final var servers = new ArrayList<Server>();
 
+                if (PSHubCore.getInstance().getConfig().getBoolean("multi-node")) {
+                    map = PSHubCore.getInstance().multinode.getTable("servers").toMap();
+                }
+
+                Map<String, Object> finalMap = map;
                 rawServers.forEach(server -> {
-                    var pingUtil = new PingUtil(map.get(server.getNode()).toString().split(" ")[0].replaceAll(":8080", ""), server.getPort());
+                    var pingUtil = new PingUtil(PSHubCore.getInstance().getConfig().getBoolean("multi-node") ? finalMap.get(server.getNode()).toString().split(" ")[0].replaceAll(":8080", "") : "localhost", server.getPort());
 
                     var _server = new Server();
 

@@ -19,13 +19,15 @@ public class JoinEvent implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
 
-        final var itemName = PSH.getConfig().getString("gui.item.material");
-        final var guiMaterial = XMaterial.matchXMaterial(itemName).orElse(XMaterial.COMPASS).parseMaterial();
+        final var itemMaterial = PSH.getConfig().getString("gui.item.material");
+        final var itemMaterial1 = PSH.getConfig().getString("gui.item.material1");
+        final var selectorMaterial = XMaterial.matchXMaterial(itemMaterial).orElse(XMaterial.COMPASS).parseMaterial();
+        final var selectorMaterial1 = XMaterial.matchXMaterial(itemMaterial1).orElse(XMaterial.EMERALD).parseMaterial();
         final var player = e.getPlayer();
         
         if (!PSH.getConfig().getBoolean("gui.enabled") || !PSH.getConfig().getBoolean("gui.item.enabled")) {
             player.getInventory().forEach(item -> {
-                if (item.getType() == guiMaterial) {
+                if (item.getType() == selectorMaterial || item.getType() == selectorMaterial1) {
                     player.getInventory().remove(item);
                 }
             });
@@ -33,20 +35,32 @@ public class JoinEvent implements Listener {
         }
 
         new Thread(() -> {
-            final var itemStack = new ItemStack(guiMaterial);
+            final var itemStack = new ItemStack(selectorMaterial);
+            final var itemStack1 = new ItemStack(selectorMaterial1);
             final var itemMeta = itemStack.getItemMeta();
+            final var itemMeta1 = itemStack1.getItemMeta();
 
             itemMeta.setDisplayName(ChatUtil.translate(PSH.getConfig().getString("gui.item.name")));
+            itemMeta1.setDisplayName(ChatUtil.translate(PSH.getConfig().getString("gui.item.name1")));
 
             final List<String> lore = PSH.getConfig().getStringList("gui.item.description")
                     .stream()
                     .map(ChatUtil::translate)
                     .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
 
+            final List<String> lore1 = PSH.getConfig().getStringList("gui.item.description1")
+                    .stream()
+                    .map(ChatUtil::translate)
+                    .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+
             itemMeta.setLore(lore);
+            itemMeta1.setLore(lore1);
             itemStack.setItemMeta(itemMeta);
+            itemStack1.setItemMeta(itemMeta1);
 
             Bukkit.getScheduler().runTask(PSH, () -> player.getInventory().setItem(PSH.getConfig().getInt("gui.item.location"), itemStack));
+            Bukkit.getScheduler().runTask(PSH, () -> player.getInventory().setItem(PSH.getConfig().getInt("gui.item.location1"), itemStack1));
         }).start();
+
     }
 }
