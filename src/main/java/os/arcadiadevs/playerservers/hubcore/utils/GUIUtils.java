@@ -15,7 +15,7 @@ public class GUIUtils {
     public static void openSelector(Player player) {
 
         final var PSH = PSHubCore.getInstance();
-        final var menu = PSH.spiGUI.create(ChatUtil.translate(PSH.getConfig().getString("gui.menu.name")), 6);
+        final var menu = PSH.getSpiGUI().create(ChatUtil.translate(PSH.getConfig().getString("gui.menu.name")), 6);
 
         menu.setAutomaticPaginationEnabled(true);
         menu.setBlockDefaultInteractions(true);
@@ -71,7 +71,7 @@ public class GUIUtils {
     public static void openMenu(Player player) {
 
         final var PSH = PSHubCore.getInstance();
-        final var menu = PSH.spiGUI.create(ChatUtil.translate(PSH.getConfig().getString("gui.menu.name1")), 3);
+        final var menu = PSH.getSpiGUI().create(ChatUtil.translate(PSH.getConfig().getString("gui.menu.name1")), 3);
         final var db = new DataBase();
 
         menu.setAutomaticPaginationEnabled(false);
@@ -82,7 +82,7 @@ public class GUIUtils {
             final var servers = PSHubCore.getInstance().getServerCache().getServers();
 
             servers.forEach(server -> {
-                if (!db.containsServer(server.getUniqueId())) {
+                if (!DataBase.containsServer(server.getUniqueId())) {
                     var itemCreate = new ItemBuilder(XMaterial.DIAMOND_BLOCK.parseMaterial())
                             .name(ChatUtil.translate("&aCreate Server"))
                             .build();

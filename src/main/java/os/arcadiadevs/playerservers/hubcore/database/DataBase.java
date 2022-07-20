@@ -1,15 +1,22 @@
 package os.arcadiadevs.playerservers.hubcore.database;
 
-import os.arcadiadevs.playerservers.hubcore.database.structures.DBInfoStructure;
+import org.bukkit.entity.Player;
+import os.arcadiadevs.playerservers.hubcore.objects.Server;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class DataBase {
 
-    public boolean containsPort(String port) {
+    private static final ExecutorService executor = Executors.newFixedThreadPool(10);
+
+    public static boolean containsPort(String port) {
         try (Connection connection = DataSource.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement("SELECT * FROM PlayerServers");
             ResultSet rs = stmt.executeQuery();
@@ -25,32 +32,51 @@ public class DataBase {
         }
     }
 
-    public ArrayList<DBInfoStructure> getServersInfo() {
-
-        ArrayList<DBInfoStructure> output = new ArrayList<>();
-
-        try (Connection connection = DataSource.getConnection()) {
-            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM PlayerServers");
-            ResultSet rs = stmt.executeQuery();
-            while(rs.next()) {
-                output.add(new DBInfoStructure(
-                        rs.getString("UUID"),
-                        rs.getString("ServerID").split("-")[0],
-                        rs.getInt("Port"),
-                        rs.getString("PlayerName"),
-                        rs.getString("Node"))
-                );
+    public static Future<Server> getServer(Player player) {
+        return executor.submit(() -> {
+            try (Connection connection = DataSource.getConnection()) {
+                PreparedStatement stmt = connection.prepareStatement("SELECT * FROM PlayerServers WHERE UUID = ?");
+                stmt.setString(1, player.getUniqueId().toString());
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    return new Server()
+                            .setServerId(rs.getString("ServerID"))
+                            .setPort(rs.getInt("Port"))
+                            .setPlayerName(rs.getString("PlayerName"))
+                            .setNode(rs.getString("Node"));
+                }
+                return null;
             }
-            return output;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-
+            catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        });
     }
 
-    public String getPortByUUID(String UUID) {
+    public static Future<HashSet<Server>> getServersInfo() {
+        return executor.submit(() -> {
+            try (Connection connection = DataSource.getConnection()) {
+                PreparedStatement stmt = connection.prepareStatement("SELECT * FROM PlayerServers");
+                ResultSet rs = stmt.executeQuery();
+                HashSet<Server> servers = new HashSet<>();
+                while (rs.next()) {
+                    servers.add(new Server()
+                            .setServerId(rs.getString("ServerID"))
+                            .setPort(rs.getInt("Port"))
+                            .setPlayerName(rs.getString("PlayerName"))
+                            .setNode(rs.getString("Node")));
+                }
+                return servers;
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        });
+    }
+
+    public static String getPortByUUID(String UUID) {
         try (Connection connection = DataSource.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement("SELECT * FROM PlayerServers WHERE UUID='" + UUID + "'");
             ResultSet rs = stmt.executeQuery(); rs.next();
@@ -62,19 +88,7 @@ public class DataBase {
         }
     }
 
-    public String getServerByUUID(String UUID) {
-        try (Connection connection = DataSource.getConnection()) {
-            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM PlayerServers WHERE UUID='" + UUID + "'");
-            ResultSet rs = stmt.executeQuery(); rs.next();
-            return rs.getString("ServerID");
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public boolean containsServer(String serverID) {
+    public static boolean containsServer(String serverID) {
         try (Connection connection = DataSource.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement("SELECT * FROM PlayerServers");
             ResultSet rs = stmt.executeQuery();

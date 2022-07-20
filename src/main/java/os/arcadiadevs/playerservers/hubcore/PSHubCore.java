@@ -5,9 +5,11 @@ import com.samjakob.spigui.SpiGUI;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import os.arcadiadevs.playerservers.hubcore.commands.CommandManager;
+import os.arcadiadevs.playerservers.hubcore.database.DataBase;
 import os.arcadiadevs.playerservers.hubcore.database.DataSource;
 import os.arcadiadevs.playerservers.hubcore.events.ClickEvent;
 import os.arcadiadevs.playerservers.hubcore.events.HubEvents;
@@ -15,17 +17,18 @@ import os.arcadiadevs.playerservers.hubcore.events.JoinEvent;
 import os.arcadiadevs.playerservers.hubcore.objects.ServerCache;
 import os.arcadiadevs.playerservers.hubcore.placeholders.PlayerCount;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Objects;
 
 public class PSHubCore extends JavaPlugin {
 
     private static PSHubCore PSH;
-    public Toml multinode;
-    public SpiGUI spiGUI;
+    @Getter
+    private static DataBase dataBase;
+    @Getter
+    public YamlConfiguration multinode;
+    @Getter
+    private SpiGUI spiGUI;
 
     @Getter
     public ServerCache serverCache;
@@ -67,22 +70,21 @@ public class PSHubCore extends JavaPlugin {
             return;
         }
 
-        File configFile = new File(this.getDataFolder(), "multinode.toml");
-        //noinspection ResultOfMethodCallIgnored
-        getDataFolder().mkdirs();
-        if (configFile.createNewFile()) {
+        File configFile = new File(this.getDataFolder(), "multinode.yml");
 
-            try (InputStream fis = getClass().getResourceAsStream("/multinode.toml"); FileOutputStream fos = new FileOutputStream(configFile)) {
-                byte[] buf = new byte[1024];
-                int i;
-                while ((i = fis.read(buf)) != -1) {
-                    fos.write(buf, 0, i);
-                }
-            } catch (Exception e) {
-                getLogger().info("[PlayerServers] Failed to load MultiNode file from Jar");
+        if (!configFile.exists()) {
+            InputStream inputStream = getClass().getResourceAsStream("/multinode.yml");
+            OutputStream outputStream = new FileOutputStream(configFile);
+            int read;
+            byte[] bytes = new byte[1024];
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
             }
+            inputStream.close();
+            outputStream.close();
         }
-        multinode = new Toml().read(new File(this.getDataFolder(), "multinode.toml"));
+
+        multinode = YamlConfiguration.loadConfiguration(configFile);
     }
 
     public static PSHubCore getInstance() {

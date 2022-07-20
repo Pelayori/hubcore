@@ -4,11 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import os.arcadiadevs.playerservers.hubcore.PSHubCore;
 import os.arcadiadevs.playerservers.hubcore.database.DataBase;
-import os.arcadiadevs.playerservers.hubcore.utils.PingUtil;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class ServerCache {
@@ -23,9 +21,8 @@ public class ServerCache {
     private void startTask() {
         new Thread(() -> {
             while(PSHubCore.getInstance().isEnabled()) {
-                final var database = new DataBase();
                 Map<String, Object> map = null;
-                final var rawServers = database.getServersInfo();
+                final var rawServers = DataBase.getServersInfo();
                 final var servers = new ArrayList<Server>();
 
                 if (PSHubCore.getInstance().getConfig().getBoolean("multi-node")) {
@@ -73,24 +70,6 @@ public class ServerCache {
                 }
             }
         }).start();
-    }
-
-    @Getter
-    @Setter
-    public static class Server {
-
-        private String uniqueId;
-        private String motd;
-        private String owner;
-        private String address;
-        private String node;
-
-        private int players;
-        private int maxPlayers;
-        private int port;
-
-        private boolean online;
-
     }
 
 }

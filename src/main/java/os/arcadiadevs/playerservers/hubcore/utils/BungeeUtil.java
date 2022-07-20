@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import os.arcadiadevs.playerservers.hubcore.PSHubCore;
 
+@SuppressWarnings("UnstableApiUsage")
 public class BungeeUtil {
 
     public static void connectPlayer(InventoryClickEvent event, Player player, String server) {

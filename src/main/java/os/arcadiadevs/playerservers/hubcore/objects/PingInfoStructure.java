@@ -1,4 +1,4 @@
-package os.arcadiadevs.playerservers.hubcore.database.structures;
+package os.arcadiadevs.playerservers.hubcore.objects;
 
 public class PingInfoStructure {
 

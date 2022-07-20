@@ -1,11 +1,12 @@
 package os.arcadiadevs.playerservers.hubcore.placeholders;
 
+import lombok.SneakyThrows;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import os.arcadiadevs.playerservers.hubcore.database.DataBase;
-import os.arcadiadevs.playerservers.hubcore.database.structures.PingInfoStructure;
-import os.arcadiadevs.playerservers.hubcore.utils.PingUtil;
+import os.arcadiadevs.playerservers.hubcore.enums.ServerStatus;
+import os.arcadiadevs.playerservers.hubcore.objects.Server;
 
 public class PlayerCount extends PlaceholderExpansion {
 
@@ -40,25 +41,22 @@ public class PlayerCount extends PlaceholderExpansion {
         return "1.0.0";
     }
 
+    @SneakyThrows
     @Override
     public String onRequest(OfflinePlayer p, String params) {
-        if (params.equalsIgnoreCase("online")) {
-            DataBase db = new DataBase();
-            PingUtil pu = new PingUtil("127.0.0.1", Integer.parseInt(db.getPortByUUID(p.getUniqueId().toString())));
+        switch (params) {
+            case "online":
+                final var server = new Server(p.getPlayer());
+                return server.getServerStatus() == ServerStatus.ONLINE ? "Online" : "Offline";
+            case "serveronline":
+                final var online = (int) DataBase
+                        .getServersInfo()
+                        .get()
+                        .stream()
+                        .filter(_server -> _server.getServerStatus() == ServerStatus.ONLINE)
+                        .count();
 
-            try {
-                PingInfoStructure structure = pu.getData();
-
-                return (structure != null) ? String.valueOf(structure.getOnline()) : "Offline";
-            } catch (Exception ex) {
-                return "Offline";
-            }
-        } else if (params.equalsIgnoreCase("serversonline")) {
-            DataBase db = new DataBase();
-
-            int online = (int) db.getServersInfo().stream().filter(dbInfoStructure -> new PingUtil("127.0.0.1", dbInfoStructure.getPort()).isOnline()).count();
-
-            return String.valueOf(online);
+                return String.valueOf(online);
         }
 
         return null;
