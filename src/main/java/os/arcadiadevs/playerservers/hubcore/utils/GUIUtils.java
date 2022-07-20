@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import os.arcadiadevs.playerservers.hubcore.PSHubCore;
 import os.arcadiadevs.playerservers.hubcore.database.DataBase;
+import os.arcadiadevs.playerservers.hubcore.enums.ServerStatus;
 
 import java.util.ArrayList;
 
@@ -30,9 +31,9 @@ public class GUIUtils {
             final var servers = PSHubCore.getInstance().getServerCache().getServers();
 
             servers.forEach(server -> {
-                final var itemBuilder = new ItemBuilder(server.isOnline() ? onlineXMaterial : offlineXMaterial);
+                final var itemBuilder = new ItemBuilder(server.getServerStatus() == ServerStatus.ONLINE ? onlineXMaterial : offlineXMaterial);
 
-                var lore = PSH.getConfig().getStringList(server.isOnline() ? "gui.menu.online.lore" : "gui.menu.offline.lore");
+                var lore = PSH.getConfig().getStringList(server.getServerStatus() == ServerStatus.ONLINE ? "gui.menu.online.lore" : "gui.menu.offline.lore");
 
                 lore = lore.stream()
                         .map(s -> s.replaceAll("%server%", server.getUniqueId()))
