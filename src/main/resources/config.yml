@@ -4,47 +4,69 @@ mysql:
   password: webmaster
   database: playerservers
   useSSL: true
+
 gui:
-  enabled: true
-  item:
-    enabled: true
-    name: "&aQuick Compass"
-    name1: "&eMy PlayerServers"
-    material: "COMPASS"
-    material1: "EMERALD"
-    location: 0
-    location1: 8
-    description:
-      - "&7Click here to open the server"
-      - "&7selector or to create your own one"
-    description1:
-      - "&7Click here to open the server"
-      - "&7selector or to create your own one"
-  menu:
-    name: "&aServer Selector"
-    name1: "&eMy PlayerServers"
-    cache-time: 20
-    online:
-      block: "EMERALD_BLOCK"
-      name: '&a%server%''s server'
-      lore:
-        - '&7Status: %status%'
-        - '&7Players: &2%players%&8/&a%maxplayers%'
-        - '&7Owner: &a%owner%'
-        - '&7Motd: &a%motd%'
-        - '&7Node: &a%node%'
-        - '&7Ip: &a%ip%&8:&a%port%'
-    offline:
-      block: "REDSTONE_BLOCK"
-      name: '&c%server%''s server'
-      lore:
-        - '&7Status: %status%'
-        - '&7Owner: &c%owner%'
-        - '&7Node: &c%node%'
-        - '&7Ip: &c%ip%&8:&c%port%'
+  selector:
+    item:
+      enabled: true
+      name: "&aQuick Compass"
+      material: "COMPASS"
+      location: 0
+      description:
+        - "&7Click here to open the server"
+        - "&7selector or to create your own one"
+
+    menu:
+      name: "&aServer Selector"
+      cache-time: 20
+      online:
+        block: "EMERALD_BLOCK"
+        name: '&a%server%''s server'
+        lore:
+          - '&7Status: %status%'
+          - '&7Players: &2%players%&8/&a%maxplayers%'
+          - '&7Owner: &a%owner%'
+          - '&7Motd: &a%motd%'
+          - '&7Node: &a%node%'
+          - '&7Ip: &a%ip%&8:&a%port%'
+      offline:
+        block: "REDSTONE_BLOCK"
+        name: '&c%server%''s server'
+        lore:
+          - '&7Status: %status%'
+          - '&7Owner: &c%owner%'
+          - '&7Node: &c%node%'
+          - '&7Ip: &c%ip%&8:&c%port%'
+
+  player-menu:
+    item:
+      enabled: true
+      name: "&eMy PlayerServers"
+      material: "EMERALD"
+      location: 8
+      description:
+        - "&7Click here to open the server"
+        - "&7selector or to create your own one"
+
+    menu:
+      name: "&eMy PlayerServers"
+      online:
+        name: '&a%server%''s server'
+        lore:
+          - '&7Status: %status%'
+          - '&7Players: &2%players%&8/&a%maxplayers%'
+          - '&7Owner: &a%owner%'
+          - '&7Motd: &a%motd%'
+          - '&7Node: &a%node%'
+          - '&7Ip: &a%ip%&8:&a%port%'
+      offline:
+        name: '&c%server%''s server'
+        lore:
+          - '&7Status: %status%'
+          - '&7Owner: &c%owner%'
+          - '&7Node: &c%node%'
+          - '&7Ip: &c%ip%&8:&c%port%'
 
 disable-weather: true
 disable-damage: true
-
-# EXPERIMENTAL
 multi-node: false

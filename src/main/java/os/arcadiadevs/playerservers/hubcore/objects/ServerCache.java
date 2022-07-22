@@ -23,7 +23,7 @@ public class ServerCache {
     @SneakyThrows
     private void startTask() {
         new Thread(() -> {
-            while(PSHubCore.getInstance().isEnabled()) {
+            while (PSHubCore.getInstance().isEnabled()) {
                 final List<Server> servers;
 
                 try {
@@ -32,7 +32,6 @@ public class ServerCache {
                     e.printStackTrace();
                     return;
                 }
-
 
                 servers.sort((s1, s2) -> {
                     final var p1 = s1.getServerStatus() == ServerStatus.ONLINE;

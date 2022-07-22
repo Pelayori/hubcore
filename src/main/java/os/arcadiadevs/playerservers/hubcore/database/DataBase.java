@@ -89,12 +89,12 @@ public class DataBase {
         }
     }
 
-    public static boolean containsServer(String serverID) {
+    public static boolean containsServer(String UUID) {
         try (Connection connection = DataSource.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement("SELECT * FROM PlayerServers");
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
-                if (rs.getString("ServerID").equals(serverID))
+                if (rs.getString("UUID").equals(UUID))
                     return true;
             }
             return false;
