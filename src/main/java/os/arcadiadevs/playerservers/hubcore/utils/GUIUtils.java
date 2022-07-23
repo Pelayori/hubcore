@@ -9,6 +9,7 @@ import os.arcadiadevs.playerservers.hubcore.PSHubCore;
 import os.arcadiadevs.playerservers.hubcore.database.DataBase;
 import os.arcadiadevs.playerservers.hubcore.enums.ServerStatus;
 import os.arcadiadevs.playerservers.hubcore.objects.Server;
+import os.arcadiadevs.playerservers.hubcore.objects.ServerCache;
 
 import java.util.ArrayList;
 
@@ -108,7 +109,18 @@ public class GUIUtils {
             stopConfirmationMenu.setAutomaticPaginationEnabled(false);
             stopConfirmationMenu.setBlockDefaultInteractions(true);
 
-            final var server = new Server(player);
+            final var server = PSH
+                    .getServerCache()
+                    .getServers()
+                    .stream()
+                    .filter(_server -> _server.getPlayerName().equals(player.getName()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (server == null) {
+                player.sendMessage(ChatUtil.translate("&9Error> &cCould not find your server!"));
+                return;
+            }
 
             var lore = PSH.getConfig().getStringList(server.getCachedStatus() == ServerStatus.ONLINE ? "gui.player-menu.menu.info.online.lore" : "gui.player-menu.menu.info.offline.lore");
 

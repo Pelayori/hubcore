@@ -103,16 +103,20 @@ gui:
           - "&7Click here to stop a server"
         confirmation:
           name: "&cStop this server?"
-          yes:
+          accept:
             name: "&cAre you sure?"
             lore:
               - "&7Click here to confirm"
               - "&7stopping your server."
-          no:
+          decline:
             name: "&cNo, I'm not sure"
             lore:
               - "&7Click here to cancel"
               - "&7stopping your server."
+      start:
+        name: "&aStart a server"
+        lore:
+          - "&7Click here to start a server"
 
 # Should we enable multinode support?
 multi-node: false
