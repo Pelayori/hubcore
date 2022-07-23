@@ -32,36 +32,42 @@ public class GUIUtils {
             final var servers = PSHubCore.getInstance().getServerCache().getServers();
 
             servers.forEach(server -> {
-                final var itemBuilder = new ItemBuilder(server.getServerStatus() == ServerStatus.ONLINE ? onlineXMaterial : offlineXMaterial);
+                final var itemBuilder = new ItemBuilder(server.getCachedStatus() == ServerStatus.ONLINE ? onlineXMaterial : offlineXMaterial);
 
-                var lore = PSH.getConfig().getStringList(server.getServerStatus() == ServerStatus.ONLINE ? "gui.selector.menu.online.lore" : "gui.selector.menu.offline.lore");
+                var lore = PSH.getConfig().getStringList(server.getCachedStatus() == ServerStatus.ONLINE ? "gui.selector.menu.online.lore" : "gui.selector.menu.offline.lore");
+
+                System.out.println("test1");
 
                 lore = lore.stream()
                         .map(s -> s.replaceAll("%server%", server.getPlayerName()))
-                        .map(s -> s.replaceAll("%status%", server.getServerStatus() == ServerStatus.ONLINE ? "&aOnline" : "&cOffline"))
-                        .map(s -> s.replaceAll("%players%", server.getServerStatus() == ServerStatus.ONLINE ? server.getCachedData().getOnline() + "" : "0"))
-                        .map(s -> s.replaceAll("%maxplayers%", server.getServerStatus() == ServerStatus.ONLINE ? server.getCachedData().getMax() + "" : "0"))
+                        .map(s -> s.replaceAll("%status%", server.getCachedStatus() == ServerStatus.ONLINE ? "&aOnline" : "&cOffline"))
+                        .map(s -> s.replaceAll("%players%", server.getCachedStatus() == ServerStatus.ONLINE ? server.getCachedData().getOnline() + "" : "0"))
+                        .map(s -> s.replaceAll("%maxplayers%", server.getCachedStatus() == ServerStatus.ONLINE ? server.getCachedData().getMax() + "" : "0"))
                         .map(s -> s.replaceAll("%port%", server.getPort() + ""))
-                        .map(s -> s.replaceAll("%motd%", server.getServerStatus() == ServerStatus.ONLINE ? server.getCachedData().getMOTD() : "&cOffline"))
+                        .map(s -> s.replaceAll("%motd%", server.getCachedStatus() == ServerStatus.ONLINE ? server.getCachedData().getMOTD() : "&cOffline"))
                         .map(s -> s.replaceAll("%node%", server.getNode()))
                         .map(s -> s.replaceAll("%owner%", server.getPlayerName()))
                         .map(s -> s.replaceAll("%ip%", server.getHostname()))
                         .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
 
+                System.out.println("test2");
+
                 var item = itemBuilder
-                        .name(ChatUtil.translate(PSH.getConfig().getString(server.getServerStatus() == ServerStatus.ONLINE ? "gui.selector.menu.online.name" : "gui.selector.menu.offline.name")
+                        .name(ChatUtil.translate(PSH.getConfig().getString(server.getCachedStatus() == ServerStatus.ONLINE ? "gui.selector.menu.online.name" : "gui.selector.menu.offline.name")
                                 .replaceAll("%server%", server.getPlayerName())
-                                .replaceAll("%status%", server.getServerStatus() == ServerStatus.ONLINE ? "&aOnline" : "&cOffline"))
-                                .replaceAll("%players%", server.getServerStatus() == ServerStatus.ONLINE ? server.getCachedData().getOnline() + "" : "0")
-                                .replaceAll("%maxplayers%", server.getServerStatus() == ServerStatus.ONLINE ? server.getCachedData().getMax() + "" : "0")
+                                .replaceAll("%status%", server.getCachedStatus() == ServerStatus.ONLINE ? "&aOnline" : "&cOffline"))
+                                .replaceAll("%players%", server.getCachedStatus() == ServerStatus.ONLINE ? server.getCachedData().getOnline() + "" : "0")
+                                .replaceAll("%maxplayers%", server.getCachedStatus() == ServerStatus.ONLINE ? server.getCachedData().getMax() + "" : "0")
                                 .replaceAll("%port%", server.getPort() + "")
-                                .replaceAll("%motd%", server.getServerStatus() == ServerStatus.ONLINE ? server.getCachedData().getMOTD() : "&cOffline")
+                                .replaceAll("%motd%", server.getCachedStatus() == ServerStatus.ONLINE ? server.getCachedData().getMOTD() : "&cOffline")
                                 .replaceAll("%node%", server.getNode())
                                 .replaceAll("%owner%", server.getPlayerName())
                                 .replaceAll("%ip%", server.getHostname())
                         )
                         .lore(lore)
                         .build();
+
+                System.out.println("test3");
 
                 menu.setButton(0, menu.getInventory().firstEmpty(), new SGButton(item).withListener(listener -> BungeeUtil.connectPlayer(listener, player, server.getPlayerName())));
             });
@@ -104,22 +110,22 @@ public class GUIUtils {
 
             final var server = new Server(player);
 
-            var lore = PSH.getConfig().getStringList(server.getServerStatus() == ServerStatus.ONLINE ? "gui.player-menu.menu.info.online.lore" : "gui.player-menu.menu.info.offline.lore");
+            var lore = PSH.getConfig().getStringList(server.getCachedStatus() == ServerStatus.ONLINE ? "gui.player-menu.menu.info.online.lore" : "gui.player-menu.menu.info.offline.lore");
 
             lore = lore.stream()
                     .map(s -> s.replaceAll("%server%", server.getPlayerName()))
-                    .map(s -> s.replaceAll("%status%", server.getServerStatus() == ServerStatus.ONLINE ? "&aOnline" : "&cOffline"))
-                    .map(s -> s.replaceAll("%players%", server.getServerStatus() == ServerStatus.ONLINE ? server.getCachedData().getOnline() + "" : "0"))
-                    .map(s -> s.replaceAll("%maxplayers%", server.getServerStatus() == ServerStatus.ONLINE ? server.getCachedData().getMax() + "" : "0"))
+                    .map(s -> s.replaceAll("%status%", server.getCachedStatus() == ServerStatus.ONLINE ? "&aOnline" : "&cOffline"))
+                    .map(s -> s.replaceAll("%players%", server.getCachedStatus() == ServerStatus.ONLINE ? server.getCachedData().getOnline() + "" : "0"))
+                    .map(s -> s.replaceAll("%maxplayers%", server.getCachedStatus() == ServerStatus.ONLINE ? server.getCachedData().getMax() + "" : "0"))
                     .map(s -> s.replaceAll("%port%", server.getPort() + ""))
-                    .map(s -> s.replaceAll("%motd%", server.getServerStatus() == ServerStatus.ONLINE ? server.getCachedData().getMOTD() : "&cOffline"))
+                    .map(s -> s.replaceAll("%motd%", server.getCachedStatus() == ServerStatus.ONLINE ? server.getCachedData().getMOTD() : "&cOffline"))
                     .map(s -> s.replaceAll("%node%", server.getNode()))
                     .map(s -> s.replaceAll("%owner%", server.getPlayerName()))
                     .map(s -> s.replaceAll("%ip%", server.getHostname()))
                     .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
 
             final var itemPlayer = new ItemBuilder(XMaterial.OAK_SIGN.parseMaterial())
-                    .name(ChatUtil.translate(PSH.getConfig().getString(server.getServerStatus() == ServerStatus.ONLINE ? "gui.player-menu.menu.info.online.name" : "gui.player-menu.menu.info.offline.name")
+                    .name(ChatUtil.translate(PSH.getConfig().getString(server.getCachedStatus() == ServerStatus.ONLINE ? "gui.player-menu.menu.info.online.name" : "gui.player-menu.menu.info.offline.name")
                             .replaceAll("%server%", server.getPlayerName())))
                     .lore(lore)
                     .build();
@@ -139,7 +145,7 @@ public class GUIUtils {
                     .lore(PSH.getConfig().getStringList("gui.player-menu.menu.delete.confirmation.decline.lore"))
                     .build();
 
-            if (server.getServerStatus() == ServerStatus.ONLINE) {
+            if (server.getCachedStatus() == ServerStatus.ONLINE) {
                 final var itemJoin = new ItemBuilder(XMaterial.OAK_DOOR.parseMaterial())
                         .name(ChatUtil.translate(PSH.getConfig().getString("gui.player-menu.menu.join.name")))
                         .lore(PSH.getConfig().getStringList("gui.player-menu.menu.join.lore"))
@@ -162,7 +168,7 @@ public class GUIUtils {
                 }));
             }
 
-            if (server.getServerStatus() == ServerStatus.OFFLINE) {
+            if (server.getCachedStatus() == ServerStatus.OFFLINE) {
                 final var itemStart = new ItemBuilder(XMaterial.EMERALD_BLOCK.parseMaterial())
                         .name(ChatUtil.translate(PSH.getConfig().getString("gui.player-menu.menu.start.name")))
                         .lore(PSH.getConfig().getStringList("gui.player-menu.menu.start.lore"))

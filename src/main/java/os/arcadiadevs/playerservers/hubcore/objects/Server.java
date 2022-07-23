@@ -23,8 +23,9 @@ public class Server {
     private String playerName;
     private String node;
     private Integer port;
-    @Setter
-    private PingInfoStructure cachedData;
+
+    @Setter private PingInfoStructure cachedData;
+    @Setter private ServerStatus cachedStatus;
 
     public String getShortId() {
         return serverId.split("-")[0];

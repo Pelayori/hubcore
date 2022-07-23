@@ -28,7 +28,10 @@ public class ServerCache implements Runnable {
             return;
         }
 
-        servers.forEach(server -> server.setCachedData(server.getData()));
+        servers.forEach(server -> {
+            server.setCachedData(server.getData());
+            server.setCachedStatus(server.getServerStatus());
+        });
 
         servers.sort((s1, s2) -> {
             final var p1 = s1.getServerStatus() == ServerStatus.ONLINE;

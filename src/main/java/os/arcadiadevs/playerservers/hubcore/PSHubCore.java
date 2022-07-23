@@ -1,11 +1,9 @@
 package os.arcadiadevs.playerservers.hubcore;
 
-import com.moandjiezana.toml.Toml;
 import com.samjakob.spigui.SpiGUI;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import os.arcadiadevs.playerservers.hubcore.commands.CommandManager;
@@ -19,7 +17,6 @@ import os.arcadiadevs.playerservers.hubcore.placeholders.PlayerCount;
 
 import java.io.*;
 import java.util.Objects;
-import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -71,7 +68,7 @@ public class PSHubCore extends JavaPlugin {
 
         // Create ServerCache refreshing task
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        executor.scheduleAtFixedRate(serverCache, 1, getConfig().getInt("gui.selector.menu.cache-time"), TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(serverCache, 1, getConfig().getInt("cache-time"), TimeUnit.SECONDS);
     }
 
     private void createMultiNodeConfig() throws IOException {
