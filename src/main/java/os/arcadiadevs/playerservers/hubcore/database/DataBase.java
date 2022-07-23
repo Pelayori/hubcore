@@ -6,6 +6,7 @@ import os.arcadiadevs.playerservers.hubcore.objects.Server;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -54,12 +55,12 @@ public class DataBase {
         });
     }
 
-    public static Future<HashSet<Server>> getServersInfo() {
+    public static Future<List<Server>> getServersInfo() {
         return executor.submit(() -> {
             try (Connection connection = DataSource.getConnection()) {
                 PreparedStatement stmt = connection.prepareStatement("SELECT * FROM PlayerServers");
                 ResultSet rs = stmt.executeQuery();
-                HashSet<Server> servers = new HashSet<>();
+                List<Server> servers = new ArrayList<>();
                 while (rs.next()) {
                     servers.add(new Server()
                             .setServerId(rs.getString("ServerID"))
@@ -88,12 +89,12 @@ public class DataBase {
         }
     }
 
-    public static boolean containsServer(String serverID) {
+    public static boolean containsServer(String UUID) {
         try (Connection connection = DataSource.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement("SELECT * FROM PlayerServers");
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
-                if (rs.getString("ServerID").equals(serverID))
+                if (rs.getString("UUID").equals(UUID))
                     return true;
             }
             return false;

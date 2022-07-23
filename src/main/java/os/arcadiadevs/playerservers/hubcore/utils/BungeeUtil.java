@@ -70,4 +70,17 @@ public class BungeeUtil {
         event.getWhoClicked().closeInventory();
     }
 
+    public static void startServer(InventoryClickEvent event, Player player, String server) {
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+
+        try {
+            out.writeUTF("start");
+            out.writeUTF(server);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        player.sendPluginMessage(PSHubCore.getInstance(), "BungeeCord", out.toByteArray());
+        event.getWhoClicked().closeInventory();
+    }
+
 }

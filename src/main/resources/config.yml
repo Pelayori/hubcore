@@ -4,47 +4,114 @@ mysql:
   password: webmaster
   database: playerservers
   useSSL: true
+
 gui:
-  enabled: true
-  item:
-    enabled: true
-    name: "&aQuick Compass"
-    name1: "&eMy PlayerServers"
-    material: "COMPASS"
-    material1: "EMERALD"
-    location: 0
-    location1: 8
-    description:
-      - "&7Click here to open the server"
-      - "&7selector or to create your own one"
-    description1:
-      - "&7Click here to open the server"
-      - "&7selector or to create your own one"
-  menu:
-    name: "&aServer Selector"
-    name1: "&eMy PlayerServers"
-    cache-time: 20
-    online:
-      block: "EMERALD_BLOCK"
-      name: '&a%server%''s server'
-      lore:
-        - '&7Status: %status%'
-        - '&7Players: &2%players%&8/&a%maxplayers%'
-        - '&7Owner: &a%owner%'
-        - '&7Motd: &a%motd%'
-        - '&7Node: &a%node%'
-        - '&7Ip: &a%ip%&8:&a%port%'
-    offline:
-      block: "REDSTONE_BLOCK"
-      name: '&c%server%''s server'
-      lore:
-        - '&7Status: %status%'
-        - '&7Owner: &c%owner%'
-        - '&7Node: &c%node%'
-        - '&7Ip: &c%ip%&8:&c%port%'
+  selector:
+    item:
+      enabled: true
+      name: "&aQuick Compass"
+      material: "COMPASS"
+      location: 0
+      description:
+        - "&7Click here to open the server"
+        - "&7selector or to create your own one"
+
+    menu:
+      name: "&aServer Selector"
+      cache-time: 20
+      online:
+        block: "EMERALD_BLOCK"
+        name: '&a%server%''s server'
+        lore:
+          - '&7Status: %status%'
+          - '&7Players: &2%players%&8/&a%maxplayers%'
+          - '&7Owner: &a%owner%'
+          - '&7Motd: &a%motd%'
+          - '&7Node: &a%node%'
+          - '&7Ip: &a%ip%&8:&a%port%'
+      offline:
+        block: "REDSTONE_BLOCK"
+        name: '&c%server%''s server'
+        lore:
+          - '&7Status: %status%'
+          - '&7Owner: &c%owner%'
+          - '&7Node: &c%node%'
+          - '&7Ip: &c%ip%&8:&c%port%'
+
+  player-menu:
+    item:
+      enabled: true
+      name: "&eMy PlayerServers"
+      material: "EMERALD"
+      location: 8
+      description:
+        - "&7Click here to open the server"
+        - "&7selector or to create your own one"
+
+    menu:
+      name: "&eMy PlayerServers"
+      info:
+        online:
+          name: '&a%server%''s server'
+          lore:
+            - '&7Status: %status%'
+            - '&7Players: &2%players%&8/&a%maxplayers%'
+            - '&7Owner: &a%owner%'
+            - '&7Motd: &a%motd%'
+            - '&7Node: &a%node%'
+            - '&7Ip: &a%ip%&8:&a%port%'
+        offline:
+          name: '&c%server%''s server'
+          lore:
+            - '&7Status: %status%'
+            - '&7Owner: &c%owner%'
+            - '&7Node: &c%node%'
+            - '&7Ip: &c%ip%&8:&c%port%'
+      create:
+        name: "&aCreate a new server"
+        lore:
+          - "&7Click here to create a new server"
+      delete:
+        name: "&cDelete a server"
+        lore:
+          - "&7Click here to delete a server"
+        confirmation:
+          name: "&cDelete this server?"
+          accept:
+            name: "&cAre you sure?"
+            lore:
+              - "&7Click here to confirm"
+              - "&7deletion of your server."
+              - "&7All files will be deleted"
+              - "&7forever without possibility"
+              - "&7to restore them."
+          decline:
+            name: "&cNo, I'm not sure"
+            lore:
+              - "&7Click here to cancel"
+              - "&7deletion of your server."
+
+      join:
+        name: "&aJoin a server"
+        lore:
+          - "&7Click here to join a server"
+      stop:
+        name: "&cStop a server"
+        lore:
+          - "&7Click here to stop a server"
+        confirmation:
+          name: "&cStop this server?"
+          yes:
+            name: "&cAre you sure?"
+            lore:
+              - "&7Click here to confirm"
+              - "&7stopping your server."
+          no:
+            name: "&cNo, I'm not sure"
+            lore:
+              - "&7Click here to cancel"
+              - "&7stopping your server."
 
 disable-weather: true
 disable-damage: true
-
-# EXPERIMENTAL
 multi-node: false

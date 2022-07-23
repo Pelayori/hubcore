@@ -22,11 +22,11 @@ public class ClickEvent implements Listener  {
             return;
         }
 
-        if (player.getInventory().getHeldItemSlot() == PSHubCore.getInstance().getConfig().getInt("gui.item.location")) {
+        if (player.getInventory().getHeldItemSlot() == PSHubCore.getInstance().getConfig().getInt("gui.selector.item.location")) {
             GUIUtils.openSelector(player);
             event.setCancelled(true);
         }
-        if (player.getInventory().getHeldItemSlot() == PSHubCore.getInstance().getConfig().getInt("gui.item.location1")) {
+        if (player.getInventory().getHeldItemSlot() == PSHubCore.getInstance().getConfig().getInt("gui.player-menu.item.location")) {
             GUIUtils.openMenu(player);
             event.setCancelled(true);
         }
@@ -40,8 +40,8 @@ public class ClickEvent implements Listener  {
 
         final var player = (Player) event.getWhoClicked();
         final var inventoryType = event.getInventory().getType();
-        final var slot = PSHubCore.getInstance().getConfig().getInt("gui.item.location");
-        final var slot1 = PSHubCore.getInstance().getConfig().getInt("gui.item.location1");
+        final var slot = PSHubCore.getInstance().getConfig().getInt("gui.selector.item.location");
+        final var slot1 = PSHubCore.getInstance().getConfig().getInt("gui.player-menu.item.location");
 
         if (event.getSlot() == slot && (inventoryType == InventoryType.PLAYER || inventoryType == InventoryType.CRAFTING)
         || event.getSlot() == slot1 && (inventoryType == InventoryType.PLAYER || inventoryType == InventoryType.CRAFTING)) {
@@ -57,8 +57,8 @@ public class ClickEvent implements Listener  {
     public void drop(PlayerDropItemEvent event) {
         final var player = event.getPlayer();
 
-        if (player.getInventory().getHeldItemSlot() == PSHubCore.getInstance().getConfig().getInt("gui.item.location") ||
-                player.getInventory().getHeldItemSlot() == PSHubCore.getInstance().getConfig().getInt("gui.item.location1")) {
+        if (player.getInventory().getHeldItemSlot() == PSHubCore.getInstance().getConfig().getInt("gui.selector.item.location") ||
+                player.getInventory().getHeldItemSlot() == PSHubCore.getInstance().getConfig().getInt("gui.player-menu.item.location")) {
             event.setCancelled(true);
         }
     }
