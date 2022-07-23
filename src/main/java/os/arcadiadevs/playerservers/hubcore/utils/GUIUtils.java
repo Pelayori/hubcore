@@ -108,7 +108,17 @@ public class GUIUtils {
             stopConfirmationMenu.setAutomaticPaginationEnabled(false);
             stopConfirmationMenu.setBlockDefaultInteractions(true);
 
-            final var server = new Server(player);
+            final var server = PSH
+                    .getServerCache()
+                    .getServers()
+                    .stream()
+                    .filter(_server -> _server.getPlayerName().equals(player.getName()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (server == null) {
+                player.sendMessage(ChatUtil.translate("&9Error> &cCould not find your server!"));
+            }
 
             var lore = PSH.getConfig().getStringList(server.getCachedStatus() == ServerStatus.ONLINE ? "gui.player-menu.menu.info.online.lore" : "gui.player-menu.menu.info.offline.lore");
 
