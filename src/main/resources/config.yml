@@ -43,7 +43,7 @@ gui:
   player-menu:
     item:
       enabled: true
-      name: "&eMy PlayerServers"
+      name: "&eMy Server"
       material: "EMERALD"
       location: 8
       description:
@@ -51,7 +51,7 @@ gui:
         - "&7selector or to create your own one"
 
     menu:
-      name: "&eMy PlayerServers"
+      name: "&eMy Server"
       info:
         online:
           name: '&a%server%''s server'
