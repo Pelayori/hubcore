@@ -22,7 +22,7 @@ public class ServerCache {
         new Thread(() -> {
             while(PSHubCore.getInstance().isEnabled()) {
                 Map<String, Object> map = null;
-                final var rawServers = DataBase.getServersInfo();
+                final var rawServers = DataBase.getServersInfo().get();
                 final var servers = new ArrayList<Server>();
 
                 if (PSHubCore.getInstance().getConfig().getBoolean("multi-node")) {
