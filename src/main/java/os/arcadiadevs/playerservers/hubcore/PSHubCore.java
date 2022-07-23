@@ -69,6 +69,7 @@ public class PSHubCore extends JavaPlugin {
         // Create ServerCache refreshing task
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         executor.scheduleAtFixedRate(serverCache, 1, getConfig().getInt("cache-time"), TimeUnit.SECONDS);
+        System.out.println(getConfig().getInt("cache-time"));
     }
 
     private void createMultiNodeConfig() throws IOException {

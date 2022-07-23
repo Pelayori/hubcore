@@ -202,6 +202,13 @@ public class GUIUtils {
 
             menu.setButton(0, 4, new SGButton(itemPlayer));
 
+            // Fill all empty slots with glass pane
+            for (int i = 0; i < 9; i++) {
+                if (menu.getButton(i) == null) {
+                    menu.setButton(i, new SGButton(new ItemBuilder(XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial()).build()));
+                }
+            }
+
             Bukkit.getScheduler().runTask(PSHubCore.getInstance(), () -> player.openInventory(menu.getInventory()));
         }).start();
     }
