@@ -11,14 +11,14 @@ public class HubEvents implements Listener {
 
     @EventHandler
     public void weatherChange(WeatherChangeEvent e) {
-        if (PSHubCore.getInstance().getConfig().getBoolean("disable-weather")) {
+        if (PSHubCore.getInstance().getConfig().getBoolean("miscellaneous.disable-weather")) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
     public void entityDamage(EntityDamageEvent e) {
-        if (e.getEntity() instanceof Player && PSHubCore.getInstance().getConfig().getBoolean("disable-damage"))
+        if (e.getEntity() instanceof Player && PSHubCore.getInstance().getConfig().getBoolean("miscellaneous.disable-damage"))
             e.setCancelled(true);
     }
 

@@ -14,11 +14,11 @@ public class CommandManager implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (commandSender instanceof Player) {
-            if (!PSHubCore.getInstance().getConfig().getBoolean("gui.enabled")) {
+            if (!PSHubCore.getInstance().getConfig().getBoolean("gui.selector.item.enabled")) {
                 commandSender.sendMessage(ChatUtil.translate("&9PlayerServers> &7Oops, gui isn't enabled in config file!"));
                 return true;
             }
-            if (PSHubCore.getInstance().getConfig().getBoolean("gui.enabled")) {
+            if (PSHubCore.getInstance().getConfig().getBoolean("gui.selector.item.enabled")) {
                 if (command.getName().equalsIgnoreCase("servers") || command.getName().equalsIgnoreCase("menu") || command.getName().equalsIgnoreCase("opengui")) {
                     Player player = (Player) commandSender;
                     GUIUtils.openSelector(player);
