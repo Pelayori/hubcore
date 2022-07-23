@@ -1,6 +1,7 @@
 package os.arcadiadevs.playerservers.hubcore.objects;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import org.bukkit.entity.Player;
 import os.arcadiadevs.playerservers.hubcore.PSHubCore;
@@ -22,6 +23,8 @@ public class Server {
     private String playerName;
     private String node;
     private Integer port;
+    @Setter
+    private PingInfoStructure cachedData;
 
     public String getShortId() {
         return serverId.split("-")[0];

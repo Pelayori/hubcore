@@ -39,10 +39,10 @@ public class GUIUtils {
                 lore = lore.stream()
                         .map(s -> s.replaceAll("%server%", server.getPlayerName()))
                         .map(s -> s.replaceAll("%status%", server.getServerStatus() == ServerStatus.ONLINE ? "&aOnline" : "&cOffline"))
-                        .map(s -> s.replaceAll("%players%", server.getServerStatus() == ServerStatus.ONLINE ? server.getData().getOnline() + "" : "0"))
-                        .map(s -> s.replaceAll("%maxplayers%", server.getServerStatus() == ServerStatus.ONLINE ? server.getData().getMax() + "" : "0"))
+                        .map(s -> s.replaceAll("%players%", server.getServerStatus() == ServerStatus.ONLINE ? server.getCachedData().getOnline() + "" : "0"))
+                        .map(s -> s.replaceAll("%maxplayers%", server.getServerStatus() == ServerStatus.ONLINE ? server.getCachedData().getMax() + "" : "0"))
                         .map(s -> s.replaceAll("%port%", server.getPort() + ""))
-                        .map(s -> s.replaceAll("%motd%", server.getServerStatus() == ServerStatus.ONLINE ? server.getData().getMOTD() : "&cOffline"))
+                        .map(s -> s.replaceAll("%motd%", server.getServerStatus() == ServerStatus.ONLINE ? server.getCachedData().getMOTD() : "&cOffline"))
                         .map(s -> s.replaceAll("%node%", server.getNode()))
                         .map(s -> s.replaceAll("%owner%", server.getPlayerName()))
                         .map(s -> s.replaceAll("%ip%", server.getHostname()))
@@ -52,10 +52,10 @@ public class GUIUtils {
                         .name(ChatUtil.translate(PSH.getConfig().getString(server.getServerStatus() == ServerStatus.ONLINE ? "gui.selector.menu.online.name" : "gui.selector.menu.offline.name")
                                 .replaceAll("%server%", server.getPlayerName())
                                 .replaceAll("%status%", server.getServerStatus() == ServerStatus.ONLINE ? "&aOnline" : "&cOffline"))
-                                .replaceAll("%players%", server.getServerStatus() == ServerStatus.ONLINE ? server.getData().getOnline() + "" : "0")
-                                .replaceAll("%maxplayers%", server.getServerStatus() == ServerStatus.ONLINE ? server.getData().getMax() + "" : "0")
+                                .replaceAll("%players%", server.getServerStatus() == ServerStatus.ONLINE ? server.getCachedData().getOnline() + "" : "0")
+                                .replaceAll("%maxplayers%", server.getServerStatus() == ServerStatus.ONLINE ? server.getCachedData().getMax() + "" : "0")
                                 .replaceAll("%port%", server.getPort() + "")
-                                .replaceAll("%motd%", server.getServerStatus() == ServerStatus.ONLINE ? server.getData().getMOTD() : "&cOffline")
+                                .replaceAll("%motd%", server.getServerStatus() == ServerStatus.ONLINE ? server.getCachedData().getMOTD() : "&cOffline")
                                 .replaceAll("%node%", server.getNode())
                                 .replaceAll("%owner%", server.getPlayerName())
                                 .replaceAll("%ip%", server.getHostname())
@@ -109,10 +109,10 @@ public class GUIUtils {
             lore = lore.stream()
                     .map(s -> s.replaceAll("%server%", server.getPlayerName()))
                     .map(s -> s.replaceAll("%status%", server.getServerStatus() == ServerStatus.ONLINE ? "&aOnline" : "&cOffline"))
-                    .map(s -> s.replaceAll("%players%", server.getServerStatus() == ServerStatus.ONLINE ? server.getData().getOnline() + "" : "0"))
-                    .map(s -> s.replaceAll("%maxplayers%", server.getServerStatus() == ServerStatus.ONLINE ? server.getData().getMax() + "" : "0"))
+                    .map(s -> s.replaceAll("%players%", server.getServerStatus() == ServerStatus.ONLINE ? server.getCachedData().getOnline() + "" : "0"))
+                    .map(s -> s.replaceAll("%maxplayers%", server.getServerStatus() == ServerStatus.ONLINE ? server.getCachedData().getMax() + "" : "0"))
                     .map(s -> s.replaceAll("%port%", server.getPort() + ""))
-                    .map(s -> s.replaceAll("%motd%", server.getServerStatus() == ServerStatus.ONLINE ? server.getData().getMOTD() : "&cOffline"))
+                    .map(s -> s.replaceAll("%motd%", server.getServerStatus() == ServerStatus.ONLINE ? server.getCachedData().getMOTD() : "&cOffline"))
                     .map(s -> s.replaceAll("%node%", server.getNode()))
                     .map(s -> s.replaceAll("%owner%", server.getPlayerName()))
                     .map(s -> s.replaceAll("%ip%", server.getHostname()))
@@ -181,6 +181,7 @@ public class GUIUtils {
                 }));
                 player.openInventory(deleteConfirmationMenu.getInventory());
             }));
+
             menu.setButton(0, 4, new SGButton(itemPlayer));
 
             Bukkit.getScheduler().runTask(PSHubCore.getInstance(), () -> player.openInventory(menu.getInventory()));

@@ -19,6 +19,10 @@ import os.arcadiadevs.playerservers.hubcore.placeholders.PlayerCount;
 
 import java.io.*;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class PSHubCore extends JavaPlugin {
 
@@ -59,9 +63,15 @@ public class PSHubCore extends JavaPlugin {
 
         Objects.requireNonNull(getCommand("servers")).setExecutor(new CommandManager());
 
+        // Initialize SpiGUI
         spiGUI = new SpiGUI(this);
 
+        // Initialize ServerCache
         serverCache = new ServerCache();
+
+        // Create ServerCache refreshing task
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleAtFixedRate(serverCache, 1, getConfig().getInt("gui.selector.menu.cache-time"), TimeUnit.SECONDS);
     }
 
     private void createMultiNodeConfig() throws IOException {

@@ -8,53 +8,42 @@ import os.arcadiadevs.playerservers.hubcore.database.DataBase;
 import os.arcadiadevs.playerservers.hubcore.enums.ServerStatus;
 
 import java.util.List;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-public class ServerCache {
+public class ServerCache implements Runnable {
 
     @Getter @Setter
     private List<Server> servers;
 
-    public ServerCache() {
-        this.startTask();
-    }
+    @Override
+    public void run() {
+        final List<Server> servers;
 
-    @SneakyThrows
-    private void startTask() {
-        new Thread(() -> {
-            while (PSHubCore.getInstance().isEnabled()) {
-                final List<Server> servers;
+        try {
+            servers = DataBase.getServersInfo().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return;
+        }
 
-                try {
-                    servers = DataBase.getServersInfo().get();
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                    return;
-                }
+        servers.forEach(server -> server.setCachedData(server.getData()));
 
-                servers.sort((s1, s2) -> {
-                    final var p1 = s1.getServerStatus() == ServerStatus.ONLINE;
-                    final var p2 = s2.getServerStatus() == ServerStatus.ONLINE;
+        servers.sort((s1, s2) -> {
+            final var p1 = s1.getServerStatus() == ServerStatus.ONLINE;
+            final var p2 = s2.getServerStatus() == ServerStatus.ONLINE;
 
-                    if (p1 && !p2) {
-                        return -1;
-                    } else if (!p1 && p2) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                });
-
-                setServers(servers);
-
-                try {
-                    Thread.sleep(TimeUnit.SECONDS.toMillis(PSHubCore.getInstance().getConfig().getInt("gui.menu.cache-time")));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            if (p1 && !p2) {
+                return -1;
+            } else if (!p1 && p2) {
+                return 1;
+            } else {
+                return 0;
             }
-        }).start();
+        });
+
+        setServers(servers);
     }
 
 }
