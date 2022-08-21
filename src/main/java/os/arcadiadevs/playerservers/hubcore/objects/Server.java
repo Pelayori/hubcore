@@ -78,15 +78,13 @@ public class Server {
 
         return new Node()
                 .setName(this.node)
-                .setHostname(config.getString("hostname"))
+                .setHostname(config.getString("host"))
                 .setToken(config.getString("token"))
                 .setPort(config.getInt("port"));
     }
 
     public PingInfoStructure getData() {
-        try {
-            Socket sock = new Socket(getHostname(), port);
-
+        try (Socket sock = new Socket(getHostname(), port)) {
             DataOutputStream out = new DataOutputStream(sock.getOutputStream());
             DataInputStream in = new DataInputStream(sock.getInputStream());
 

@@ -8,8 +8,6 @@ import org.bukkit.entity.Player;
 import os.arcadiadevs.playerservers.hubcore.PSHubCore;
 import os.arcadiadevs.playerservers.hubcore.database.DataBase;
 import os.arcadiadevs.playerservers.hubcore.enums.ServerStatus;
-import os.arcadiadevs.playerservers.hubcore.objects.Server;
-import os.arcadiadevs.playerservers.hubcore.objects.ServerCache;
 
 import java.util.ArrayList;
 
@@ -37,8 +35,6 @@ public class GUIUtils {
 
                 var lore = PSH.getConfig().getStringList(server.getCachedStatus() == ServerStatus.ONLINE ? "gui.selector.menu.online.lore" : "gui.selector.menu.offline.lore");
 
-                System.out.println("test1");
-
                 lore = lore.stream()
                         .map(s -> s.replaceAll("%server%", server.getPlayerName()))
                         .map(s -> s.replaceAll("%status%", server.getCachedStatus() == ServerStatus.ONLINE ? "&aOnline" : "&cOffline"))
@@ -50,8 +46,6 @@ public class GUIUtils {
                         .map(s -> s.replaceAll("%owner%", server.getPlayerName()))
                         .map(s -> s.replaceAll("%ip%", server.getHostname()))
                         .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
-
-                System.out.println("test2");
 
                 var item = itemBuilder
                         .name(ChatUtil.translate(PSH.getConfig().getString(server.getCachedStatus() == ServerStatus.ONLINE ? "gui.selector.menu.online.name" : "gui.selector.menu.offline.name")
@@ -67,8 +61,6 @@ public class GUIUtils {
                         )
                         .lore(lore)
                         .build();
-
-                System.out.println("test3");
 
                 menu.setButton(0, menu.getInventory().firstEmpty(), new SGButton(item).withListener(listener -> BungeeUtil.connectPlayer(listener, player, server.getPlayerName())));
             });
