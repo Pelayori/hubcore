@@ -205,7 +205,7 @@ public class GUIUtils {
             // Fill all empty slots with glass pane
             for (int i = 0; i < 9; i++) {
                 if (menu.getButton(i) == null) {
-                    menu.setButton(i, new SGButton(new ItemBuilder(XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial()).build()));
+                    menu.setButton(i, new SGButton(new ItemBuilder(XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial()).build()));
                 }
             }
 

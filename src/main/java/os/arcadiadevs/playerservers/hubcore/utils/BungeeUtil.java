@@ -83,4 +83,16 @@ public class BungeeUtil {
         event.getWhoClicked().closeInventory();
     }
 
+    public static void getMultinode(InventoryClickEvent event, Player player) {
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+
+        try {
+            out.writeUTF("multinode");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        player.sendPluginMessage(PSHubCore.getInstance(), "BungeeCord", out.toByteArray());
+        event.getWhoClicked().closeInventory();
+    }
+
 }
