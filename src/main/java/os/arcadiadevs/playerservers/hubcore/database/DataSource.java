@@ -28,7 +28,7 @@ public class DataSource
         hikari.setMaximumPoolSize(10);
         hikari.setLoginTimeout(10);
         hikari.setConnectionTimeout(10000);
-        hikari.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
+        hikari.setDataSourceClassName("com.mysql.cj.jdbc.MysqlDataSource");
         hikari.addDataSourceProperty("serverName", address);
         hikari.addDataSourceProperty("port", "3306");
         hikari.addDataSourceProperty("databaseName", name);

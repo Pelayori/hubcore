@@ -34,6 +34,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.30</version>
+        </dependency>
+        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.18.2-R0.1-SNAPSHOT</version>
@@ -80,6 +85,6 @@
 
     <groupId>PSHubCore</groupId>
     <artifactId>PSHubCore</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>v3-dev</version>
 
 </project>
