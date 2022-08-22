@@ -31,7 +31,6 @@ public class JoinEvent implements Listener {
                     player.getInventory().remove(item);
                 }
             });
-            return;
         }
 
         if (!PSH.getConfig().getBoolean("gui.player-menu.item.enabled")) {
@@ -40,7 +39,6 @@ public class JoinEvent implements Listener {
                     player.getInventory().remove(item);
                 }
             });
-            return;
         }
 
         new Thread(() -> {
@@ -67,8 +65,13 @@ public class JoinEvent implements Listener {
             itemStack.setItemMeta(itemMeta);
             itemStack1.setItemMeta(itemMeta1);
 
-            Bukkit.getScheduler().runTask(PSH, () -> player.getInventory().setItem(PSH.getConfig().getInt("gui.selector.item.location"), itemStack));
-            Bukkit.getScheduler().runTask(PSH, () -> player.getInventory().setItem(PSH.getConfig().getInt("gui.player-menu.item.location"), itemStack1));
+            if (PSH.getConfig().getBoolean("gui.selector.item.enabled")) {
+                Bukkit.getScheduler().runTask(PSH, () -> player.getInventory().setItem(PSH.getConfig().getInt("gui.selector.item.location"), itemStack));
+            }
+
+            if (PSH.getConfig().getBoolean("gui.player-menu.item.enabled")) {
+                Bukkit.getScheduler().runTask(PSH, () -> player.getInventory().setItem(PSH.getConfig().getInt("gui.player-menu.item.location"), itemStack1));
+            }
         }).start();
 
     }
