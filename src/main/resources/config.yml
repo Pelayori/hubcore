@@ -2,11 +2,14 @@ mysql:
   hostname: 127.0.0.1
   username: web
   password: webmaster
-  database: playerservers
+  database: PlayerServers
   useSSL: true
 
 # For how long should we keep Server Data cached?
 cache-time: 20
+
+messages:
+  no-permission: "&9Error> &7Oops, it seems like you don't have permission to do that."
 
 gui:
   selector:
@@ -74,9 +77,9 @@ gui:
         lore:
           - "&7Click here to create a new server"
       delete:
-        name: "&cDelete a server"
+        name: "&cDelete the server"
         lore:
-          - "&7Click here to delete a server"
+          - "&7Click here to delete the server"
         confirmation:
           name: "&cDelete this server?"
           accept:
@@ -94,13 +97,13 @@ gui:
               - "&7deletion of your server."
 
       join:
-        name: "&aJoin a server"
+        name: "&aJoin the server"
         lore:
-          - "&7Click here to join a server"
+          - "&7Click here to join the server"
       stop:
-        name: "&cStop a server"
+        name: "&cStop the server"
         lore:
-          - "&7Click here to stop a server"
+          - "&7Click here to stop the server"
         confirmation:
           name: "&cStop this server?"
           accept:
@@ -114,9 +117,9 @@ gui:
               - "&7Click here to cancel"
               - "&7stopping your server."
       start:
-        name: "&aStart a server"
+        name: "&aStart the server"
         lore:
-          - "&7Click here to start a server"
+          - "&7Click here to start the server"
 
 # Should we enable multinode support?
 multi-node: false
