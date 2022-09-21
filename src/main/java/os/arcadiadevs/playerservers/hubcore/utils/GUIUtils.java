@@ -139,14 +139,24 @@ public class GUIUtils {
                     .lore(PSH.getConfig().getStringList("gui.player-menu.menu.delete.lore"))
                     .build();
 
-            final var itemQuestionYes = new ItemBuilder(XMaterial.EMERALD_BLOCK.parseMaterial())
+            final var itemDeleteQuestionYes = new ItemBuilder(XMaterial.EMERALD_BLOCK.parseMaterial())
                     .name(ChatUtil.translate(PSH.getConfig().getString("gui.player-menu.menu.delete.confirmation.accept.name")))
                     .lore(PSH.getConfig().getStringList("gui.player-menu.menu.delete.confirmation.accept.lore"))
                     .build();
 
-            final var itemQuestionNo = new ItemBuilder(XMaterial.REDSTONE_BLOCK.parseMaterial())
+            final var itemDeleteQuestionNo = new ItemBuilder(XMaterial.REDSTONE_BLOCK.parseMaterial())
                     .name(ChatUtil.translate(PSH.getConfig().getString("gui.player-menu.menu.delete.confirmation.decline.name")))
                     .lore(PSH.getConfig().getStringList("gui.player-menu.menu.delete.confirmation.decline.lore"))
+                    .build();
+
+            final var itemStopQuestionYes = new ItemBuilder(XMaterial.EMERALD_BLOCK.parseMaterial())
+                    .name(ChatUtil.translate(PSH.getConfig().getString("gui.player-menu.menu.stop.confirmation.accept.name")))
+                    .lore(PSH.getConfig().getStringList("gui.player-menu.menu.stop.confirmation.accept.lore"))
+                    .build();
+
+            final var itemStopQuestionNo = new ItemBuilder(XMaterial.REDSTONE_BLOCK.parseMaterial())
+                    .name(ChatUtil.translate(PSH.getConfig().getString("gui.player-menu.menu.stop.confirmation.decline.name")))
+                    .lore(PSH.getConfig().getStringList("gui.player-menu.menu.stop.confirmation.decline.lore"))
                     .build();
 
             if (server.getCachedStatus() == ServerStatus.ONLINE) {
@@ -161,11 +171,11 @@ public class GUIUtils {
 
                 menu.setButton(0, 22, new SGButton(itemJoin).withListener(listener -> BungeeUtil.connectPlayer(listener, player, player.getDisplayName())));
                 menu.setButton(0, 20, new SGButton(itemStop).withListener(listener -> {
-                    stopConfirmationMenu.setButton(0, 11, new SGButton(itemQuestionYes).withListener(listener2 -> {
+                    stopConfirmationMenu.setButton(0, 11, new SGButton(itemStopQuestionYes).withListener(listener2 -> {
                         BungeeUtil.stopServer(listener2, player, player.getDisplayName());
                         player.closeInventory();
                     }));
-                    stopConfirmationMenu.setButton(0, 15, new SGButton(itemQuestionNo).withListener(listener2 -> {
+                    stopConfirmationMenu.setButton(0, 15, new SGButton(itemStopQuestionNo).withListener(listener2 -> {
                         player.closeInventory();
                     }));
                     player.openInventory(stopConfirmationMenu.getInventory());
@@ -182,11 +192,11 @@ public class GUIUtils {
             }
 
             menu.setButton(0, 24, new SGButton(itemDelete).withListener(listener -> {
-                deleteConfirmationMenu.setButton(0, 11, new SGButton(itemQuestionYes).withListener(listener2 -> {
+                deleteConfirmationMenu.setButton(0, 11, new SGButton(itemDeleteQuestionYes).withListener(listener2 -> {
                     BungeeUtil.deleteServer(listener2, player, player.getDisplayName());
                     player.closeInventory();
                 }));
-                deleteConfirmationMenu.setButton(0, 15, new SGButton(itemQuestionNo).withListener(listener2 -> {
+                deleteConfirmationMenu.setButton(0, 15, new SGButton(itemDeleteQuestionNo).withListener(listener2 -> {
                     player.closeInventory();
                 }));
                 player.openInventory(deleteConfirmationMenu.getInventory());
