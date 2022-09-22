@@ -1,8 +1,7 @@
 package os.arcadiadevs.playerservers.hubcore.database;
 
 import com.zaxxer.hikari.HikariDataSource;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
+import os.arcadiadevs.playerservers.hubcore.PSHubCore;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -15,13 +14,13 @@ public class DataSource
     @SuppressWarnings("ConstantConditions")
     public void registerDataSource() throws SQLException {
 
-        Plugin pl = Bukkit.getPluginManager().getPlugin("PSHubCore");
+        final var pl = PSHubCore.getInstance();
 
-        String address = pl.getConfig().getString("mysql.hostname");
-        String name = pl.getConfig().getString("mysql.database");
-        String username = pl.getConfig().getString("mysql.username");
-        String password = pl.getConfig().getString("mysql.password");
-        Boolean useSSL = pl.getConfig().getBoolean("mysql.useSSL");
+        final var address = pl.getConfig().getString("mysql.hostname");
+        final var name = pl.getConfig().getString("mysql.database");
+        final var username = pl.getConfig().getString("mysql.username");
+        final var password = pl.getConfig().getString("mysql.password");
+        final var useSSL = pl.getConfig().getBoolean("mysql.useSSL");
 
         hikari = new HikariDataSource();
         hikari.setPoolName("PSHubCore");

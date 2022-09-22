@@ -1,6 +1,6 @@
 name: PSHubCore
 main: os.arcadiadevs.playerservers.hubcore.PSHubCore
-version: v3-dev
+version: 3-dev
 author: OpenSource
 
 softdepend: [PlaceholderAPI]

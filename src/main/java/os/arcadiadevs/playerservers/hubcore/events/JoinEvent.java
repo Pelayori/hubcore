@@ -19,38 +19,36 @@ public class JoinEvent implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
 
-        final var itemMaterial = PSH.getConfig().getString("gui.selector.item.material");
-        final var itemMaterial1 = PSH.getConfig().getString("gui.player-menu.item.material");
-        final var selectorMaterial = XMaterial.matchXMaterial(itemMaterial).orElse(XMaterial.COMPASS).parseMaterial();
-        final var selectorMaterial1 = XMaterial.matchXMaterial(itemMaterial1).orElse(XMaterial.EMERALD).parseMaterial();
+        final var selectorConfigMaterial = PSH.getConfig().getString("gui.selector.item.material");
+        final var menuConfigMaterial = PSH.getConfig().getString("gui.player-menu.item.material");
+        final var selectorMaterial = XMaterial.matchXMaterial(selectorConfigMaterial).orElse(XMaterial.COMPASS).parseMaterial();
+        final var menuMaterial = XMaterial.matchXMaterial(menuConfigMaterial).orElse(XMaterial.EMERALD).parseMaterial();
         final var player = e.getPlayer();
         
         if (!PSH.getConfig().getBoolean("gui.selector.item.enabled")) {
             player.getInventory().forEach(item -> {
-                if (item.getType() == selectorMaterial) {
+                if (item != null && item.getType() == selectorMaterial) {
                     player.getInventory().remove(item);
                 }
             });
-            return;
         }
 
         if (!PSH.getConfig().getBoolean("gui.player-menu.item.enabled")) {
             player.getInventory().forEach(item -> {
-                if (item.getType() == selectorMaterial1) {
+                if (item != null && item.getType() == menuMaterial) {
                     player.getInventory().remove(item);
                 }
             });
-            return;
         }
 
         new Thread(() -> {
-            final var itemStack = new ItemStack(selectorMaterial);
-            final var itemStack1 = new ItemStack(selectorMaterial1);
-            final var itemMeta = itemStack.getItemMeta();
-            final var itemMeta1 = itemStack1.getItemMeta();
+            final var selectorItemStack = new ItemStack(selectorMaterial);
+            final var menuItemStack = new ItemStack(menuMaterial);
+            final var selectorItemMeta = selectorItemStack.getItemMeta();
+            final var menuItemMeta = menuItemStack.getItemMeta();
 
-            itemMeta.setDisplayName(ChatUtil.translate(PSH.getConfig().getString("gui.selector.item.name")));
-            itemMeta1.setDisplayName(ChatUtil.translate(PSH.getConfig().getString("gui.player-menu.item.name")));
+            selectorItemMeta.setDisplayName(ChatUtil.translate(PSH.getConfig().getString("gui.selector.item.name")));
+            menuItemMeta.setDisplayName(ChatUtil.translate(PSH.getConfig().getString("gui.player-menu.item.name")));
 
             final List<String> lore = PSH.getConfig().getStringList("gui.selector.item.description")
                     .stream()
@@ -62,13 +60,18 @@ public class JoinEvent implements Listener {
                     .map(ChatUtil::translate)
                     .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
 
-            itemMeta.setLore(lore);
-            itemMeta1.setLore(lore1);
-            itemStack.setItemMeta(itemMeta);
-            itemStack1.setItemMeta(itemMeta1);
+            selectorItemMeta.setLore(lore);
+            menuItemMeta.setLore(lore1);
+            selectorItemStack.setItemMeta(selectorItemMeta);
+            menuItemStack.setItemMeta(menuItemMeta);
 
-            Bukkit.getScheduler().runTask(PSH, () -> player.getInventory().setItem(PSH.getConfig().getInt("gui.selector.item.location"), itemStack));
-            Bukkit.getScheduler().runTask(PSH, () -> player.getInventory().setItem(PSH.getConfig().getInt("gui.player-menu.item.location"), itemStack1));
+            if (PSH.getConfig().getBoolean("gui.selector.item.enabled")) {
+                Bukkit.getScheduler().runTask(PSH, () -> player.getInventory().setItem(PSH.getConfig().getInt("gui.selector.item.location"), selectorItemStack));
+            }
+
+            if (PSH.getConfig().getBoolean("gui.player-menu.item.enabled")) {
+                Bukkit.getScheduler().runTask(PSH, () -> player.getInventory().setItem(PSH.getConfig().getInt("gui.player-menu.item.location"), menuItemStack));
+            }
         }).start();
 
     }
