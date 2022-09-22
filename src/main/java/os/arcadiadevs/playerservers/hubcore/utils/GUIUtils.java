@@ -178,6 +178,13 @@ public class GUIUtils {
                     stopConfirmationMenu.setButton(0, 15, new SGButton(itemStopQuestionNo).withListener(listener2 -> {
                         player.closeInventory();
                     }));
+
+                    for (int i = 0; i < 9 * 4; i++) {
+                        if (stopConfirmationMenu.getButton(i) == null) {
+                            stopConfirmationMenu.setButton(i, new SGButton(new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).name(" ").build()));
+                        }
+                    }
+
                     player.openInventory(stopConfirmationMenu.getInventory());
                 }));
             }
@@ -199,15 +206,22 @@ public class GUIUtils {
                 deleteConfirmationMenu.setButton(0, 15, new SGButton(itemDeleteQuestionNo).withListener(listener2 -> {
                     player.closeInventory();
                 }));
+
+                for (int i = 0; i < 9 * 4; i++) {
+                    if (deleteConfirmationMenu.getButton(i) == null) {
+                        deleteConfirmationMenu.setButton(i, new SGButton(new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).name(" ").build()));
+                    }
+                }
+
                 player.openInventory(deleteConfirmationMenu.getInventory());
             }));
 
             menu.setButton(0, 4, new SGButton(itemPlayer));
 
             // Fill all empty slots with glass pane
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < 9 * 4; i++) {
                 if (menu.getButton(i) == null) {
-                    menu.setButton(i, new SGButton(new ItemBuilder(XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial()).build()));
+                    menu.setButton(i, new SGButton(new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).name(" ").build()));
                 }
             }
 
