@@ -85,6 +85,13 @@ public class GUIUtils {
                         .build();
 
                 menu.setButton(0, 13, new SGButton(itemCreate).withListener(listener -> BungeeUtil.createServer(listener, player, player.getDisplayName())));
+
+                for (int i = 0; i < 9 * 4; i++) {
+                    if (menu.getButton(i) == null) {
+                        menu.setButton(i, new SGButton(new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).name(" ").build()));
+                    }
+                }
+
                 Bukkit.getScheduler().runTask(PSHubCore.getInstance(), () -> player.openInventory(menu.getInventory()));
                 return;
             }
