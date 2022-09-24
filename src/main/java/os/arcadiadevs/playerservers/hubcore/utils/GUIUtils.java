@@ -58,6 +58,7 @@ public class GUIUtils {
                                 .replaceAll("%node%", server.getNode())
                                 .replaceAll("%owner%", server.getPlayerName())
                                 .replaceAll("%ip%", server.getHostname())
+
                         )
                         .lore(lore)
                         .build();
@@ -175,9 +176,7 @@ public class GUIUtils {
                         BungeeUtil.stopServer(listener2, player, player.getDisplayName());
                         player.closeInventory();
                     }));
-                    stopConfirmationMenu.setButton(0, 15, new SGButton(itemStopQuestionNo).withListener(listener2 -> {
-                        player.closeInventory();
-                    }));
+                    stopConfirmationMenu.setButton(0, 15, new SGButton(itemStopQuestionNo).withListener(listener2 -> player.closeInventory()));
 
                     for (int i = 0; i < 9 * 4; i++) {
                         if (stopConfirmationMenu.getButton(i) == null) {
@@ -203,9 +202,7 @@ public class GUIUtils {
                     BungeeUtil.deleteServer(listener2, player, player.getDisplayName());
                     player.closeInventory();
                 }));
-                deleteConfirmationMenu.setButton(0, 15, new SGButton(itemDeleteQuestionNo).withListener(listener2 -> {
-                    player.closeInventory();
-                }));
+                deleteConfirmationMenu.setButton(0, 15, new SGButton(itemDeleteQuestionNo).withListener(listener2 -> player.closeInventory()));
 
                 for (int i = 0; i < 9 * 4; i++) {
                     if (deleteConfirmationMenu.getButton(i) == null) {

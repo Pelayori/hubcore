@@ -16,6 +16,9 @@ import os.arcadiadevs.playerservers.hubcore.objects.ServerCache;
 import os.arcadiadevs.playerservers.hubcore.placeholders.PlayerCount;
 
 import java.io.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -43,7 +46,9 @@ public class PSHubCore extends JavaPlugin {
         createMultiNodeConfig();
 
         DataSource ds = new DataSource();
-        ds.registerDataSource();
+        if (!ds.registerDataSource()) {
+            return;
+        }
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             /*
