@@ -63,7 +63,8 @@ public class GUIUtils {
                         .lore(lore)
                         .build();
 
-                menu.setButton(0, menu.getInventory().firstEmpty(), new SGButton(item).withListener(listener -> BungeeUtil.connectPlayer(listener, player, server.getPlayerName())));
+                //menu.setButton(0, menu.getInventory().firstEmpty(), new SGButton(item).withListener(listener -> BungeeUtil.connectPlayer(listener, player, server.getPlayerName())));
+                menu.setButton(0, menu.getInventory().firstEmpty(), new SGButton(item).withListener(listener -> openMenu(player)));
             });
 
             Bukkit.getScheduler().runTask(PSHubCore.getInstance(), () -> player.openInventory(menu.getInventory()));
@@ -118,7 +119,7 @@ public class GUIUtils {
                     .orElse(null);
 
             if (server == null) {
-                player.sendMessage(ChatUtil.translate("&9Error> &cCould not find your server!"));
+                player.sendMessage(ChatUtil.translate("&9Error> &cCould not find your server, please try again in 10 seconds."));
                 return;
             }
 

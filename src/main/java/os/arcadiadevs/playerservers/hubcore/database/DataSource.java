@@ -4,7 +4,6 @@ import com.zaxxer.hikari.HikariDataSource;
 import os.arcadiadevs.playerservers.hubcore.PSHubCore;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DataSource
