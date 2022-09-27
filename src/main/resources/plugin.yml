@@ -12,3 +12,8 @@ commands:
     aliases:
       - menu
       - opengui
+  playermenu:
+    usage: /playermenu
+    description: Opens up player-menu GUI
+    aliases:
+      - pmenu

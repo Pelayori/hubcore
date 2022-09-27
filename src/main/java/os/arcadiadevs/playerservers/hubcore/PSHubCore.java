@@ -64,6 +64,7 @@ public class PSHubCore extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new HubEvents(), this);
 
         Objects.requireNonNull(getCommand("servers")).setExecutor(new CommandManager());
+        Objects.requireNonNull(getCommand("pmenu")).setExecutor(new CommandManager());
 
         // Initialize SpiGUI
         spiGUI = new SpiGUI(this);

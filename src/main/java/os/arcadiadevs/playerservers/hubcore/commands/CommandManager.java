@@ -13,18 +13,42 @@ public class CommandManager implements CommandExecutor {
     @SuppressWarnings("NullableProblems")
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        if (commandSender instanceof Player) {
-            if (!PSHubCore.getInstance().getConfig().getBoolean("gui.selector.item.enabled")) {
-                commandSender.sendMessage(ChatUtil.translate("&9PlayerServers> &7Oops, gui isn't enabled in config file!"));
-                return true;
-            }
-            if (PSHubCore.getInstance().getConfig().getBoolean("gui.selector.item.enabled")) {
-                if (command.getName().equalsIgnoreCase("servers") || command.getName().equalsIgnoreCase("menu") || command.getName().equalsIgnoreCase("opengui")) {
-                    Player player = (Player) commandSender;
+
+        if (!(commandSender instanceof Player)) {
+            return true;
+        }
+
+        final Player player =  (Player) commandSender;
+
+        if (!PSHubCore.getInstance().getConfig().getBoolean("gui.selector.item.enabled")) {
+            commandSender.sendMessage(ChatUtil.translate("&9PlayerServers> &7Oops, selector isn't enabled in config file!"));
+            return true;
+        }
+
+        if (!PSHubCore.getInstance().getConfig().getBoolean("gui.player-menu.item.enabled")) {
+            commandSender.sendMessage(ChatUtil.translate("&9PlayerServers> &7Oops, player-menu isn't enabled in config file!"));
+            return true;
+        }
+
+        if (PSHubCore.getInstance().getConfig().getBoolean("gui.selector.item.enabled")) {
+            switch (command.getName()) {
+                case ("servers"):
                     GUIUtils.openSelector(player);
-                }
+                case ("menu"):
+                    GUIUtils.openSelector(player);
+                case ("opengui"):
+                    GUIUtils.openSelector(player);
             }
         }
+        if (PSHubCore.getInstance().getConfig().getBoolean("gui.player-menu.item.enabled")) {
+            switch (command.getName()) {
+                case ("playermenu"):
+                    GUIUtils.openMenu(player);
+                case ("pmenu"):
+                    GUIUtils.openMenu(player);
+            }
+        }
+
         return true;
     }
 }
