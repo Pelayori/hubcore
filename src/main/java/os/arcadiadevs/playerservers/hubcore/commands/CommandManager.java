@@ -4,27 +4,33 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import os.arcadiadevs.playerservers.hubcore.PSHubCore;
+import os.arcadiadevs.playerservers.hubcore.PsHubCore;
+import os.arcadiadevs.playerservers.hubcore.guis.SelectorGui;
 import os.arcadiadevs.playerservers.hubcore.utils.ChatUtil;
-import os.arcadiadevs.playerservers.hubcore.utils.GUIUtils;
+import os.arcadiadevs.playerservers.hubcore.guis.PlayerMenuGui;
 
 public class CommandManager implements CommandExecutor {
 
-    @SuppressWarnings("NullableProblems")
-    @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        if (commandSender instanceof Player) {
-            if (!PSHubCore.getInstance().getConfig().getBoolean("gui.selector.item.enabled")) {
-                commandSender.sendMessage(ChatUtil.translate("&9PlayerServers> &7Oops, gui isn't enabled in config file!"));
-                return true;
-            }
-            if (PSHubCore.getInstance().getConfig().getBoolean("gui.selector.item.enabled")) {
-                if (command.getName().equalsIgnoreCase("servers") || command.getName().equalsIgnoreCase("menu") || command.getName().equalsIgnoreCase("opengui")) {
-                    Player player = (Player) commandSender;
-                    GUIUtils.openSelector(player);
-                }
-            }
-        }
-        return true;
+  @Override
+  public boolean onCommand(CommandSender commandSender, Command command, String s,
+                           String[] strings) {
+    if (!(commandSender instanceof Player player)) {
+      ChatUtil.sendMessage(commandSender,
+          "&9Error> &cYou must be a player to execute this command.");
+      return true;
     }
+
+    if (!PsHubCore.getInstance().getConfig().getBoolean("gui.selector.enabled")) {
+      ChatUtil.sendMessage(player, "&9PlayerServers> &7Oops, this feature is disabled.");
+      return true;
+    }
+
+    if (command.getName().equalsIgnoreCase("servers") ||
+        command.getName().equalsIgnoreCase("menu") ||
+        command.getName().equalsIgnoreCase("opengui")) {
+      SelectorGui.openGui(player);
+    }
+
+    return true;
+  }
 }

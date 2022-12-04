@@ -13,6 +13,8 @@ messages:
 
 gui:
   selector:
+    enabled: true
+
     item:
       enabled: true
       name: "&aQuick Compass"
@@ -44,6 +46,8 @@ gui:
           - '&7Ip: &c%ip%&8:&c%port%'
 
   player-menu:
+    enabled: true
+
     item:
       enabled: true
       name: "&eMy Server"

@@ -5,82 +5,70 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import os.arcadiadevs.playerservers.hubcore.PSHubCore;
+import os.arcadiadevs.playerservers.hubcore.PsHubCore;
 
 @SuppressWarnings("UnstableApiUsage")
 public class BungeeUtil {
 
-    public static void connectPlayer(InventoryClickEvent event, Player player, String server) {
-        if (event.getCurrentItem().getType() == XMaterial.REDSTONE_BLOCK.parseMaterial()) {
-            player.sendMessage(ChatUtil.translate("&9PlayerServers> &7Oops, the server you tried to connect to is offline."));
-            return;
-        }
+  public static void connectPlayer(Player player) {
+    ByteArrayDataOutput out = ByteStreams.newDataOutput();
 
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
-
-        try {
-            out.writeUTF("Connect");
-            out.writeUTF(server);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        player.sendPluginMessage(PSHubCore.getInstance(), "BungeeCord", out.toByteArray());
-        event.getWhoClicked().closeInventory();
+    try {
+      out.writeUTF("Connect");
+    } catch (Exception e) {
+      e.printStackTrace();
     }
 
-    public static void stopServer(InventoryClickEvent event, Player player, String server) {
+    player.sendPluginMessage(PsHubCore.getInstance(), "BungeeCord", out.toByteArray());
+    player.closeInventory();
+  }
 
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+  public static void stopServer(Player player) {
+    ByteArrayDataOutput out = ByteStreams.newDataOutput();
 
-        try {
-            out.writeUTF("stop");
-            out.writeUTF(server);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        player.sendPluginMessage(PSHubCore.getInstance(), "BungeeCord", out.toByteArray());
-        event.getWhoClicked().closeInventory();
+    try {
+      out.writeUTF("stop");
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+    player.sendPluginMessage(PsHubCore.getInstance(), "BungeeCord", out.toByteArray());
+    player.closeInventory();
+  }
 
-    public static void deleteServer(InventoryClickEvent event, Player player, String server) {
+  public static void deleteServer(Player player) {
+    ByteArrayDataOutput out = ByteStreams.newDataOutput();
 
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
-
-        try {
-            out.writeUTF("delete");
-            out.writeUTF(server);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        player.sendPluginMessage(PSHubCore.getInstance(), "BungeeCord", out.toByteArray());
-        event.getWhoClicked().closeInventory();
+    try {
+      out.writeUTF("delete");
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+    player.sendPluginMessage(PsHubCore.getInstance(), "BungeeCord", out.toByteArray());
+    player.closeInventory();
+  }
 
-    public static void createServer(InventoryClickEvent event, Player player, String server) {
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+  public static void createServer(Player player) {
+    ByteArrayDataOutput out = ByteStreams.newDataOutput();
 
-        try {
-            out.writeUTF("create");
-            out.writeUTF(server);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        player.sendPluginMessage(PSHubCore.getInstance(), "BungeeCord", out.toByteArray());
-        event.getWhoClicked().closeInventory();
+    try {
+      out.writeUTF("create");
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+    player.sendPluginMessage(PsHubCore.getInstance(), "BungeeCord", out.toByteArray());
+    player.closeInventory();
+  }
 
-    public static void startServer(InventoryClickEvent event, Player player, String server) {
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+  public static void startServer(Player player) {
+    ByteArrayDataOutput out = ByteStreams.newDataOutput();
 
-        try {
-            out.writeUTF("start");
-            out.writeUTF(server);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        player.sendPluginMessage(PSHubCore.getInstance(), "BungeeCord", out.toByteArray());
-        event.getWhoClicked().closeInventory();
+    try {
+      out.writeUTF("start");
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+    player.sendPluginMessage(PsHubCore.getInstance(), "BungeeCord", out.toByteArray());
+    player.closeInventory();
+  }
 
 }

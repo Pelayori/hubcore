@@ -1,5 +1,5 @@
 name: PSHubCore
-main: os.arcadiadevs.playerservers.hubcore.PSHubCore
+main: os.arcadiadevs.playerservers.hubcore.PsHubCore
 version: 3-dev
 author: OpenSource
 
