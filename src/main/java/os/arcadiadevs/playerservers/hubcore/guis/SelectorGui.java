@@ -1,6 +1,7 @@
 package os.arcadiadevs.playerservers.hubcore.guis;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XSound;
 import com.samjakob.spigui.buttons.SGButton;
 import com.samjakob.spigui.item.ItemBuilder;
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class SelectorGui {
           .map(s -> s.replaceAll("%status%", online ? "&aOnline" : "&cOffline"))
           .map(s -> s.replaceAll("%players%", online ? server.getInfo().players() + "" : "0"))
           .map(s -> s.replaceAll("%maxplayers%", online ? server.getInfo().maxPlayers() + "" : "0"))
-          .map(s -> s.replaceAll("%port%", server.getPort() + ""))
+          .map(s -> s.replaceAll("%port%", server.getDefaultAllocation().getPort() + ""))
           .map(s -> s.replaceAll("%motd%", online ? server.getInfo().motd() : "&cOffline"))
           .map(s -> s.replaceAll("%node%", server.getNode().getName()))
           .map(s -> s.replaceAll("%owner%", server.getOfflinePlayer().getName()))
@@ -60,7 +61,7 @@ public class SelectorGui {
               .replaceAll("%status%", online ? "&aOnline" : "&cOffline")
               .replaceAll("%players%", online ? server.getInfo().players() + "" : "0")
               .replaceAll("%maxplayers%", online ? server.getInfo().maxPlayers() + "" : "0")
-              .replaceAll("%port%", server.getPort() + "")
+              .replaceAll("%port%", server.getDefaultAllocation().getPort() + "")
               .replaceAll("%motd%", online ? server.getInfo().motd() : "&cOffline")
               .replaceAll("%node%", server.getNode().getName())
               .replaceAll("%owner%", server.getOfflinePlayer().getName())
@@ -73,6 +74,7 @@ public class SelectorGui {
           listener -> BungeeUtil.connectPlayer(player)));
     });
 
+    XSound.BLOCK_NOTE_BLOCK_BASS.play(player);
     player.openInventory(menu.getInventory());
 
   }

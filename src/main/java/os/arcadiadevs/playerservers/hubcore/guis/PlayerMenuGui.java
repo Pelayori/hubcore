@@ -65,7 +65,7 @@ public class PlayerMenuGui {
       return;
     }
 
-    final var online = server.getStatus() == ServerStatus.ONLINE;
+    final var online = server.getInfo() != null && server.getInfo().motd() != null && server.getStatus() == ServerStatus.ONLINE;
 
     var lore = instance.getConfig().getStringList(online
         ? "gui.player-menu.menu.info.online.lore"
@@ -77,7 +77,7 @@ public class PlayerMenuGui {
         .map(s -> s.replaceAll("%status%", online ? "&aOnline" : "&cOffline"))
         .map(s -> s.replaceAll("%players%", online ? server.getInfo().players() + "" : "0"))
         .map(s -> s.replaceAll("%maxplayers%", online ? server.getInfo().maxPlayers() + "" : "0"))
-        .map(s -> s.replaceAll("%port%", server.getPort() + ""))
+        .map(s -> s.replaceAll("%port%", server.getDefaultAllocation().getPort() + ""))
         .map(s -> s.replaceAll("%motd%", online ? server.getInfo().motd() : "&cOffline"))
         .map(s -> s.replaceAll("%node%", server.getNode().getName()))
         .map(s -> s.replaceAll("%owner%", server.getOfflinePlayer().getName()))

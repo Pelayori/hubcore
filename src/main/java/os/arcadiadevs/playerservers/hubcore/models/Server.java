@@ -2,13 +2,17 @@ package os.arcadiadevs.playerservers.hubcore.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import lombok.Getter;
@@ -36,20 +40,26 @@ public class Server {
   @Column(name = "id")
   private String id;
 
-  @Column(name = "owner")
+  @Column(name = "external_id")
+  private Long externalId = null;
+
+  @Column(name = "external_uuid")
+  private UUID externalUuid = null;
+
+  @Column(name = "owner", nullable = false)
   private UUID owner;
 
-  @Column(name = "port")
-  private Integer port;
-
   @ManyToOne
-  @JoinColumn(name = "node", nullable = false)
+  @JoinColumn(name = "node")
   private Node node;
 
-  public String getFullAddress() {
-    return (this.node.getIp() + ":" + this.port)
-        .replaceAll("localhost", "127.0.0.1");
-  }
+  @Column(name = "allocations")
+  @OneToMany(mappedBy = "id", fetch = FetchType.EAGER)
+  private List<Allocation> allocations;
+
+  @JoinColumn(name = "default_allocation", referencedColumnName = "id")
+  @OneToOne
+  private Allocation defaultAllocation;
 
   /**
    * Gets the owner of the server as a OfflinePlayer.
@@ -79,7 +89,7 @@ public class Server {
    * @return The InetSocketAddress
    */
   public InetSocketAddress getInetAddress() {
-    return new InetSocketAddress(this.node.getIp(), this.port);
+    return defaultAllocation.getInetAddress();
   }
 
   /**
@@ -88,15 +98,13 @@ public class Server {
    * @return The status of the server
    */
   public ServerStatus getStatus() {
-    final var address = node.getNumericAddress();
-
     var status = ServerStatus.UNKNOWN;
-    try {
-      Socket s = new Socket(address, port);
+    try (Socket s = new Socket()) {
+      s.connect(getInetAddress(), 1000);
+      s.setSoTimeout(1000);
       if (s.isConnected()) {
         status = ServerStatus.ONLINE;
       }
-      s.close();
     } catch (IOException ignored) {
       status = ServerStatus.OFFLINE;
     }

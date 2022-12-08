@@ -10,12 +10,14 @@ import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import os.arcadiadevs.playerservers.hubcore.commands.CommandManager;
 import os.arcadiadevs.playerservers.hubcore.controllers.NodesController;
 import os.arcadiadevs.playerservers.hubcore.controllers.ServersController;
 import os.arcadiadevs.playerservers.hubcore.events.ClickEvent;
 import os.arcadiadevs.playerservers.hubcore.events.HubEvents;
 import os.arcadiadevs.playerservers.hubcore.events.JoinEvent;
+import os.arcadiadevs.playerservers.hubcore.models.Allocation;
 import os.arcadiadevs.playerservers.hubcore.models.Node;
 import os.arcadiadevs.playerservers.hubcore.models.Server;
 import os.arcadiadevs.playerservers.hubcore.placeholders.PlayerCount;
@@ -47,10 +49,11 @@ public class PsHubCore extends JavaPlugin {
     extractFile("hibernate.cfg.xml");
 
     sessionFactory =
-        new org.hibernate.cfg.Configuration()
+        new Configuration()
             .configure(new File(this.getDataFolder().getAbsolutePath() + "/" + "hibernate.cfg.xml"))
             .addAnnotatedClass(Server.class)
             .addAnnotatedClass(Node.class)
+            .addAnnotatedClass(Allocation.class)
             .buildSessionFactory();
 
     // Initialize the controllers

@@ -27,7 +27,7 @@ public class Node {
   @Id
   @Column(name = "id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
+  private long id;
 
   @Column(name = "name")
   private String name;
@@ -38,14 +38,11 @@ public class Node {
   @Column(name = "port")
   private int port;
 
-  @Column(name = "min_port")
-  private int minPort;
+  @Column(name = "max_online")
+  private Integer maxOnline;
 
-  @Column(name = "max_port")
-  private int maxPort;
-
-  @Column(name = "max_servers")
-  private short maxServers;
+  @Column(name = "pterodactyl")
+  private boolean pterodactyl = false;
 
   @Column(name = "token")
   private String token;
@@ -53,6 +50,10 @@ public class Node {
   @Column(name = "servers")
   @OneToMany(mappedBy = "node", fetch = FetchType.EAGER)
   private List<Server> servers;
+
+  @Column(name = "allocations")
+  @OneToMany(mappedBy = "node", fetch = FetchType.EAGER)
+  private List<Allocation> allocations;
 
   /**
    * Get the full address of the server as ip:port.
