@@ -10,5 +10,15 @@ commands:
     usage: /servers
     description: Opens up server selector GUI
     aliases:
-      - menu
       - opengui
+  playermenu:
+    usage: /playermenu
+    description: Opens up player-menu GUI
+    aliases:
+      - pmenu
+      - playergui
+  adminmenu:
+    usage: /adminmenu
+    description: Opens up admin-menu GUI
+    aliases:
+      - adminmenu

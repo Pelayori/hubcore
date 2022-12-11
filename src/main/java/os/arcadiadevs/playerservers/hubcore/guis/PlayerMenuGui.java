@@ -7,18 +7,24 @@ import com.samjakob.spigui.item.ItemBuilder;
 import java.util.ArrayList;
 import org.bukkit.entity.Player;
 import os.arcadiadevs.playerservers.hubcore.PsHubCore;
+import os.arcadiadevs.playerservers.hubcore.enums.MessageAction;
 import os.arcadiadevs.playerservers.hubcore.enums.PowerAction;
 import os.arcadiadevs.playerservers.hubcore.enums.ServerStatus;
 import os.arcadiadevs.playerservers.hubcore.models.Server;
-import os.arcadiadevs.playerservers.hubcore.utils.BungeeUtil;
 import os.arcadiadevs.playerservers.hubcore.utils.ChatUtil;
 import os.arcadiadevs.playerservers.hubcore.utils.GuiUtils;
 
+/**
+ * Player gui to manage their own server.
+ *
+ * @author ArcadiaDevs
+ */
 public class PlayerMenuGui {
 
   public static void openGui(Player player) {
     final var instance = PsHubCore.getInstance();
     final var serversController = instance.getServersController();
+    final var server = serversController.getServer(player);
 
     if (!serversController.hasServer(player)) {
       final var menu = instance.getSpiGui().create(
@@ -41,7 +47,7 @@ public class PlayerMenuGui {
 
       menu.setButton(0, 13, new SGButton(itemCreate).withListener(
           listener -> {
-            BungeeUtil.createServer(player);
+            server.create();
             XSound.ENTITY_EXPERIENCE_ORB_PICKUP.play(player);
           }));
 
@@ -58,10 +64,8 @@ public class PlayerMenuGui {
 
     GuiUtils.addBorder(menu, rows);
 
-    final var server = serversController.getServer(player);
-
     if (server == null) {
-      player.sendMessage(ChatUtil.translate("&9Error> &cCould not find your server!"));
+      ChatUtil.sendMessage(player, "&9Error> &cCould not find your server!");
       return;
     }
 
@@ -127,7 +131,7 @@ public class PlayerMenuGui {
               instance.getConfig().getString("gui.player-menu.menu.start.name")))
           .lore(instance.getConfig().getStringList("gui.player-menu.menu.start.lore"))
           .build())
-          .withListener(listener -> server.executePowerAction(PowerAction.START));
+          .withListener(listener -> server.start());
 
       menu.setButton(20, itemStart);
     }
@@ -200,7 +204,7 @@ public class PlayerMenuGui {
         .build())
         .withListener(listener2 -> {
           XSound.ENTITY_EXPERIENCE_ORB_PICKUP.play(player);
-          server.executePowerAction(PowerAction.STOP);
+          server.stop();
           player.closeInventory();
         });
 

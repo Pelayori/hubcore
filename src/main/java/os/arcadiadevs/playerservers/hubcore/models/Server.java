@@ -1,29 +1,25 @@
 package os.arcadiadevs.playerservers.hubcore.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+import os.arcadiadevs.playerservers.hubcore.PsHubCore;
+import os.arcadiadevs.playerservers.hubcore.enums.MessageAction;
+import os.arcadiadevs.playerservers.hubcore.enums.PowerAction;
+import os.arcadiadevs.playerservers.hubcore.enums.ServerStatus;
+import os.arcadiadevs.playerservers.hubcore.utils.ServerPinger;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
-import lombok.Getter;
-import lombok.Setter;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-import os.arcadiadevs.playerservers.hubcore.enums.PowerAction;
-import os.arcadiadevs.playerservers.hubcore.enums.ServerStatus;
-import os.arcadiadevs.playerservers.hubcore.utils.BungeeUtil;
-import os.arcadiadevs.playerservers.hubcore.utils.ServerPinger;
 
 /**
  * The model of a server.
@@ -79,8 +75,11 @@ public class Server {
     return Bukkit.getPlayer(owner);
   }
 
+  /**
+   * Connect player to the server.
+   */
   public void connect() {
-    BungeeUtil.connectPlayer(getPlayer());
+    serverAction(MessageAction.CONNECT, getPlayer());
   }
 
   /**
@@ -126,23 +125,69 @@ public class Server {
   }
 
   /**
-   * Execute a power action on the server.
+   * Sends bungee message.
    *
-   * @param action The action to execute
+   * @param action message to bungee
    */
-  public void executePowerAction(PowerAction action) {
-    switch (action) {
-      case START -> BungeeUtil.startServer(getPlayer());
-      case STOP -> BungeeUtil.stopServer(getPlayer());
-      default -> throw new IllegalStateException("Unexpected value: " + action);
+  private void serverAction(MessageAction action, Player player, String id) {
+    ByteArrayDataOutput out = ByteStreams.newDataOutput();
+
+    try {
+      out.writeUTF(action.toString().toLowerCase());
+      if (id != null) {
+        out.writeUTF(id);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+
+    player.sendPluginMessage(PsHubCore.getInstance(), "BungeeCord", out.toByteArray());
+    player.closeInventory();
+  }
+
+  private void serverAction(MessageAction action, Player player) {
+    serverAction(action, player, null);
+  }
+
+  public void start() {
+    serverAction(MessageAction.START, getPlayer());
+  }
+
+  public void stop() {
+    serverAction(MessageAction.STOP, getPlayer());
+  }
+
+  public void create() {
+    serverAction(MessageAction.CREATE, getPlayer());
   }
 
   /**
    * Deletes the server.
    */
   public void delete() {
-    BungeeUtil.deleteServer(getPlayer());
+    serverAction(MessageAction.DELETE, getPlayer());
   }
+
+  /**
+   * Deletes specified server.
+   */
+  public void adminDelete(Player player) {
+    serverAction(MessageAction.ADELETE, player, getId());
+  }
+
+  /**
+   * Stops specified server.
+   */
+  public void adminStop(Player player) {
+    serverAction(MessageAction.ASTOP, player, getId());
+  }
+
+  /**
+   * Starts specified server.
+   */
+  public void adminStart(Player player) {
+    serverAction(MessageAction.ASTART, player, getId());
+  }
+
 
 }

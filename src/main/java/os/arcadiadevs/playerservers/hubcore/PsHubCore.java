@@ -74,6 +74,8 @@ public class PsHubCore extends JavaPlugin {
     Bukkit.getPluginManager().registerEvents(new HubEvents(getConfig()), this);
 
     Objects.requireNonNull(getCommand("servers")).setExecutor(new CommandManager());
+    Objects.requireNonNull(getCommand("playermenu")).setExecutor(new CommandManager());
+    Objects.requireNonNull(getCommand("adminmenu")).setExecutor(new CommandManager());
 
     // Initialize SpiGUI
     spiGui = new SpiGUI(this);
@@ -90,10 +92,9 @@ public class PsHubCore extends JavaPlugin {
    * Extracts a file from the jar to the data folder.
    *
    * @param name The name of the file.
-   * @return The file
    * @throws IOException If the file cannot be extracted.
    */
-  private File extractFile(String name) throws IOException {
+  private void extractFile(String name) throws IOException {
     var configFile = new File(this.getDataFolder(), name);
 
     //noinspection ResultOfMethodCallIgnored
@@ -114,7 +115,6 @@ public class PsHubCore extends JavaPlugin {
       }
     }
 
-    return configFile;
   }
 
   @Override

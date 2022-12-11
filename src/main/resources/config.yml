@@ -124,6 +124,30 @@ gui:
         name: "&aStart the server"
         lore:
           - "&7Click here to start the server"
+  admin-menu:
+    enabled: true
+
+    menu:
+      name: "&aServers"
+      online:
+        block: "EMERALD_BLOCK"
+        name: '&a%server%''s server'
+        lore:
+          - '&7Status: %status%'
+          - '&7Players: &2%players%&8/&a%maxplayers%'
+          - '&7Owner: &a%owner%'
+          - '&7Motd: &a%motd%'
+          - '&7Node: &a%node%'
+          - '&7Ip: &a%ip%&8:&a%port%'
+      offline:
+        block: "REDSTONE_BLOCK"
+        name: '&c%server%''s server'
+        lore:
+          - '&7Status: %status%'
+          - '&7Owner: &c%owner%'
+          - '&7Node: &c%node%'
+          - '&7Ip: &c%ip%&8:&c%port%'
+
 
 # Should we enable multinode support?
 multi-node: false

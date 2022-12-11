@@ -5,10 +5,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import os.arcadiadevs.playerservers.hubcore.PsHubCore;
+import os.arcadiadevs.playerservers.hubcore.guis.AdminGui;
 import os.arcadiadevs.playerservers.hubcore.guis.SelectorGui;
 import os.arcadiadevs.playerservers.hubcore.utils.ChatUtil;
 import os.arcadiadevs.playerservers.hubcore.guis.PlayerMenuGui;
 
+/**
+ * A class that handles all the commands.
+ *
+ * @author ArcadiaDevs
+ */
 public class CommandManager implements CommandExecutor {
 
   @Override
@@ -26,9 +32,19 @@ public class CommandManager implements CommandExecutor {
     }
 
     if (command.getName().equalsIgnoreCase("servers") ||
-        command.getName().equalsIgnoreCase("menu") ||
         command.getName().equalsIgnoreCase("opengui")) {
       SelectorGui.openGui(player);
+    }
+
+    if (command.getName().equalsIgnoreCase("playermenu") ||
+            command.getName().equalsIgnoreCase("pmenu") ||
+            command.getName().equalsIgnoreCase("playergui")) {
+      PlayerMenuGui.openGui(player);
+    }
+
+    if (command.getName().equalsIgnoreCase("adminmenu") ||
+            command.getName().equalsIgnoreCase("admingui")) {
+      AdminGui.openGui(player);
     }
 
     return true;
