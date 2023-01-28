@@ -77,15 +77,28 @@ public class ClickEvent implements Listener {
     final var menuItemSlot =
         PsHubCore.getInstance().getConfig().getInt("gui.player-menu.item.location");
 
-    if (event.getSlot() == selectorItemSlot
-        && (inventoryType == InventoryType.PLAYER || inventoryType == InventoryType.CRAFTING)
-        || event.getSlot() == menuItemSlot
-        && (inventoryType == InventoryType.PLAYER || inventoryType == InventoryType.CRAFTING)) {
-      if (player.getGameMode() == GameMode.CREATIVE) {
-        player.closeInventory();
-      }
+    if (instance.getConfig().getBoolean("gui.selector.item.enabled")) {
+      if (event.getSlot() == selectorItemSlot
+              && (inventoryType == InventoryType.PLAYER
+              || inventoryType == InventoryType.CRAFTING)) {
+        if (player.getGameMode() == GameMode.CREATIVE) {
+          player.closeInventory();
+        }
 
-      event.setCancelled(true);
+        event.setCancelled(true);
+      }
+    }
+
+    if (instance.getConfig().getBoolean("gui.player-menu.item.enabled")) {
+      if (event.getSlot() == menuItemSlot
+              && (inventoryType == InventoryType.PLAYER
+              || inventoryType == InventoryType.CRAFTING)) {
+        if (player.getGameMode() == GameMode.CREATIVE) {
+          player.closeInventory();
+        }
+
+        event.setCancelled(true);
+      }
     }
   }
 
