@@ -70,8 +70,9 @@ public class SelectorGui {
           .lore(lore)
           .build();
 
-      menu.setButton(0, menu.getInventory().firstEmpty(), new SGButton(item).withListener(
-          listener -> BungeeUtil.connectPlayer(player)));
+      menu.setButton(0, menu.getInventory().firstEmpty(),
+          new SGButton(item).withListener(listener -> server.connect())
+      );
     });
 
     XSound.BLOCK_NOTE_BLOCK_BASS.play(player);

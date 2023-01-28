@@ -80,7 +80,7 @@ public class Server {
   }
 
   public void connect() {
-    BungeeUtil.connectPlayer(getPlayer());
+    BungeeUtil.connectPlayer(this);
   }
 
   /**
