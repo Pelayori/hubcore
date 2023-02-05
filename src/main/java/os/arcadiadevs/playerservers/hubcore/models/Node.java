@@ -25,23 +25,22 @@ import lombok.Setter;
 public class Node {
 
   @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  @Column(name = "id", unique = true, nullable = false)
+  private Long id;
 
-  @Column(name = "name")
+  @Column(name = "name", nullable = false)
   private String name;
 
-  @Column(name = "ip")
+  @Column(name = "ip", nullable = false)
   private String ip;
 
-  @Column(name = "port")
+  @Column(name = "port", nullable = false)
   private int port;
 
   @Column(name = "max_online")
   private Integer maxOnline;
 
-  @Column(name = "pterodactyl")
+  @Column(name = "pterodactyl", nullable = false)
   private boolean pterodactyl = false;
 
   @Column(name = "token")

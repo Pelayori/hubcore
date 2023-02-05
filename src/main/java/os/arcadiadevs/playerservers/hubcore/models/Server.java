@@ -53,12 +53,11 @@ public class Server {
   @JoinColumn(name = "node")
   private Node node;
 
-  @Column(name = "allocations")
-  @OneToMany(mappedBy = "id", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "server", fetch = FetchType.EAGER)
   private List<Allocation> allocations;
 
-  @JoinColumn(name = "default_allocation", referencedColumnName = "id")
-  @OneToOne
+  @JoinColumn(name = "default_allocation")
+  @OneToOne()
   private Allocation defaultAllocation;
 
   /**

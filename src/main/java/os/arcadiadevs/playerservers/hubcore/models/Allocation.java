@@ -19,8 +19,7 @@ import lombok.Setter;
 public class Allocation {
 
   @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", unique = true, nullable = false)
   private long id;
 
   @Column(name = "ip", nullable = false)
@@ -33,8 +32,8 @@ public class Allocation {
   @JoinColumn(name = "node")
   private Node node;
 
-  @ManyToOne(optional = true)
-  @JoinColumn(name = "server_id", nullable = true)
+  @ManyToOne()
+  @JoinColumn(name = "server_id")
   private Server server;
 
   public String getFullAddress() {

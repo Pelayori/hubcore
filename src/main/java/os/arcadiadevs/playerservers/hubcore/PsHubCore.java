@@ -48,13 +48,30 @@ public class PsHubCore extends JavaPlugin {
 
     extractFile("hibernate.cfg.xml");
 
-    sessionFactory =
-        new Configuration()
-            .configure(new File(this.getDataFolder().getAbsolutePath() + "/" + "hibernate.cfg.xml"))
-            .addAnnotatedClass(Server.class)
-            .addAnnotatedClass(Node.class)
-            .addAnnotatedClass(Allocation.class)
-            .buildSessionFactory();
+    var configuration = new org.hibernate.cfg.Configuration()
+        .addAnnotatedClass(Server.class)
+        .addAnnotatedClass(Node.class)
+        .addAnnotatedClass(Allocation.class);
+
+    if (getConfig().getBoolean("mysql.get-from-file")) {
+      configuration
+          .configure(new File(this.getDataFolder().getAbsolutePath() + "/" + "hibernate.cfg.xml"));
+    } else {
+      configuration
+          .setProperty("hibernate.connection.url", getConfig().getString("mysql.url"))
+          .setProperty("hibernate.connection.username", getConfig().getString("mysql.username"))
+          .setProperty("hibernate.connection.password", getConfig().getString("mysql.password"))
+          .setProperty("hibernate.connection.driver_class", getConfig().getString("mysql.driver"))
+          .setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect")
+          .setProperty("hibernate.connection.pool_size", "10")
+          .setProperty("hibernate.show_sql", String.valueOf(getConfig().getBoolean("mysql.debug")))
+          .setProperty("hibernate.format_sql",
+              String.valueOf(getConfig().getBoolean("mysql.debug")))
+          .setProperty("hibernate.current_session_context_class", "thread")
+          .setProperty("hibernate.hbm2ddl.auto", getConfig().getString("mysql.update-policy"));
+    }
+
+    sessionFactory = configuration.buildSessionFactory();
 
     // Initialize the controllers
     serversController = new ServersController(sessionFactory);

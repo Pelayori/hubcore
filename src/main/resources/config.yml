@@ -1,9 +1,18 @@
+# Please enter your MySQL information below. These need to be the same as for PlayerServers.
 mysql:
-  hostname: 127.0.0.1
-  username: web
-  password: webmaster
-  database: PlayerServers
-  useSSL: true
+  # Url of the MySQL server, in format: jdbc:mysql://<host>:<port>/<database>
+  # Any additional options can be added at the end of url, such as:
+  # ?autoReconnect=true&useSSL=false?useUnicode=true&characterEncoding=UTF-8
+  url: "jdbc:mysql://localhost:3306/playerservers?useSSL=false&serverTimezone=UTC"
+
+  username: root
+  password: root
+
+  # Developer options, do not change unless you know what you are doing.
+  driver: "com.mysql.cj.jdbc.Driver"
+  update-policy: "update"
+  debug: false
+  get-from-file: false
 
 # For how long should we keep Server Data cached?
 cache-time: 20
