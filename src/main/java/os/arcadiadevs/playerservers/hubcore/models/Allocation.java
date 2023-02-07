@@ -19,6 +19,7 @@ import lombok.Setter;
 public class Allocation {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", unique = true, nullable = false)
   private long id;
 
@@ -31,6 +32,9 @@ public class Allocation {
   @ManyToOne
   @JoinColumn(name = "node")
   private Node node;
+
+  @Column(name = "pterodactyl_id")
+  private Long pterodactylId;
 
   @ManyToOne()
   @JoinColumn(name = "server_id")

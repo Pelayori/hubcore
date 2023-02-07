@@ -1,5 +1,6 @@
 package os.arcadiadevs.playerservers.hubcore.models;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -25,6 +26,7 @@ import lombok.Setter;
 public class Node {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", unique = true, nullable = false)
   private Long id;
 
@@ -40,8 +42,8 @@ public class Node {
   @Column(name = "max_online")
   private Integer maxOnline;
 
-  @Column(name = "pterodactyl", nullable = false)
-  private boolean pterodactyl = false;
+  @Column(name = "pterodactyl_id")
+  private Long pterodactylId;
 
   @Column(name = "token")
   private String token;
@@ -51,7 +53,7 @@ public class Node {
   private List<Server> servers;
 
   @Column(name = "allocations")
-  @OneToMany(mappedBy = "node", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "node", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
   private List<Allocation> allocations;
 
   /**
