@@ -1,10 +1,8 @@
 package os.arcadiadevs.playerservers.hubcore.utils;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import os.arcadiadevs.playerservers.hubcore.PsHubCore;
 import os.arcadiadevs.playerservers.hubcore.models.Server;
 

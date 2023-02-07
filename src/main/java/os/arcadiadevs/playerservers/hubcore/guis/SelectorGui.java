@@ -7,6 +7,7 @@ import com.samjakob.spigui.item.ItemBuilder;
 import org.bukkit.entity.Player;
 import os.arcadiadevs.playerservers.hubcore.PsHubCore;
 import os.arcadiadevs.playerservers.hubcore.enums.ServerStatus;
+import os.arcadiadevs.playerservers.hubcore.utils.BungeeUtil;
 import os.arcadiadevs.playerservers.hubcore.utils.ChatUtil;
 
 import java.util.ArrayList;
@@ -72,7 +73,7 @@ public class SelectorGui {
           .build();
 
       menu.setButton(0, menu.getInventory().firstEmpty(), new SGButton(item).withListener(
-          listener -> server.connect()));
+          listener -> BungeeUtil.connectPlayer(player, server.getId())));
     });
 
     XSound.BLOCK_NOTE_BLOCK_BASS.play(player);
