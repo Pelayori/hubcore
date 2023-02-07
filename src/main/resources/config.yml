@@ -36,7 +36,7 @@ gui:
     menu:
       name: "&aServer Selector"
       online:
-        block: "EMERALD_BLOCK"
+        block: "PLAYER_HEAD"
         name: '&a%server%''s server'
         lore:
           - '&7Status: %status%'
@@ -46,7 +46,7 @@ gui:
           - '&7Node: &a%node%'
           - '&7Ip: &a%ip%&8:&a%port%'
       offline:
-        block: "REDSTONE_BLOCK"
+        block: "RED_TERRACOTTA"
         name: '&c%server%''s server'
         lore:
           - '&7Status: %status%'

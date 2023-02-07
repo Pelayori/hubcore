@@ -4,12 +4,12 @@ import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XSound;
 import com.samjakob.spigui.buttons.SGButton;
 import com.samjakob.spigui.item.ItemBuilder;
-import java.util.ArrayList;
 import org.bukkit.entity.Player;
 import os.arcadiadevs.playerservers.hubcore.PsHubCore;
 import os.arcadiadevs.playerservers.hubcore.enums.ServerStatus;
-import os.arcadiadevs.playerservers.hubcore.utils.BungeeUtil;
 import os.arcadiadevs.playerservers.hubcore.utils.ChatUtil;
+
+import java.util.ArrayList;
 
 public class SelectorGui {
 
@@ -24,10 +24,10 @@ public class SelectorGui {
 
     final var onlinexMaterial =
         XMaterial.matchXMaterial(instance.getConfig().getString("gui.selector.menu.online.block"))
-            .orElse(XMaterial.PLAYER_HEAD).parseMaterial();
+            .orElse(XMaterial.PLAYER_HEAD).parseItem();
     final var offlinexMaterial =
         XMaterial.matchXMaterial(instance.getConfig().getString("gui.selector.menu.offline.block"))
-            .orElse(XMaterial.RED_TERRACOTTA).parseMaterial();
+            .orElse(XMaterial.RED_TERRACOTTA).parseItem();
 
     final var servers = PsHubCore.getInstance()
         .getServersController()
@@ -67,12 +67,12 @@ public class SelectorGui {
               .replaceAll("%owner%", server.getOfflinePlayer().getName())
               .replaceAll("%ip%", server.getNode().getIp())
           ))
+          .skullOwner(server.getOfflinePlayer().getName())
           .lore(lore)
           .build();
 
-      menu.setButton(0, menu.getInventory().firstEmpty(),
-          new SGButton(item).withListener(listener -> server.connect())
-      );
+      menu.setButton(0, menu.getInventory().firstEmpty(), new SGButton(item).withListener(
+          listener -> server.connect()));
     });
 
     XSound.BLOCK_NOTE_BLOCK_BASS.play(player);
