@@ -23,18 +23,18 @@ public class SelectorGui {
     menu.setAutomaticPaginationEnabled(true);
     menu.setBlockDefaultInteractions(true);
 
-    final var onlinexMaterial =
-        XMaterial.matchXMaterial(instance.getConfig().getString("gui.selector.menu.online.block"))
-            .orElse(XMaterial.PLAYER_HEAD).parseItem();
-    final var offlinexMaterial =
-        XMaterial.matchXMaterial(instance.getConfig().getString("gui.selector.menu.offline.block"))
-            .orElse(XMaterial.RED_TERRACOTTA).parseItem();
-
     final var servers = PsHubCore.getInstance()
         .getServersController()
         .getServers();
 
     servers.forEach(server -> {
+      final var onlinexMaterial =
+          XMaterial.matchXMaterial(instance.getConfig().getString("gui.selector.menu.online.block"))
+              .orElse(XMaterial.PLAYER_HEAD).parseItem();
+      final var offlinexMaterial =
+          XMaterial.matchXMaterial(instance.getConfig().getString("gui.selector.menu.offline.block"))
+              .orElse(XMaterial.RED_TERRACOTTA).parseItem();
+
       final var itemBuilder = new ItemBuilder(
           server.getStatus() == ServerStatus.ONLINE ? onlinexMaterial : offlinexMaterial);
       final var online = server.getStatus() == ServerStatus.ONLINE;
@@ -72,7 +72,7 @@ public class SelectorGui {
           .lore(lore)
           .build();
 
-      menu.setButton(0, menu.getInventory().firstEmpty(), new SGButton(item).withListener(
+      menu.addButton(new SGButton(item).withListener(
           listener -> BungeeUtil.connectPlayer(player, server.getId())));
     });
 
