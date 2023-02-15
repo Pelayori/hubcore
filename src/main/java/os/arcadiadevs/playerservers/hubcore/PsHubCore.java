@@ -5,11 +5,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.hibernate.SessionFactory;
+import os.arcadiadevs.playerservers.hubcore.cache.ServerCache;
 import os.arcadiadevs.playerservers.hubcore.commands.CommandManager;
 import os.arcadiadevs.playerservers.hubcore.controllers.NodesController;
 import os.arcadiadevs.playerservers.hubcore.controllers.ServersController;
@@ -42,6 +46,9 @@ public class PsHubCore extends JavaPlugin {
 
   @Getter
   private NodesController nodesController;
+
+  @Getter
+  private ServerCache serverCache;
 
   @SneakyThrows
   @Override
@@ -100,11 +107,11 @@ public class PsHubCore extends JavaPlugin {
     spiGui = new SpiGUI(this);
 
     // Initialize ServerCache
-    //serverCache = new ServerCache();
+    serverCache = new ServerCache(serversController);
 
     // Create ServerCache refreshing task
-    //ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-    //executor.scheduleAtFixedRate(serverCache, 1, getConfig().getInt("cache-time"), TimeUnit.SECONDS);
+    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    executor.scheduleAtFixedRate(serverCache, 1, getConfig().getInt("cache.cache-time"), TimeUnit.SECONDS);
   }
 
   /**

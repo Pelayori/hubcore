@@ -14,8 +14,12 @@ mysql:
   debug: false
   get-from-file: false
 
-# For how long should we keep Server Data cached?
-cache-time: 20
+cache:
+  # Should we cache Server Data for the servers gui?
+  enabled: false
+
+  # For how long should we keep Server Data cached? (in seconds)
+  cache-time: 20
 
 messages:
   no-permission: "&9Error> &7Oops, it seems like you don't have permission to do that."

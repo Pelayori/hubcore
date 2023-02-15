@@ -29,13 +29,21 @@ public class SelectorGui {
     final var instance = PsHubCore.getInstance();
     final var menu = instance.getSpiGui()
         .create(ChatUtil.translate(instance.getConfig().getString("gui.selector.menu.name")), 5);
+    final var useCache = instance.getConfig().getBoolean("cache.enabled");
 
     menu.setAutomaticPaginationEnabled(true);
     menu.setBlockDefaultInteractions(true);
 
-    final var servers = PsHubCore.getInstance()
-        .getServersController()
-        .getServers();
+    final var servers = useCache
+        ?
+        PsHubCore.getInstance()
+            .getServerCache()
+            .getServers()
+        :
+        PsHubCore.getInstance()
+            .getServersController()
+            .getServers();
+
 
     servers.forEach(server -> {
       final var onlinexMaterial =
@@ -45,22 +53,24 @@ public class SelectorGui {
           XMaterial.matchXMaterial(
                   instance.getConfig().getString("gui.selector.menu.offline.block"))
               .orElse(XMaterial.RED_TERRACOTTA).parseItem();
+      
+      final var serverInfo = server.getInfo();
 
       final var itemBuilder = new ItemBuilder(
-          server.getStatus() == ServerStatus.ONLINE ? onlinexMaterial : offlinexMaterial);
-      final var online = server.getStatus() == ServerStatus.ONLINE;
+          serverInfo.status() == ServerStatus.ONLINE ? onlinexMaterial : offlinexMaterial);
+      final var online = serverInfo.status() == ServerStatus.ONLINE;
 
       var lore = instance.getConfig().getStringList(
-          server.getStatus() == ServerStatus.ONLINE ? "gui.selector.menu.online.lore" :
+          serverInfo.status() == ServerStatus.ONLINE ? "gui.selector.menu.online.lore" :
               "gui.selector.menu.offline.lore");
 
       lore = lore.stream()
           .map(s -> s.replaceAll("%server%", server.getId()))
           .map(s -> s.replaceAll("%status%", online ? "&aOnline" : "&cOffline"))
-          .map(s -> s.replaceAll("%players%", online ? server.getInfo().players() + "" : "0"))
-          .map(s -> s.replaceAll("%maxplayers%", online ? server.getInfo().maxPlayers() + "" : "0"))
+          .map(s -> s.replaceAll("%players%", online ? serverInfo.players() + "" : "0"))
+          .map(s -> s.replaceAll("%maxplayers%", online ? serverInfo.maxPlayers() + "" : "0"))
           .map(s -> s.replaceAll("%port%", server.getDefaultAllocation().getPort() + ""))
-          .map(s -> s.replaceAll("%motd%", online ? server.getInfo().motd() : "&cOffline"))
+          .map(s -> s.replaceAll("%motd%", online ? serverInfo.motd() : "&cOffline"))
           .map(s -> s.replaceAll("%node%", server.getNode().getName()))
           .map(s -> s.replaceAll("%owner%", server.getOfflinePlayer().getName()))
           .map(s -> s.replaceAll("%ip%", server.getNode().getIp()))
@@ -71,10 +81,10 @@ public class SelectorGui {
                   online ? "gui.selector.menu.online.name" : "gui.selector.menu.offline.name")
               .replaceAll("%server%", server.getId())
               .replaceAll("%status%", online ? "&aOnline" : "&cOffline")
-              .replaceAll("%players%", online ? server.getInfo().players() + "" : "0")
-              .replaceAll("%maxplayers%", online ? server.getInfo().maxPlayers() + "" : "0")
+              .replaceAll("%players%", online ? serverInfo.players() + "" : "0")
+              .replaceAll("%maxplayers%", online ? serverInfo.maxPlayers() + "" : "0")
               .replaceAll("%port%", server.getDefaultAllocation().getPort() + "")
-              .replaceAll("%motd%", online ? server.getInfo().motd() : "&cOffline")
+              .replaceAll("%motd%", online ? serverInfo.motd() : "&cOffline")
               .replaceAll("%node%", server.getNode().getName())
               .replaceAll("%owner%", server.getOfflinePlayer().getName())
               .replaceAll("%ip%", server.getNode().getIp())
