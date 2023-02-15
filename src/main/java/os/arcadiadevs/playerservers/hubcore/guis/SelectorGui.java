@@ -12,8 +12,18 @@ import os.arcadiadevs.playerservers.hubcore.utils.ChatUtil;
 
 import java.util.ArrayList;
 
+/**
+ * Handles the selector GUI.
+ *
+ * @author ArcadiaDevs
+ */
 public class SelectorGui {
 
+  /**
+   * Opens the selector GUI.
+   *
+   * @param player The player to open the GUI for.
+   */
   public static void openGui(Player player) {
 
     final var instance = PsHubCore.getInstance();
@@ -32,7 +42,8 @@ public class SelectorGui {
           XMaterial.matchXMaterial(instance.getConfig().getString("gui.selector.menu.online.block"))
               .orElse(XMaterial.PLAYER_HEAD).parseItem();
       final var offlinexMaterial =
-          XMaterial.matchXMaterial(instance.getConfig().getString("gui.selector.menu.offline.block"))
+          XMaterial.matchXMaterial(
+                  instance.getConfig().getString("gui.selector.menu.offline.block"))
               .orElse(XMaterial.RED_TERRACOTTA).parseItem();
 
       final var itemBuilder = new ItemBuilder(

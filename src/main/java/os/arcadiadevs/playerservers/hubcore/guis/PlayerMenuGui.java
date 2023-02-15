@@ -14,8 +14,18 @@ import os.arcadiadevs.playerservers.hubcore.utils.BungeeUtil;
 import os.arcadiadevs.playerservers.hubcore.utils.ChatUtil;
 import os.arcadiadevs.playerservers.hubcore.utils.GuiUtils;
 
+/**
+ * Handles the player menu GUI.
+ *
+ * @author ArcadiaDevs
+ */
 public class PlayerMenuGui {
 
+  /**
+   * Opens the player menu GUI.
+   *
+   * @param player The player to open the GUI for.
+   */
   public static void openGui(Player player) {
     final var instance = PsHubCore.getInstance();
     final var serversController = instance.getServersController();
@@ -140,6 +150,12 @@ public class PlayerMenuGui {
     player.openInventory(menu.getInventory());
   }
 
+  /**
+   * Opens the delete confirmation menu.
+   *
+   * @param player the player to open the menu for.
+   * @param server the server to delete.
+   */
   public static void openDeleteConfirmation(Player player, Server server) {
     XSound.BLOCK_NOTE_BLOCK_BASS.play(player);
     final var instance = PsHubCore.getInstance();
@@ -183,6 +199,12 @@ public class PlayerMenuGui {
     player.openInventory(deleteConfirmationMenu.getInventory());
   }
 
+  /**
+   * Opens the stop confirmation menu.
+   *
+   * @param player the player to open the menu for.
+   * @param server the server to stop.
+   */
   public static void openStopConfirmation(Player player, Server server) {
     final var instance = PsHubCore.getInstance();
 

@@ -12,6 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import os.arcadiadevs.playerservers.hubcore.utils.ChatUtil;
 
+/**
+ * Handles player join events.
+ *
+ * @author ArcadiaDevs
+ */
 public class JoinEvent implements Listener {
 
   private final PsHubCore instance;
@@ -20,8 +25,13 @@ public class JoinEvent implements Listener {
     this.instance = instance;
   }
 
+  /**
+   * Handles player join events.
+   *
+   * @param event The event.
+   */
   @EventHandler
-  public void onJoin(PlayerJoinEvent e) {
+  public void onJoin(PlayerJoinEvent event) {
 
     final var selectorConfigMaterial = instance.getConfig().getString("gui.selector.item.material");
     final var menuConfigMaterial = instance.getConfig().getString("gui.player-menu.item.material");
@@ -29,7 +39,7 @@ public class JoinEvent implements Listener {
         XMaterial.matchXMaterial(selectorConfigMaterial).orElse(XMaterial.COMPASS).parseMaterial();
     final var menuMaterial =
         XMaterial.matchXMaterial(menuConfigMaterial).orElse(XMaterial.EMERALD).parseMaterial();
-    final var player = e.getPlayer();
+    final var player = event.getPlayer();
 
     if (!instance.getConfig().getBoolean("gui.selector.item.enabled")) {
       player.getInventory().forEach(item -> {

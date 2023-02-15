@@ -10,7 +10,6 @@ import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import os.arcadiadevs.playerservers.hubcore.commands.CommandManager;
 import os.arcadiadevs.playerservers.hubcore.controllers.NodesController;
 import os.arcadiadevs.playerservers.hubcore.controllers.ServersController;
@@ -22,6 +21,11 @@ import os.arcadiadevs.playerservers.hubcore.models.Node;
 import os.arcadiadevs.playerservers.hubcore.models.Server;
 import os.arcadiadevs.playerservers.hubcore.placeholders.PlayerCount;
 
+/**
+ * Main class of the plugin.
+ *
+ * @author ArcadiaDevs
+ */
 public class PsHubCore extends JavaPlugin {
 
   @Getter
@@ -107,10 +111,9 @@ public class PsHubCore extends JavaPlugin {
    * Extracts a file from the jar to the data folder.
    *
    * @param name The name of the file.
-   * @return The file
    * @throws IOException If the file cannot be extracted.
    */
-  private File extractFile(String name) throws IOException {
+  private void extractFile(String name) throws IOException {
     var configFile = new File(this.getDataFolder(), name);
 
     //noinspection ResultOfMethodCallIgnored
@@ -130,8 +133,6 @@ public class PsHubCore extends JavaPlugin {
             .warning(String.format("Error extracting %s: %s", name, e.getMessage()));
       }
     }
-
-    return configFile;
   }
 
   @Override

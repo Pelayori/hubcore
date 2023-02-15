@@ -12,6 +12,11 @@ import java.net.InetSocketAddress;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * The allocation object.
+ *
+ * @author ArcadiaDevs
+ */
 @Entity
 @Table(name = "allocations")
 @Getter
