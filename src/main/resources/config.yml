@@ -138,9 +138,6 @@ gui:
         lore:
           - "&7Click here to start the server"
 
-# Should we enable multinode support?
-multi-node: false
-
 miscellaneous:
   # Should we disable weather events?
   disable-weather: true
