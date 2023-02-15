@@ -14,6 +14,11 @@ import os.arcadiadevs.playerservers.hubcore.guis.SelectorGui;
 import os.arcadiadevs.playerservers.hubcore.utils.ChatUtil;
 import os.arcadiadevs.playerservers.hubcore.guis.PlayerMenuGui;
 
+/**
+ * A class that handles all click/interact events for the hubcore plugin.
+ *
+ * @author ArcadiaDevs
+ */
 public class ClickEvent implements Listener {
 
   private final PsHubCore instance;

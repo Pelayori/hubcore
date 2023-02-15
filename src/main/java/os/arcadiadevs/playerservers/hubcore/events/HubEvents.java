@@ -9,6 +9,11 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import os.arcadiadevs.playerservers.hubcore.PsHubCore;
 
+/**
+ * Handles miscellaneous events.
+ *
+ * @author ArcadiaDevs
+ */
 public class HubEvents implements Listener {
 
   private final Configuration config;
@@ -17,17 +22,27 @@ public class HubEvents implements Listener {
     this.config = config;
   }
 
+  /**
+   * Handles weather change events.
+   *
+   * @param event The event.
+   */
   @EventHandler
-  public void weatherChange(WeatherChangeEvent e) {
+  public void weatherChange(WeatherChangeEvent event) {
     if (config.getBoolean("miscellaneous.disable-weather")) {
-      e.setCancelled(true);
+      event.setCancelled(true);
     }
   }
 
+  /**
+   * Handles entity damage events.
+   *
+   * @param event The event.
+   */
   @EventHandler
-  public void entityDamage(EntityDamageEvent e) {
-    if (e.getEntity() instanceof Player && config.getBoolean("miscellaneous.disable-damage")) {
-      e.setCancelled(true);
+  public void entityDamage(EntityDamageEvent event) {
+    if (event.getEntity() instanceof Player && config.getBoolean("miscellaneous.disable-damage")) {
+      event.setCancelled(true);
     }
   }
 
