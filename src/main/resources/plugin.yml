@@ -6,9 +6,19 @@ author: OpenSource
 softdepend: [PlaceholderAPI]
 
 commands:
+  pshubreload:
+    usage: /pshubreload
+    description: Reloads the plugin
   servers:
     usage: /servers
     description: Opens up server selector GUI
     aliases:
       - menu
       - opengui
+  playermenu:
+    usage: /playermenu
+    description: Opens up player menu GUI
+    aliases:
+      - pmenu
+      - playergui
+      - pgui

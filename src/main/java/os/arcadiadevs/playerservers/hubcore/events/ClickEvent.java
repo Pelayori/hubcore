@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import os.arcadiadevs.playerservers.hubcore.PsHubCore;
 import os.arcadiadevs.playerservers.hubcore.guis.SelectorGui;
+import os.arcadiadevs.playerservers.hubcore.statics.Permissions;
 import os.arcadiadevs.playerservers.hubcore.utils.ChatUtil;
 import os.arcadiadevs.playerservers.hubcore.guis.PlayerMenuGui;
 
@@ -35,6 +36,7 @@ public class ClickEvent implements Listener {
   @EventHandler
   public void onClick(PlayerInteractEvent event) {
     final var player = event.getPlayer();
+    final boolean enableGuiPermissions = PsHubCore.getInstance().getConfig().getBoolean("gui.enable-permissions");
 
     if (event.getAction() != Action.RIGHT_CLICK_AIR
         && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
@@ -44,7 +46,7 @@ public class ClickEvent implements Listener {
     if (instance.getConfig().getBoolean("gui.selector.item.enabled")
         && player.getInventory().getHeldItemSlot()
         == PsHubCore.getInstance().getConfig().getInt("gui.selector.item.location")) {
-      if (!player.hasPermission("hubcore.selector")) {
+      if (!player.hasPermission(Permissions.SERVER_SELECTOR) && enableGuiPermissions) {
         ChatUtil.sendMessage(player, instance.getConfig().getString("messages.no-permission"));
         return;
       }
@@ -55,7 +57,7 @@ public class ClickEvent implements Listener {
     if (instance.getConfig().getBoolean("gui.player-menu.item.enabled")
         && player.getInventory().getHeldItemSlot()
         == PsHubCore.getInstance().getConfig().getInt("gui.player-menu.item.location")) {
-      if (!player.hasPermission("hubcore.player-menu")) {
+      if (!player.hasPermission(Permissions.PLAYER_MENU) && enableGuiPermissions) {
         ChatUtil.sendMessage(player, instance.getConfig().getString("messages.no-permission"));
         return;
       }

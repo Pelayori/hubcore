@@ -25,6 +25,8 @@ messages:
   no-permission: "&9Error> &7Oops, it seems like you don't have permission to do that."
 
 gui:
+  enable-permissions: false
+
   selector:
     enabled: true
 

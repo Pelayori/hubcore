@@ -24,6 +24,8 @@ import os.arcadiadevs.playerservers.hubcore.models.Allocation;
 import os.arcadiadevs.playerservers.hubcore.models.Node;
 import os.arcadiadevs.playerservers.hubcore.models.Server;
 import os.arcadiadevs.playerservers.hubcore.placeholders.PlayerCount;
+import os.arcadiadevs.playerservers.hubcore.statics.Permissions;
+import os.arcadiadevs.playerservers.hubcore.utils.ChatUtil;
 
 /**
  * Main class of the plugin.
@@ -102,6 +104,17 @@ public class PsHubCore extends JavaPlugin {
     Bukkit.getPluginManager().registerEvents(new HubEvents(getConfig()), this);
 
     Objects.requireNonNull(getCommand("servers")).setExecutor(new CommandManager());
+    Objects.requireNonNull(getCommand("playermenu")).setExecutor(new CommandManager());
+
+    Objects.requireNonNull(getCommand("pshubreload")).setExecutor((sender, command, label, args) -> {
+      if (sender.hasPermission(Permissions.RELOAD)) {
+        reloadConfig();
+        ChatUtil.sendMessage(sender, "&9PSHubCore> &aConfig reloaded.");
+      } else {
+        ChatUtil.sendMessage(sender, "&9PSHubCore> &cYou don't have permission to do that.");
+      }
+      return true;
+    });
 
     // Initialize SpiGUI
     spiGui = new SpiGUI(this);
