@@ -66,11 +66,6 @@ public class SelectorGui {
         ? filteredServersByPlayers
         : filteredServers;
 
-    for (Server server : serversPage) {
-      System.out.println("status" + server.getInfo().status());
-      System.out.println("players" + server.getInfo().players());
-    }
-
     serversPage.forEach(server -> {
       final var onlinexMaterial =
           XMaterial.matchXMaterial(instance.getConfig().getString("gui.selector.menu.online.block"))
