@@ -10,6 +10,7 @@ import os.arcadiadevs.playerservers.hubcore.enums.ServerStatus;
 import os.arcadiadevs.playerservers.hubcore.models.Server;
 import os.arcadiadevs.playerservers.hubcore.utils.BungeeUtil;
 import os.arcadiadevs.playerservers.hubcore.utils.ChatUtil;
+import os.arcadiadevs.playerservers.hubcore.utils.ServerPinger;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -47,14 +48,28 @@ public class SelectorGui {
             .getServersController()
             .getServers();
 
-
     List<Server> filteredServers = new ArrayList<>(servers);
 
-    filteredServers.sort(Comparator.comparing(s -> s.getInfo().players() != null ? -s.getInfo().players() : 0));
+    filteredServers.sort(Comparator.comparing(s -> {
+      final ServerPinger.PingResult info = s.getInfo();
+      if (info == null || info.status() != ServerStatus.ONLINE) {
+        return 1;
+      }
+      return 0;
+    }));
+
+    List<Server> filteredServersByPlayers = new ArrayList<>(filteredServers);
+
+    filteredServersByPlayers.sort(Comparator.comparing(s -> s.getInfo().players() != null ? -s.getInfo().players() : 0));
 
     final var serversPage = instance.getConfig().getBoolean("gui.selector.menu.sort-by-players")
-        ? filteredServers
-        : servers;
+        ? filteredServersByPlayers
+        : filteredServers;
+
+    for (Server server : serversPage) {
+      System.out.println("status" + server.getInfo().status());
+      System.out.println("players" + server.getInfo().players());
+    }
 
     serversPage.forEach(server -> {
       final var onlinexMaterial =
