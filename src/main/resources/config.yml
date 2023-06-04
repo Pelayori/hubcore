@@ -40,6 +40,9 @@ gui:
         - "&7selector or to create your own one"
 
     menu:
+      show-offline: true
+      sort-by-players: true
+
       name: "&aServer Selector"
       online:
         block: "PLAYER_HEAD"

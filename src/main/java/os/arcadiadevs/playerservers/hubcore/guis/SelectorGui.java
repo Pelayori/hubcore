@@ -7,10 +7,13 @@ import com.samjakob.spigui.item.ItemBuilder;
 import org.bukkit.entity.Player;
 import os.arcadiadevs.playerservers.hubcore.PsHubCore;
 import os.arcadiadevs.playerservers.hubcore.enums.ServerStatus;
+import os.arcadiadevs.playerservers.hubcore.models.Server;
 import os.arcadiadevs.playerservers.hubcore.utils.BungeeUtil;
 import os.arcadiadevs.playerservers.hubcore.utils.ChatUtil;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Handles the selector GUI.
@@ -45,7 +48,15 @@ public class SelectorGui {
             .getServers();
 
 
-    servers.forEach(server -> {
+    List<Server> filteredServers = new ArrayList<>(servers);
+
+    filteredServers.sort(Comparator.comparing(s -> s.getInfo().players() != null ? -s.getInfo().players() : 0));
+
+    final var serversPage = instance.getConfig().getBoolean("gui.selector.menu.sort-by-players")
+        ? filteredServers
+        : servers;
+
+    serversPage.forEach(server -> {
       final var onlinexMaterial =
           XMaterial.matchXMaterial(instance.getConfig().getString("gui.selector.menu.online.block"))
               .orElse(XMaterial.PLAYER_HEAD).parseItem();
@@ -53,12 +64,17 @@ public class SelectorGui {
           XMaterial.matchXMaterial(
                   instance.getConfig().getString("gui.selector.menu.offline.block"))
               .orElse(XMaterial.RED_TERRACOTTA).parseItem();
-      
+
       final var serverInfo = server.getInfo();
+      final var online = serverInfo.status() == ServerStatus.ONLINE;
+      final boolean showOffline = instance.getConfig().getBoolean("gui.selector.menu.show-offline");
+
+      if (!showOffline && !online) {
+        return;
+      }
 
       final var itemBuilder = new ItemBuilder(
           serverInfo.status() == ServerStatus.ONLINE ? onlinexMaterial : offlinexMaterial);
-      final var online = serverInfo.status() == ServerStatus.ONLINE;
 
       var lore = instance.getConfig().getStringList(
           serverInfo.status() == ServerStatus.ONLINE ? "gui.selector.menu.online.lore" :
@@ -67,9 +83,9 @@ public class SelectorGui {
       lore = lore.stream()
           .map(s -> s.replaceAll("%server%", server.getId()))
           .map(s -> s.replaceAll("%status%", online ? "&aOnline" : "&cOffline"))
-          .map(s -> s.replaceAll("%players%", online ? serverInfo.players() + "" : "0"))
-          .map(s -> s.replaceAll("%maxplayers%", online ? serverInfo.maxPlayers() + "" : "0"))
-          .map(s -> s.replaceAll("%port%", server.getDefaultAllocation().getPort() + ""))
+          .map(s -> s.replaceAll("%players%", online ? String.valueOf(serverInfo.players()) : "0"))
+          .map(s -> s.replaceAll("%maxplayers%", online ? String.valueOf(serverInfo.maxPlayers()) : "0"))
+          .map(s -> s.replaceAll("%port%", String.valueOf(server.getDefaultAllocation().getPort())))
           .map(s -> s.replaceAll("%motd%", online ? serverInfo.motd() : "&cOffline"))
           .map(s -> s.replaceAll("%node%", server.getNode().getName()))
           .map(s -> s.replaceAll("%owner%", server.getOfflinePlayer().getName()))
@@ -81,9 +97,9 @@ public class SelectorGui {
                   online ? "gui.selector.menu.online.name" : "gui.selector.menu.offline.name")
               .replaceAll("%server%", server.getId())
               .replaceAll("%status%", online ? "&aOnline" : "&cOffline")
-              .replaceAll("%players%", online ? serverInfo.players() + "" : "0")
-              .replaceAll("%maxplayers%", online ? serverInfo.maxPlayers() + "" : "0")
-              .replaceAll("%port%", server.getDefaultAllocation().getPort() + "")
+              .replaceAll("%players%", online ? String.valueOf(serverInfo.players()) : "0")
+              .replaceAll("%maxplayers%", online ? String.valueOf(serverInfo.maxPlayers()) : "0")
+              .replaceAll("%port%", String.valueOf(server.getDefaultAllocation().getPort()))
               .replaceAll("%motd%", online ? serverInfo.motd() : "&cOffline")
               .replaceAll("%node%", server.getNode().getName())
               .replaceAll("%owner%", server.getOfflinePlayer().getName())
