@@ -85,12 +85,12 @@ public class PlayerMenuGui {
     lore = lore.stream()
         .map(s -> s.replaceAll("%server%", server.getId()))
         .map(s -> s.replaceAll("%status%", online ? "&aOnline" : "&cOffline"))
-        .map(s -> s.replaceAll("%players%", online ? server.getInfo().players() + "" : "0"))
-        .map(s -> s.replaceAll("%maxplayers%", online ? server.getInfo().maxPlayers() + "" : "0"))
-        .map(s -> s.replaceAll("%port%", server.getDefaultAllocation().getPort() + ""))
+        .map(s -> s.replaceAll("%players%", online ? String.valueOf(server.getInfo().players()) : "0"))
+        .map(s -> s.replaceAll("%maxplayers%", online ? String.valueOf(server.getInfo().maxPlayers()) : "0"))
+        .map(s -> s.replaceAll("%port%", String.valueOf(server.getDefaultAllocation().getPort())))
         .map(s -> s.replaceAll("%motd%", online ? server.getInfo().motd() : "&cOffline"))
         .map(s -> s.replaceAll("%node%", server.getNode().getName()))
-        .map(s -> s.replaceAll("%owner%", server.getOfflinePlayer().getName()))
+        .map(s -> s.replaceAll("%owner%", server.getOfflinePlayer().getName() == null ? "Unknown" : server.getOfflinePlayer().getName()))
         .map(s -> s.replaceAll("%ip%", server.getNode().getIp()))
         .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
 

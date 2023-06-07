@@ -98,7 +98,7 @@ public class SelectorGui {
           .map(s -> s.replaceAll("%port%", String.valueOf(server.getDefaultAllocation().getPort())))
           .map(s -> s.replaceAll("%motd%", online ? serverInfo.motd() : "&cOffline"))
           .map(s -> s.replaceAll("%node%", server.getNode().getName()))
-          .map(s -> s.replaceAll("%owner%", server.getOfflinePlayer().getName()))
+          .map(s -> s.replaceAll("%owner%", server.getOfflinePlayer().getName() == null ? "Unknown" : server.getOfflinePlayer().getName()))
           .map(s -> s.replaceAll("%ip%", server.getNode().getIp()))
           .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
 
@@ -112,10 +112,10 @@ public class SelectorGui {
               .replaceAll("%port%", String.valueOf(server.getDefaultAllocation().getPort()))
               .replaceAll("%motd%", online ? serverInfo.motd() : "&cOffline")
               .replaceAll("%node%", server.getNode().getName())
-              .replaceAll("%owner%", server.getOfflinePlayer().getName())
+              .replaceAll("%owner%", server.getOfflinePlayer().getName() == null ? "Unknown" : server.getOfflinePlayer().getName())
               .replaceAll("%ip%", server.getNode().getIp())
           ))
-          .skullOwner(server.getOfflinePlayer().getName())
+          .skullOwner(server.getOfflinePlayer().getName() == null ? "MHF_Question" : server.getOfflinePlayer().getName())
           .lore(lore)
           .build();
 
