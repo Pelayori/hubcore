@@ -1,11 +1,14 @@
 name: PSHubCore
-main: os.arcadiadevs.playerservers.hubcore.PSHubCore
-version: 3-dev
+main: os.arcadiadevs.playerservers.hubcore.PsHubCore
+version: 3.1-rc1
 author: OpenSource
 
 softdepend: [PlaceholderAPI]
 
 commands:
+  pshubreload:
+    usage: /pshubreload
+    description: Reloads the plugin
   servers:
     usage: /servers
     description: Opens up server selector GUI
@@ -14,6 +17,8 @@ commands:
       - opengui
   playermenu:
     usage: /playermenu
-    description: Opens up player-menu GUI
+    description: Opens up player menu GUI
     aliases:
       - pmenu
+      - playergui
+      - pgui

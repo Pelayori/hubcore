@@ -1,25 +1,49 @@
 package os.arcadiadevs.playerservers.hubcore.events;
 
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
-import os.arcadiadevs.playerservers.hubcore.PSHubCore;
+import os.arcadiadevs.playerservers.hubcore.PsHubCore;
 
+/**
+ * Handles miscellaneous events.
+ *
+ * @author ArcadiaDevs
+ */
 public class HubEvents implements Listener {
 
-    @EventHandler
-    public void weatherChange(WeatherChangeEvent e) {
-        if (PSHubCore.getInstance().getConfig().getBoolean("miscellaneous.disable-weather")) {
-            e.setCancelled(true);
-        }
-    }
+  private final Configuration config;
 
-    @EventHandler
-    public void entityDamage(EntityDamageEvent e) {
-        if (e.getEntity() instanceof Player && PSHubCore.getInstance().getConfig().getBoolean("miscellaneous.disable-damage"))
-            e.setCancelled(true);
+  public HubEvents(FileConfiguration config) {
+    this.config = config;
+  }
+
+  /**
+   * Handles weather change events.
+   *
+   * @param event The event.
+   */
+  @EventHandler
+  public void weatherChange(WeatherChangeEvent event) {
+    if (config.getBoolean("miscellaneous.disable-weather")) {
+      event.setCancelled(true);
     }
+  }
+
+  /**
+   * Handles entity damage events.
+   *
+   * @param event The event.
+   */
+  @EventHandler
+  public void entityDamage(EntityDamageEvent event) {
+    if (event.getEntity() instanceof Player && config.getBoolean("miscellaneous.disable-damage")) {
+      event.setCancelled(true);
+    }
+  }
 
 }

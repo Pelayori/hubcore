@@ -1,18 +1,35 @@
+# Please enter your MySQL information below. These need to be the same as for PlayerServers.
 mysql:
-  hostname: 127.0.0.1
-  username: web
-  password: webmaster
-  database: PlayerServers
-  useSSL: true
+  # Url of the MySQL server, in format: jdbc:mysql://<host>:<port>/<database>
+  # Any additional options can be added at the end of url, such as:
+  # ?autoReconnect=true&useSSL=false?useUnicode=true&characterEncoding=UTF-8
+  url: "jdbc:mysql://localhost:3306/playerservers?useSSL=false&serverTimezone=UTC"
 
-# For how long should we keep Server Data cached?
-cache-time: 20
+  username: root
+  password: root
+
+  # Developer options, do not change unless you know what you are doing.
+  driver: "com.mysql.cj.jdbc.Driver"
+  update-policy: "update"
+  debug: false
+  get-from-file: false
+
+cache:
+  # Should we cache Server Data for the servers gui?
+  enabled: false
+
+  # For how long should we keep Server Data cached? (in seconds)
+  cache-time: 20
 
 messages:
   no-permission: "&9Error> &7Oops, it seems like you don't have permission to do that."
 
 gui:
+  enable-permissions: false
+
   selector:
+    enabled: true
+
     item:
       enabled: true
       name: "&aQuick Compass"
@@ -23,9 +40,12 @@ gui:
         - "&7selector or to create your own one"
 
     menu:
+      show-offline: true
+      sort-by-players: true
+
       name: "&aServer Selector"
       online:
-        block: "EMERALD_BLOCK"
+        block: "PLAYER_HEAD"
         name: '&a%server%''s server'
         lore:
           - '&7Status: %status%'
@@ -35,7 +55,7 @@ gui:
           - '&7Node: &a%node%'
           - '&7Ip: &a%ip%&8:&a%port%'
       offline:
-        block: "REDSTONE_BLOCK"
+        block: "RED_TERRACOTTA"
         name: '&c%server%''s server'
         lore:
           - '&7Status: %status%'
@@ -44,6 +64,8 @@ gui:
           - '&7Ip: &c%ip%&8:&c%port%'
 
   player-menu:
+    enabled: true
+
     item:
       enabled: true
       name: "&eMy Server"
@@ -120,9 +142,6 @@ gui:
         name: "&aStart the server"
         lore:
           - "&7Click here to start the server"
-
-# Should we enable multinode support?
-multi-node: false
 
 miscellaneous:
   # Should we disable weather events?
