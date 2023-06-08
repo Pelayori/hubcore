@@ -30,13 +30,11 @@ public class CachedServer extends Server {
 
   @Override
   public ServerPinger.PingResult getInfo() {
-    System.out.println("Getting cached info");
     return pingResult;
   }
 
   @Override
   public ServerStatus getStatus() {
-    System.out.println("Getting cached status");
     return status;
   }
 
