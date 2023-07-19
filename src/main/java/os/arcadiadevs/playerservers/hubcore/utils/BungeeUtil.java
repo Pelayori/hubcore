@@ -75,4 +75,15 @@ public class BungeeUtil {
     player.closeInventory();
   }
 
+  public static void checkIfOnline(Player player) {
+    ByteArrayDataOutput out = ByteStreams.newDataOutput();
+
+    try {
+      out.writeUTF("hcp");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    player.sendPluginMessage(PsHubCore.getInstance(), "BungeeCord", out.toByteArray());
+    player.closeInventory();
+  }
 }
