@@ -1,9 +1,12 @@
 package os.arcadiadevs.playerservers.hubcore;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.samjakob.spigui.SpiGUI;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.module.Configuration;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -11,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.hibernate.SessionFactory;
 import os.arcadiadevs.playerservers.hubcore.cache.ServerCache;
@@ -20,6 +24,7 @@ import os.arcadiadevs.playerservers.hubcore.controllers.ServersController;
 import os.arcadiadevs.playerservers.hubcore.events.ClickEvent;
 import os.arcadiadevs.playerservers.hubcore.events.HubEvents;
 import os.arcadiadevs.playerservers.hubcore.events.JoinEvent;
+import os.arcadiadevs.playerservers.hubcore.events.MessageChannelListener;
 import os.arcadiadevs.playerservers.hubcore.models.Allocation;
 import os.arcadiadevs.playerservers.hubcore.models.Node;
 import os.arcadiadevs.playerservers.hubcore.models.Server;
@@ -52,21 +57,28 @@ public class PsHubCore extends JavaPlugin {
   @Getter
   private ServerCache serverCache;
 
+  private Gson gson;
+
   @SneakyThrows
   @Override
   public void onEnable() {
     instance = this;
+
+    gson = new GsonBuilder().setPrettyPrinting().create();
+
+    System.out.println(gson.getClass());
+
     getConfig().options().copyDefaults(true);
     saveConfig();
 
-    extractFile("hibernate.cfg.xml");
+    FileConfiguration config = getConfig();
 
     var configuration = new org.hibernate.cfg.Configuration()
         .addAnnotatedClass(Server.class)
         .addAnnotatedClass(Node.class)
         .addAnnotatedClass(Allocation.class);
 
-    if (getConfig().getBoolean("mysql.get-from-file")) {
+    if (config.getBoolean("mysql.get-from-file")) {
       configuration
           .configure(new File(this.getDataFolder().getAbsolutePath() + "/" + "hibernate.cfg.xml"));
     } else {
@@ -99,6 +111,8 @@ public class PsHubCore extends JavaPlugin {
     }
 
     Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+    Bukkit.getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new MessageChannelListener(gson));
+
     Bukkit.getPluginManager().registerEvents(new ClickEvent(this), this);
     Bukkit.getPluginManager().registerEvents(new JoinEvent(this), this);
     Bukkit.getPluginManager().registerEvents(new HubEvents(getConfig()), this);
