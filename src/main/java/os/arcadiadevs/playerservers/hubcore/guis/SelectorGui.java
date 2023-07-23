@@ -38,7 +38,7 @@ public class SelectorGui {
     menu.setAutomaticPaginationEnabled(true);
     menu.setBlockDefaultInteractions(true);
 
-    final var servers = useCache
+    var servers = useCache
         ?
         PsHubCore.getInstance()
             .getServerCache()
@@ -48,9 +48,7 @@ public class SelectorGui {
             .getServersController()
             .getServers();
 
-    List<Server> filteredServers = new ArrayList<>(servers);
-
-    filteredServers.sort(Comparator.comparing(s -> {
+    servers.sort(Comparator.comparing(s -> {
       final ServerPinger.PingResult info = s.getInfo();
       if (info == null || info.status() != ServerStatus.ONLINE) {
         return 1;
@@ -58,15 +56,11 @@ public class SelectorGui {
       return 0;
     }));
 
-    List<Server> filteredServersByPlayers = new ArrayList<>(filteredServers);
+    if (instance.getConfig().getBoolean("gui.selector.menu.sort-by-players")) {
+      servers.sort(Comparator.comparing(s -> s.getInfo().players() != null ? -s.getInfo().players() : 0));
+    }
 
-    filteredServersByPlayers.sort(Comparator.comparing(s -> s.getInfo().players() != null ? -s.getInfo().players() : 0));
-
-    final var serversPage = instance.getConfig().getBoolean("gui.selector.menu.sort-by-players")
-        ? filteredServersByPlayers
-        : filteredServers;
-
-    serversPage.forEach(server -> {
+    servers.forEach(server -> {
       final var onlinexMaterial =
           XMaterial.matchXMaterial(instance.getConfig().getString("gui.selector.menu.online.block"))
               .orElse(XMaterial.PLAYER_HEAD).parseItem();

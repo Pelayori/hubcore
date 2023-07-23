@@ -121,10 +121,7 @@ public class PsHubCore extends JavaPlugin {
 
     // Initialize ServerCache
     serverCache = new ServerCache(serversController);
-
-    // Create ServerCache refreshing task
-    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-    executor.scheduleAtFixedRate(serverCache, 1, getConfig().getInt("cache.cache-time"), TimeUnit.SECONDS);
+    serverCache.runTaskTimerAsynchronously(this, 0, getConfig().getLong("cache.cache-time") * 20);
   }
 
   /**
