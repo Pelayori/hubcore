@@ -85,6 +85,5 @@ public class BungeeUtil {
       e.printStackTrace();
     }
     player.sendPluginMessage(PsHubCore.getInstance(), "BungeeCord", out.toByteArray());
-    player.closeInventory();
   }
 }

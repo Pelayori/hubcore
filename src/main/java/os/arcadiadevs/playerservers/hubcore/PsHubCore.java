@@ -134,8 +134,11 @@ public class PsHubCore extends JavaPlugin {
     spiGui = new SpiGUI(this);
 
     // Initialize ServerCache
-    serverCache = new ServerCache(serversController);
-    serverCache.runTaskTimerAsynchronously(this, 0, getConfig().getLong("cache.cache-time") * 20);
+    serverCache = new ServerCache(serversController, getConfig());
+
+    Bukkit.getMessenger().registerIncomingPluginChannel(this, "BungeeCord", serverCache);
+
+    serverCache.runTaskAsynchronously(this);
   }
 
   /**
