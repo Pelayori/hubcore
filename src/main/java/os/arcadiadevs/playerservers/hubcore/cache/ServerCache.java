@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
+import os.arcadiadevs.playerservers.hubcore.PsHubCore;
 import os.arcadiadevs.playerservers.hubcore.controllers.ServersController;
 import os.arcadiadevs.playerservers.hubcore.dto.ServerRecord;
 import os.arcadiadevs.playerservers.hubcore.utils.BungeeUtil;
@@ -27,10 +28,13 @@ public class ServerCache extends BukkitRunnable implements PluginMessageListener
 
   private final ServersController serversController;
 
-  public ServerCache(ServersController serversController, FileConfiguration config) {
+  private final PsHubCore instance;
+
+  public ServerCache(ServersController serversController, FileConfiguration config, PsHubCore instance) {
     this.serversController = serversController;
     this.servers = new ArrayList<>();
     this.config = config;
+    this.instance = instance;
   }
 
   /**
@@ -39,7 +43,7 @@ public class ServerCache extends BukkitRunnable implements PluginMessageListener
   @SneakyThrows
   @Override
   public void run() {
-    while (!this.isCancelled()) {
+    while (instance.isEnabled()) {
       Player player = Bukkit.getOnlinePlayers().stream().findAny().orElse(null);
 
       if (player == null) {

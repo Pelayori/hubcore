@@ -134,7 +134,7 @@ public class PsHubCore extends JavaPlugin {
     spiGui = new SpiGUI(this);
 
     // Initialize ServerCache
-    serverCache = new ServerCache(serversController, getConfig());
+    serverCache = new ServerCache(serversController, getConfig(), this);
 
     Bukkit.getMessenger().registerIncomingPluginChannel(this, "BungeeCord", serverCache);
 
