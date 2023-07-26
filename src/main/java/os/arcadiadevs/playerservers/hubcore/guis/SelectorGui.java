@@ -43,7 +43,7 @@ public class SelectorGui {
 
     List<ServerRecord> filteredServers = new ArrayList<>(records);
 
-    filteredServers.sort(Comparator.comparing(s -> s.online() ? 1 : 0));
+    filteredServers.sort(Comparator.comparing(s -> s.online() ? 0 : 1));
 
     List<ServerRecord> filteredServersByPlayers = new ArrayList<>(filteredServers);
 
@@ -86,6 +86,7 @@ public class SelectorGui {
 
           ItemStack item = itemBuilder
               .lore(online ? onlineLore : offlineLore)
+              .skullOwner(server.name() == null ? "" : server.name())
               .build();
 
           menu.addButton(new SGButton(item).withListener(
