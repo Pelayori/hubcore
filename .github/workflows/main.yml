@@ -1,6 +1,6 @@
-name: Java CI
+name: Buildpls
 
-on: [push]
+on: push
 
 jobs:
   build:
