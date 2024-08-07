@@ -26,11 +26,6 @@ import os.arcadiadevs.playerservers.hubcore.utils.formatter.Formatter;
  */
 public class SelectorGui {
 
-  /**
-   * Opens the selector GUI.
-   *
-   * @param player The player to open the GUI for.
-   */
   public static void openGui(Player player) {
     final var instance = PsHubCore.getInstance();
     final var records = PsHubCore.getInstance().getServerCache().getServers();
@@ -40,6 +35,9 @@ public class SelectorGui {
 
     menu.setAutomaticPaginationEnabled(true);
     menu.setBlockDefaultInteractions(true);
+
+    // Add stained glass pane outline
+    GuiUtils.addBorder(menu, 5);
 
     List<ServerRecord> filteredServers = new ArrayList<>(records);
 
@@ -98,3 +96,4 @@ public class SelectorGui {
   }
 
 }
+
