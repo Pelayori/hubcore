@@ -83,21 +83,21 @@ public class SelectorGui {
 
         // Add pagination buttons
         if (page > 0) {
-            menu.setButton(18, createPaginationButton("Previous Page", XMaterial.ARROW, () -> openGui(player, page - 1)));
+            menu.setButton(18, createPaginationButton("&fPrevious Page", XMaterial.ARROW, () -> openGui(player, page - 1)));
         }
         if ((page + 1) * SERVERS_PER_PAGE < serversPage.size()) {
-            menu.setButton(26, createPaginationButton("Next Page", XMaterial.ARROW, () -> openGui(player, page + 1)));
+            menu.setButton(26, createPaginationButton("&fNext Page", XMaterial.ARROW, () -> openGui(player, page + 1)));
         }
-        
+
         // Add new buttons
         menu.setButton(39, createCommandButton("&eMy Server", 
-                Arrays.asList("&7", "&7Open your server menu", "&7", "&eClick to open!"), 
+                "&7", "&7Open your server menu", "&7", "&eClick to open!", 
                 XMaterial.COMPARATOR, player, "/pguy"));
         menu.setButton(40, createCommandButton("&bServer Guide", 
-                Arrays.asList("&7", "&7Open the server guide", "&7", "&eClick to open!"), 
+                "&7", "&7Open the server guide", "&7", "&eClick to open!", 
                 XMaterial.BOOK, player, "/guide"));
         menu.setButton(41, createCommandButton("&aGet a Server", 
-                Arrays.asList("&7", "&7Buy your own server", "&7", "&eClick to open!"), 
+                "&7", "&7Buy your own server", "&7", "&eClick to open!", 
                 XMaterial.EMERALD, player, "/buysrv"));
 
         XSound.BLOCK_NOTE_BLOCK_BASS.play(player);
@@ -111,10 +111,10 @@ public class SelectorGui {
         return new SGButton(item).withListener(event -> action.run());
     }
 
-    private static SGButton createCommandButton(String name, List<String> lore, XMaterial material, Player player, String command) {
+    private static SGButton createCommandButton(String name, String lore1, String lore2, String lore3, String lore4, XMaterial material, Player player, String command) {
         ItemStack item = new ItemBuilder(material.parseMaterial())
                 .name(ChatUtil.translate(name))
-                .lore(ChatUtil.translate(lore))
+                .lore(ChatUtil.translate(lore1), ChatUtil.translate(lore2), ChatUtil.translate(lore3), ChatUtil.translate(lore4))
                 .build();
         return new SGButton(item).withListener(event -> {
             player.closeInventory();
