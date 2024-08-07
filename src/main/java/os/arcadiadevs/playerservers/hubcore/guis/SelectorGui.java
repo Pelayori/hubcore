@@ -8,11 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import os.arcadiadevs.playerservers.hubcore.PsHubCore;
 import os.arcadiadevs.playerservers.hubcore.dto.ServerRecord;
-import os.arcadiadevs.playerservers.hubcore.enums.ServerStatus;
-import os.arcadiadevs.playerservers.hubcore.models.Server;
 import os.arcadiadevs.playerservers.hubcore.utils.BungeeUtil;
 import os.arcadiadevs.playerservers.hubcore.utils.ChatUtil;
-import os.arcadiadevs.playerservers.hubcore.utils.ServerPinger;
 import os.arcadiadevs.playerservers.hubcore.utils.GuiUtils;
 import os.arcadiadevs.playerservers.hubcore.utils.formatter.Formatter;
 
@@ -92,21 +89,16 @@ public class SelectorGui {
             menu.setButton(26, createPaginationButton("Next Page", XMaterial.ARROW, () -> openGui(player, page + 1)));
         }
 
-        // Region: Custom Button Configuration
-        String myServerName = ChatUtil.translate("&aMy Server");
-        List<String> myServerLore = ChatUtil.translate(List.of("&7Click to open your server menu"));
-
-        String guideName = ChatUtil.translate("&aGuide");
-        List<String> guideLore = ChatUtil.translate(List.of("&7Click to open the guide"));
-
-        String getServerName = ChatUtil.translate("&aGet a Server");
-        List<String> getServerLore = ChatUtil.translate(List.of("&7Click to buy a server"));
-        // End Region: Custom Button Configuration
-
         // Add new buttons
-        menu.setButton(39, createCommandButton(myServerName, myServerLore, XMaterial.COMPARATOR, player, "/pguy"));
-        menu.setButton(40, createCommandButton(guideName, guideLore, XMaterial.BOOK, player, "/guide"));
-        menu.setButton(41, createCommandButton(getServerName, getServerLore, XMaterial.EMERALD, player, "/buysrv"));
+        menu.setButton(39, createCommandButton("&eMy Server", 
+                List.of("&7", "&7Open your server menu", "&7", "&eClick to open!"), 
+                XMaterial.COMPARATOR, player, "/pguy"));
+        menu.setButton(40, createCommandButton("&bServers Guide", 
+                List.of("&7", "&7Open the server guide", "&7", "&eClick to open!"), 
+                XMaterial.BOOK, player, "/guide"));
+        menu.setButton(41, createCommandButton("&aGet a Server", 
+                List.of("&7", "&7Buy your own server", "&7", "&eClick to open!"), 
+                XMaterial.EMERALD, player, "/buysrv"));
 
         XSound.BLOCK_NOTE_BLOCK_BASS.play(player);
         player.openInventory(menu.getInventory());
@@ -121,8 +113,8 @@ public class SelectorGui {
 
     private static SGButton createCommandButton(String name, List<String> lore, XMaterial material, Player player, String command) {
         ItemStack item = new ItemBuilder(material.parseMaterial())
-                .name(name)
-                .lore(lore)
+                .name(ChatUtil.translate(name))
+                .lore(ChatUtil.translate(lore))
                 .build();
         return new SGButton(item).withListener(event -> {
             player.closeInventory();
