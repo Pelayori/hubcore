@@ -42,7 +42,7 @@ public class PlayerMenuGui {
       for (int i = 0; i < 9 * 4; i++) {
         menu.setButton(
             i,
-            new SGButton(new ItemBuilder(new ItemStack(Material.GRAY_STAINED_GLASS_PANE)).build())
+            new SGButton(new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).build())
         );
       }
 
@@ -122,7 +122,7 @@ public class PlayerMenuGui {
           .build())
           .withListener(listener -> server.connect());
 
-      final var itemStop = new SGButton(new ItemBuilder(XMaterial.RED_TERRACOTTA.parseItem())
+      final var itemStop = new SGButton(new ItemBuilder(XMaterial.RED_BANNER.parseItem())
           .name(ChatUtil.translate(
               instance.getConfig().getString("gui.player-menu.menu.stop.name")))
           .lore(instance.getConfig().getStringList("gui.player-menu.menu.stop.lore"))
@@ -134,7 +134,7 @@ public class PlayerMenuGui {
     }
 
     if (!online) {
-      final var itemStart = new SGButton(new ItemBuilder(XMaterial.GREEN_TERRACOTTA.parseItem())
+      final var itemStart = new SGButton(new ItemBuilder(XMaterial.GREEN_BANNER.parseItem())
           .name(ChatUtil.translate(
               instance.getConfig().getString("gui.player-menu.menu.start.name")))
           .lore(instance.getConfig().getStringList("gui.player-menu.menu.start.lore"))
@@ -168,7 +168,7 @@ public class PlayerMenuGui {
     deleteConfirmationMenu.setAutomaticPaginationEnabled(false);
     deleteConfirmationMenu.setBlockDefaultInteractions(true);
 
-    final var yesButton = new SGButton(new ItemBuilder(XMaterial.GREEN_TERRACOTTA.parseItem())
+    final var yesButton = new SGButton(new ItemBuilder(XMaterial.GREEN_BANNER.parseItem())
         .name(ChatUtil.translate(
             instance.getConfig()
                 .getString("gui.player-menu.menu.delete.confirmation.accept.name")))
@@ -182,7 +182,7 @@ public class PlayerMenuGui {
           player.closeInventory();
         });
 
-    final var noButton = new SGButton(new ItemBuilder(XMaterial.RED_TERRACOTTA.parseItem())
+    final var noButton = new SGButton(new ItemBuilder(XMaterial.RED_BANNER.parseItem())
         .name(ChatUtil.translate(
             instance.getConfig()
                 .getString("gui.player-menu.menu.delete.confirmation.decline.name")))
@@ -216,7 +216,7 @@ public class PlayerMenuGui {
     stopConfirmationMenu.setAutomaticPaginationEnabled(false);
     stopConfirmationMenu.setBlockDefaultInteractions(true);
 
-    final var yesButton = new SGButton(new ItemBuilder(XMaterial.GREEN_TERRACOTTA.parseItem())
+    final var yesButton = new SGButton(new ItemBuilder(XMaterial.GREEN_BANNER.parseItem())
         .name(ChatUtil.translate(
             instance.getConfig().getString("gui.player-menu.menu.stop.confirmation.accept.name")))
         .lore(instance.getConfig()
@@ -228,7 +228,7 @@ public class PlayerMenuGui {
           player.closeInventory();
         });
 
-    final var noButton = new SGButton(new ItemBuilder(XMaterial.RED_TERRACOTTA.parseItem())
+    final var noButton = new SGButton(new ItemBuilder(XMaterial.RED_BANNER.parseItem())
         .name(ChatUtil.translate(
             instance.getConfig()
                 .getString("gui.player-menu.menu.stop.confirmation.decline.name")))
