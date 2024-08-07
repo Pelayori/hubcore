@@ -113,9 +113,16 @@ public class SelectorGui {
         slot++;
     }
 
-    // Add page buttons at the bottom
-    menu.setButton(36, menu.previousPageButton());
-    menu.setButton(44, menu.nextPageButton());
+    // Add custom page buttons at the bottom
+    ItemStack previousPageItem = new ItemBuilder(XMaterial.ARROW.parseMaterial())
+        .name(ChatUtil.translate("&aPrevious Page"))
+        .build();
+    ItemStack nextPageItem = new ItemBuilder(XMaterial.ARROW.parseMaterial())
+        .name(ChatUtil.translate("&aNext Page"))
+        .build();
+
+    menu.setButton(36, new SGButton(previousPageItem).withListener(event -> menu.previousPage()));
+    menu.setButton(44, new SGButton(nextPageItem).withListener(event -> menu.nextPage()));
 
     XSound.BLOCK_NOTE_BLOCK_BASS.play(player);
     player.openInventory(menu.getInventory());
