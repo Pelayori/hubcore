@@ -11,28 +11,28 @@ public class GuiUtils {
     for (int i = 0; i < 9; i++) {
       menu.setButton(
           i,
-          new SGButton(new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem()).build())
+          new SGButton(new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).build())
       );
     }
 
     for (int i = 0; i < rows; i++) {
       menu.setButton(
           i * 9,
-          new SGButton(new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem()).build())
+          new SGButton(new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).build())
       );
     }
 
     for (int i = 0; i < rows; i++) {
       menu.setButton(
           i * 9 + 8,
-          new SGButton(new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem()).build())
+          new SGButton(new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).build())
       );
     }
 
     for (int i = (rows - 1) * 9; i < ((rows - 1) * 9) + 9; i++) {
       menu.setButton(
           i,
-          new SGButton(new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem()).build())
+          new SGButton(new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).build())
       );
     }
   }
