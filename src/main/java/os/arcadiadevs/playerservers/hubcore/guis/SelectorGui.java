@@ -88,16 +88,16 @@ public class SelectorGui {
         if ((page + 1) * SERVERS_PER_PAGE < serversPage.size()) {
             menu.setButton(26, createPaginationButton("Next Page", XMaterial.ARROW, () -> openGui(player, page + 1)));
         }
-
+        
         // Add new buttons
         menu.setButton(39, createCommandButton("&eMy Server", 
-                List.of("&7", "&7Open your server menu", "&7", "&eClick to open!"), 
+                Arrays.asList("&7", "&7Open your server menu", "&7", "&eClick to open!"), 
                 XMaterial.COMPARATOR, player, "/pguy"));
-        menu.setButton(40, createCommandButton("&bServers Guide", 
-                List.of("&7", "&7Open the server guide", "&7", "&eClick to open!"), 
+        menu.setButton(40, createCommandButton("&bServer Guide", 
+                Arrays.asList("&7", "&7Open the server guide", "&7", "&eClick to open!"), 
                 XMaterial.BOOK, player, "/guide"));
         menu.setButton(41, createCommandButton("&aGet a Server", 
-                List.of("&7", "&7Buy your own server", "&7", "&eClick to open!"), 
+                Arrays.asList("&7", "&7Buy your own server", "&7", "&eClick to open!"), 
                 XMaterial.EMERALD, player, "/buysrv"));
 
         XSound.BLOCK_NOTE_BLOCK_BASS.play(player);
