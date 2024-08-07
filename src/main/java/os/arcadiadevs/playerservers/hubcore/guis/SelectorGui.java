@@ -97,7 +97,7 @@ public class SelectorGui {
                 "&7Open the server guide", "&7", "&eClick to open!", 
                 XMaterial.BOOK, player, "/guide"));
         menu.setButton(41, createCommandButton("&aGet a Server", 
-                "&7Buy your own server", "&7", "&eClick to open!", 
+                "&7Start your own server", "&7", "&eClick to open!", 
                 XMaterial.EMERALD, player, "/buysrv"));
 
         XSound.BLOCK_NOTE_BLOCK_BASS.play(player);
