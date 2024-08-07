@@ -92,7 +92,7 @@ public class SelectorGui {
         // Add new buttons
         menu.setButton(39, createCommandButton("&6My Server", 
                 "&7Open your server menu", "&7", "&eClick to open!", 
-                XMaterial.COMPARATOR, player, "/pguy"));
+                XMaterial.COMPARATOR, player, "/pgui"));
         menu.setButton(40, createCommandButton("&bServer Guide", 
                 "&7Open the server guide", "&7", "&eClick to open!", 
                 XMaterial.BOOK, player, "/guide"));
