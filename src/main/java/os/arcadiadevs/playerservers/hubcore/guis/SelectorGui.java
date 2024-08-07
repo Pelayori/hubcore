@@ -41,6 +41,13 @@ public class SelectorGui {
     menu.setAutomaticPaginationEnabled(true);
     menu.setBlockDefaultInteractions(true);
 
+    // Add gray stained glass pane outline
+    for (int i = 0; i < 45; i++) {
+        if (i < 9 || i > 35 || i % 9 == 0 || i % 9 == 8) {
+            menu.setButton(i, new SGButton(new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).name(" ").build()));
+        }
+    }
+
     List<ServerRecord> filteredServers = new ArrayList<>(records);
 
     filteredServers.sort(Comparator.comparing(s -> s.online() ? 0 : 1));
@@ -64,37 +71,53 @@ public class SelectorGui {
 
     final boolean showOffline = instance.getConfig().getBoolean("gui.selector.menu.show-offline");
 
-    serversPage.stream()
-        .filter(server -> showOffline || server.online())
-        .forEach(server -> {
-          boolean online = server.online();
-          XMaterial material = online ? onlinexMaterial : offlinexMaterial;
-          List<String> onlineLore = Formatter.format(server,
-              instance.getConfig().getStringList("gui.selector.menu.online.lore"));
+    int slot = 10; // Start at the first slot of the second row
+    for (ServerRecord server : serversPage) {
+        if (!showOffline && !server.online()) {
+            continue;
+        }
 
-          List<String> offlineLore = Formatter.format(server,
-              instance.getConfig().getStringList("gui.selector.menu.offline.lore"));
+        if (slot % 9 == 8) {
+            slot += 2; // Skip the outline columns
+        }
 
-          String onlineName = Formatter.format(server,
-              instance.getConfig().getString("gui.selector.menu.online.name"));
+        if (slot >= 35) {
+            break; // Stop if we've filled all available slots
+        }
 
-          String offlineName = Formatter.format(server,
-              instance.getConfig().getString("gui.selector.menu.offline.name"));
+        boolean online = server.online();
+        XMaterial material = online ? onlinexMaterial : offlinexMaterial;
+        List<String> onlineLore = Formatter.format(server,
+            instance.getConfig().getStringList("gui.selector.menu.online.lore"));
 
-          ItemBuilder itemBuilder = new ItemBuilder(material.parseMaterial())
-              .name(online ? onlineName : offlineName);
+        List<String> offlineLore = Formatter.format(server,
+            instance.getConfig().getStringList("gui.selector.menu.offline.lore"));
 
-          ItemStack item = itemBuilder
-              .lore(online ? onlineLore : offlineLore)
-              .skullOwner(server.name() == null ? "" : server.name())
-              .build();
+        String onlineName = Formatter.format(server,
+            instance.getConfig().getString("gui.selector.menu.online.name"));
 
-          menu.addButton(new SGButton(item).withListener(
-              listener -> BungeeUtil.connectPlayer(player, server.name())));
-        });
+        String offlineName = Formatter.format(server,
+            instance.getConfig().getString("gui.selector.menu.offline.name"));
+
+        ItemBuilder itemBuilder = new ItemBuilder(material.parseMaterial())
+            .name(online ? onlineName : offlineName);
+
+        ItemStack item = itemBuilder
+            .lore(online ? onlineLore : offlineLore)
+            .skullOwner(server.name() == null ? "" : server.name())
+            .build();
+
+        menu.setButton(slot, new SGButton(item).withListener(
+            listener -> BungeeUtil.connectPlayer(player, server.name())));
+
+        slot++;
+    }
+
+    // Add page buttons at the bottom
+    menu.setButton(36, menu.previousPageButton());
+    menu.setButton(44, menu.nextPageButton());
 
     XSound.BLOCK_NOTE_BLOCK_BASS.play(player);
     player.openInventory(menu.getInventory());
   }
-
 }
