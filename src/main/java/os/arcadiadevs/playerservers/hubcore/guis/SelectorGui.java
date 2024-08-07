@@ -4,7 +4,6 @@ import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XSound;
 import com.samjakob.spigui.buttons.SGButton;
 import com.samjakob.spigui.item.ItemBuilder;
-import com.samjakob.spigui.menu.SGMenu;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import os.arcadiadevs.playerservers.hubcore.PsHubCore;
