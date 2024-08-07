@@ -9,8 +9,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import os.arcadiadevs.playerservers.hubcore.PsHubCore;
 import os.arcadiadevs.playerservers.hubcore.dto.ServerRecord;
+import os.arcadiadevs.playerservers.hubcore.enums.ServerStatus;
+import os.arcadiadevs.playerservers.hubcore.models.Server;
 import os.arcadiadevs.playerservers.hubcore.utils.BungeeUtil;
 import os.arcadiadevs.playerservers.hubcore.utils.ChatUtil;
+import os.arcadiadevs.playerservers.hubcore.utils.ServerPinger;
+import os.arcadiadevs.playerservers.hubcore.utils.GuiUtils;
 import os.arcadiadevs.playerservers.hubcore.utils.formatter.Formatter;
 
 import java.util.ArrayList;
@@ -19,9 +23,15 @@ import java.util.List;
 
 public class SelectorGui {
 
+    private static final int SERVERS_PER_PAGE = 21;
+
     public static void openGui(Player player) {
+        openGui(player, 0);
+    }
+
+    public static void openGui(Player player, int page) {
         final var instance = PsHubCore.getInstance();
-        final var records = PsHubCore.getInstance().getServerCache().getServers();
+        final var records = instance.getServerCache().getServers();
         final var menu = instance.getSpiGui()
                 .create(ChatUtil.translate(instance.getConfig().getString("gui.selector.menu.name")), 5);
 
@@ -29,13 +39,15 @@ public class SelectorGui {
         menu.setBlockDefaultInteractions(true);
 
         // Add border
-        addBorder(menu, 5);
+        GuiUtils.addBorder(menu, 5);
 
         List<ServerRecord> filteredServers = new ArrayList<>(records);
         filteredServers.sort(Comparator.comparing(s -> s.online() ? 0 : 1));
 
         List<ServerRecord> filteredServersByPlayers = new ArrayList<>(filteredServers);
-        filteredServersByPlayers.sort(Comparator.comparing(s -> s.players() != null ? -s.players() : 0));
+        filteredServersByPlayers.sort(
+            Comparator.comparing(s -> s.players() != null ? -s.players() : 0)
+        );
 
         final var serversPage = instance.getConfig().getBoolean("gui.selector.menu.sort-by-players")
                 ? filteredServersByPlayers
@@ -49,7 +61,9 @@ public class SelectorGui {
         final boolean showOffline = instance.getConfig().getBoolean("gui.selector.menu.show-offline");
 
         int slot = 10; // Starting slot for servers
-        for (ServerRecord server : serversPage) {
+        int serverCount = 0;
+        for (int i = page * SERVERS_PER_PAGE; i < serversPage.size() && serverCount < SERVERS_PER_PAGE; i++) {
+            ServerRecord server = serversPage.get(i);
             if (showOffline || server.online()) {
                 boolean online = server.online();
                 XMaterial material = online ? onlinexMaterial : offlinexMaterial;
@@ -67,28 +81,26 @@ public class SelectorGui {
 
                 slot++;
                 if ((slot % 9) == 8) slot += 2; // Move to next row if at the end
-                if (slot > 34) break; // Stop if we've filled the 3x7 grid
+                serverCount++;
             }
+        }
+
+        // Add pagination buttons
+        if (page > 0) {
+            menu.setButton(18, createPaginationButton("Previous Page", XMaterial.ARROW, () -> openGui(player, page - 1)));
+        }
+        if ((page + 1) * SERVERS_PER_PAGE < serversPage.size()) {
+            menu.setButton(26, createPaginationButton("Next Page", XMaterial.ARROW, () -> openGui(player, page + 1)));
         }
 
         XSound.BLOCK_NOTE_BLOCK_BASS.play(player);
         player.openInventory(menu.getInventory());
     }
 
-    private static void addBorder(SGMenu menu, int rows) {
-        ItemStack borderItem = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).build();
-        SGButton borderButton = new SGButton(borderItem);
-
-        // Top and bottom rows
-        for (int i = 0; i < 9; i++) {
-            menu.setButton(i, borderButton);
-            menu.setButton((rows - 1) * 9 + i, borderButton);
-        }
-
-        // Left and right columns
-        for (int i = 1; i < rows - 1; i++) {
-            menu.setButton(i * 9, borderButton);
-            menu.setButton(i * 9 + 8, borderButton);
-        }
+    private static SGButton createPaginationButton(String name, XMaterial material, Runnable action) {
+        ItemStack item = new ItemBuilder(material.parseMaterial())
+                .name(ChatUtil.translate("&a" + name))
+                .build();
+        return new SGButton(item).withListener(event -> action.run());
     }
 }
