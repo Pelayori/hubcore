@@ -90,14 +90,14 @@ public class SelectorGui {
         }
 
         // Add new buttons
-        menu.setButton(39, createCommandButton("&eMy Server", 
-                "&7", "&7Open your server menu", "&7", "&eClick to open!", 
+        menu.setButton(39, createCommandButton("&6My Server", 
+                "&7Open your server menu", "&7", "&eClick to open!", 
                 XMaterial.COMPARATOR, player, "/pguy"));
         menu.setButton(40, createCommandButton("&bServer Guide", 
-                "&7", "&7Open the server guide", "&7", "&eClick to open!", 
+                "&7Open the server guide", "&7", "&eClick to open!", 
                 XMaterial.BOOK, player, "/guide"));
         menu.setButton(41, createCommandButton("&aGet a Server", 
-                "&7", "&7Buy your own server", "&7", "&eClick to open!", 
+                "&7Buy your own server", "&7", "&eClick to open!", 
                 XMaterial.EMERALD, player, "/buysrv"));
 
         XSound.BLOCK_NOTE_BLOCK_BASS.play(player);
@@ -111,10 +111,10 @@ public class SelectorGui {
         return new SGButton(item).withListener(event -> action.run());
     }
 
-    private static SGButton createCommandButton(String name, String lore1, String lore2, String lore3, String lore4, XMaterial material, Player player, String command) {
+    private static SGButton createCommandButton(String name, String lore1, String lore2, String lore3, XMaterial material, Player player, String command) {
         ItemStack item = new ItemBuilder(material.parseMaterial())
                 .name(ChatUtil.translate(name))
-                .lore(ChatUtil.translate(lore1), ChatUtil.translate(lore2), ChatUtil.translate(lore3), ChatUtil.translate(lore4))
+                .lore(ChatUtil.translate(lore1), ChatUtil.translate(lore2), ChatUtil.translate(lore3))
                 .build();
         return new SGButton(item).withListener(event -> {
             player.closeInventory();
