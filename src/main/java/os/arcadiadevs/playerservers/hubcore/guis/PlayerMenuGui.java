@@ -5,6 +5,8 @@ import com.cryptomorin.xseries.XSound;
 import com.samjakob.spigui.buttons.SGButton;
 import com.samjakob.spigui.item.ItemBuilder;
 import java.util.ArrayList;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.entity.Player;
 import os.arcadiadevs.playerservers.hubcore.PsHubCore;
 import os.arcadiadevs.playerservers.hubcore.enums.PowerAction;
@@ -40,7 +42,7 @@ public class PlayerMenuGui {
       for (int i = 0; i < 9 * 4; i++) {
         menu.setButton(
             i,
-            new SGButton(new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).build())
+            new SGButton(new ItemBuilder(new ItemStack(Material.GRAY_STAINED_GLASS_PANE)).build())
         );
       }
 
