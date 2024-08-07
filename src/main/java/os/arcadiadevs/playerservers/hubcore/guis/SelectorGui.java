@@ -92,6 +92,22 @@ public class SelectorGui {
             menu.setButton(26, createPaginationButton("Next Page", XMaterial.ARROW, () -> openGui(player, page + 1)));
         }
 
+        // Region: Custom Button Configuration
+        String myServerName = ChatUtil.translate("&aMy Server");
+        List<String> myServerLore = ChatUtil.translate(List.of("&7Click to open your server menu"));
+
+        String guideName = ChatUtil.translate("&aGuide");
+        List<String> guideLore = ChatUtil.translate(List.of("&7Click to open the guide"));
+
+        String getServerName = ChatUtil.translate("&aGet a Server");
+        List<String> getServerLore = ChatUtil.translate(List.of("&7Click to buy a server"));
+        // End Region: Custom Button Configuration
+
+        // Add new buttons
+        menu.setButton(39, createCommandButton(myServerName, myServerLore, XMaterial.COMPARATOR, player, "/pguy"));
+        menu.setButton(40, createCommandButton(guideName, guideLore, XMaterial.BOOK, player, "/guide"));
+        menu.setButton(41, createCommandButton(getServerName, getServerLore, XMaterial.EMERALD, player, "/buysrv"));
+
         XSound.BLOCK_NOTE_BLOCK_BASS.play(player);
         player.openInventory(menu.getInventory());
     }
@@ -101,5 +117,16 @@ public class SelectorGui {
                 .name(ChatUtil.translate("&a" + name))
                 .build();
         return new SGButton(item).withListener(event -> action.run());
+    }
+
+    private static SGButton createCommandButton(String name, List<String> lore, XMaterial material, Player player, String command) {
+        ItemStack item = new ItemBuilder(material.parseMaterial())
+                .name(name)
+                .lore(lore)
+                .build();
+        return new SGButton(item).withListener(event -> {
+            player.closeInventory();
+            player.performCommand(command.substring(1)); // Remove the leading '/'
+        });
     }
 }
