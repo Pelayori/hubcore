@@ -147,11 +147,21 @@ public class PlayerMenuGui {
     menu.setButton(0, 24, itemDelete);
 
     menu.setButton(0, 4, itemPlayer);
+    
+    // Add new buttons
+    menu.setButton(39, createCommandButton("&6Player Servers",
+        "&7Open the server list", "&7", "&eClick to view!",
+        XMaterial.NETHER_STAR, player, "/servers"));
+    menu.setButton(40, createCommandButton("&bServer Guide",
+        "&7Open the server guide", "&7", "&eClick to view!",
+        XMaterial.BOOK, player, "/guide"));
+    menu.setButton(41, createCommandButton("&aServer Upgrades",
+        "&7Boost your server", "&7", "&eClick to view!",
+        XMaterial.EMERALD, player, "/buysrv"));
 
     XSound.BLOCK_NOTE_BLOCK_BASS.play(player);
     player.openInventory(menu.getInventory());
   }
-
   /**
    * Opens the delete confirmation menu.
    *
