@@ -257,5 +257,15 @@ public class PlayerMenuGui {
 
     player.openInventory(stopConfirmationMenu.getInventory());
   }
-
+  
+  private static SGButton createCommandButton(String name, String lore1, String lore2, String lore3, XMaterial material, Player player, String command) {
+    return new SGButton(new ItemBuilder(material.parseItem())
+        .name(ChatUtil.translate(name))
+        .lore(ChatUtil.translate(lore1), ChatUtil.translate(lore2), ChatUtil.translate(lore3))
+        .build())
+        .withListener(listener -> {
+          player.performCommand(command);
+          XSound.ENTITY_EXPERIENCE_ORB_PICKUP.play(player);
+        });
+  }
 }
