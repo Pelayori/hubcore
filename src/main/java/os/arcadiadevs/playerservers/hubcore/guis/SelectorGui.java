@@ -83,21 +83,21 @@ public class SelectorGui {
 
         // Add pagination buttons
         if (page > 0) {
-            menu.setButton(18, createPaginationButton("&fPrevious Page", XMaterial.ARROW, () -> openGui(player, page - 1)));
+            menu.setButton(18, createPaginationButton("&f< Previous Page", XMaterial.ARROW, () -> openGui(player, page - 1)));
         }
         if ((page + 1) * SERVERS_PER_PAGE < serversPage.size()) {
-            menu.setButton(26, createPaginationButton("&fNext Page", XMaterial.ARROW, () -> openGui(player, page + 1)));
+            menu.setButton(26, createPaginationButton("&fNext Page >", XMaterial.ARROW, () -> openGui(player, page + 1)));
         }
 
         // Add new buttons
         menu.setButton(39, createCommandButton("&6My Server", 
-                "&7Open your server menu", "&7", "&eClick to open!", 
+                "&7Open your server menu", "&7", "&eClick to view!", 
                 XMaterial.COMPARATOR, player, "/pgui"));
         menu.setButton(40, createCommandButton("&bServer Guide", 
-                "&7Open the server guide", "&7", "&eClick to open!", 
+                "&7Open the server guide", "&7", "&eClick to view!", 
                 XMaterial.BOOK, player, "/guide"));
-        menu.setButton(41, createCommandButton("&aGet a Server", 
-                "&7Start your own server", "&7", "&eClick to open!", 
+        menu.setButton(41, createCommandButton("&aServer Upgrades", 
+                "&7Boost your server performance", "&7", "&eClick to view!", 
                 XMaterial.EMERALD, player, "/buysrv"));
 
         XSound.BLOCK_NOTE_BLOCK_BASS.play(player);
