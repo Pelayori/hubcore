@@ -97,7 +97,7 @@ public class SelectorGui {
                 "&7Open the server guide", "&7", "&eClick to view!", 
                 XMaterial.BOOK, player, "/guide"));
         menu.setButton(41, createCommandButton("&aServer Upgrades", 
-                "&7Boost your server performance", "&7", "&eClick to view!", 
+                "&7Boost your server", "&7", "&eClick to view!", 
                 XMaterial.EMERALD, player, "/buysrv"));
 
         XSound.BLOCK_NOTE_BLOCK_BASS.play(player);
